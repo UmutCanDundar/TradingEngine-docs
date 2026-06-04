@@ -1,0 +1,2837 @@
+
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+      
+      
+        <link rel="canonical" href="https://UmutCanDundar.github.io/TradingEngine-Portfolio/Unit/risk_unit/">
+      
+      
+        <link rel="prev" href="../../Perf/order_manager_perf/">
+      
+      
+        <link rel="next" href="../../Benchmark/risk_benchmark/">
+      
+      
+        
+      
+      
+      <link rel="icon" href="../../assets/images/favicon.png">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.7.6">
+    
+    
+      
+        <title>Unit - TradingEngine</title>
+      
+    
+    
+      <link rel="stylesheet" href="../../assets/stylesheets/main.484c7ddc.min.css">
+      
+        
+        <link rel="stylesheet" href="../../assets/stylesheets/palette.ab4e12ef.min.css">
+      
+      
+
+
+    
+    
+      
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,700,700i%7CRoboto+Mono:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
+      
+    
+    
+      <link rel="stylesheet" href="../../stylesheets/extra.css">
+    
+    <script>__md_scope=new URL("../..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+  </head>
+  
+  
+    
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="slate" data-md-color-primary="teal" data-md-color-accent="indigo">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#risk-engine-unit-tests" class="md-skip">
+          Skip to content
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+  
+
+<header class="md-header md-header--shadow md-header--lifted" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Header">
+    <a href="../.." title="TradingEngine" class="md-header__button md-logo" aria-label="TradingEngine" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            TradingEngine
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              Unit
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+      
+    
+    
+    
+    
+      
+      
+        <label class="md-header__button md-icon" for="__search">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        </label>
+        <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Search" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="Search">
+        
+        <button type="reset" class="md-search__icon md-icon" title="Clear" aria-label="Clear" tabindex="-1">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+        </button>
+      </nav>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" tabindex="0" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Initializing search
+          </div>
+          <ol class="md-search-result__list" role="presentation"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+      
+    
+    
+  </nav>
+  
+    
+      
+<nav class="md-tabs" aria-label="Tabs" data-md-component="tabs">
+  <div class="md-grid">
+    <ul class="md-tabs__list">
+      
+        
+  
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../.." class="md-tabs__link">
+        
+  
+  
+    
+  
+  Overview
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../../architecture/" class="md-tabs__link">
+        
+  
+  
+    
+  
+  Architecture
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../../design/" class="md-tabs__link">
+        
+  
+  
+    
+  
+  Design
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+    
+  
+  
+    
+    
+      <li class="md-tabs__item md-tabs__item--active">
+        <a href="../../tests/" class="md-tabs__link">
+          
+  
+  
+    
+  
+  Tests
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../../optimization/" class="md-tabs__link">
+        
+  
+  
+    
+  
+  Recent Optimization
+
+      </a>
+    </li>
+  
+
+      
+    </ul>
+  </div>
+</nav>
+    
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+  
+
+
+<nav class="md-nav md-nav--primary md-nav--lifted" aria-label="Navigation" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href="../.." title="TradingEngine" class="md-nav__button md-logo" aria-label="TradingEngine" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    TradingEngine
+  </label>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../.." class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Overview
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../architecture/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Architecture
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../design/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Design
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+    
+  
+  
+  
+    
+    
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+      
+        
+        
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4" checked>
+        
+          
+          <label class="md-nav__link" for="__nav_4" id="__nav_4_label" tabindex="">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Tests
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_4_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_4">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Tests
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../tests/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Overview
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+      
+      
+        
+          
+          
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_4_2" >
+        
+          
+          <label class="md-nav__link" for="__nav_4_2" id="__nav_4_2_label" tabindex="">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Pipeline
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_2_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_4_2">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Pipeline
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../Pipeline/pipeline/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Overview
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../Pipeline/benchmark_pipeline/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Benchmark
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../Pipeline/perf_pipeline/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Perf
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+      
+        
+      
+    
+    
+    
+      
+      
+        
+          
+          
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_4_3" >
+        
+          
+          <label class="md-nav__link" for="__nav_4_3" id="__nav_4_3_label" tabindex="">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Network
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_3_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_4_3">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Network
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../network_unit/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Unit
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+      
+      
+        
+          
+          
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_4_4" >
+        
+          
+          <label class="md-nav__link" for="__nav_4_4" id="__nav_4_4_label" tabindex="">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Parser
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_4_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_4_4">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Parser
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../parser_unit/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Unit
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../Benchmark/parser_benchmark/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Benchmark
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../Perf/parser_perf/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Perf
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+      
+      
+        
+          
+          
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_4_5" >
+        
+          
+          <label class="md-nav__link" for="__nav_4_5" id="__nav_4_5_label" tabindex="">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Order Manager
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_5_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_4_5">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Order Manager
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../order_manager_unit/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Unit
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../Benchmark/order_manager_benchmark/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Benchmark
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../Perf/order_manager_perf/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Perf
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+    
+  
+  
+  
+    
+    
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+      
+      
+        
+          
+          
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_6" checked>
+        
+          
+          <label class="md-nav__link" for="__nav_4_6" id="__nav_4_6_label" tabindex="">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Risk
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_6_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_4_6">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Risk
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+    
+  
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Unit
+  
+
+    
+  </span>
+  
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Unit
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#overview" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Overview
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#test-environment" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Test Environment
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#test-cases" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Test Cases
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Test Cases">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#riskenginetestmixedmessagetraffic" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        RiskEngineTest.MixedMessageTraffic
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#part-1-update-risk" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Part 1 — Update Risk
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Part 1 — Update Risk">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#message-1-fix-new-order-garan-buy-50015000" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Message 1 — FIX New Order (GARAN, buy 500@15000)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#message-2-bist-ouch-order-accepted-garan-buy-10010000" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Message 2 — BIST OUCH Order Accepted (GARAN, buy 100@10000)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#message-3-bist-itch-add-order-garan-100010000-buy" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Message 3 — BIST ITCH Add Order (GARAN, 1000@10000 Buy)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#message-4-nasdaq-ouch-order-accepted-aapl-buy-100010000" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Message 4 — NASDAQ OUCH Order Accepted (AAPL, buy 1000@10000)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#message-5-nasdaq-itch-add-order-aapl-10010000-buy" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Message 5 — NASDAQ ITCH Add Order (AAPL, 100@10000 Buy)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#message-6-fix-partial-fill-garan-200-filled-15000" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Message 6 — FIX Partial Fill (GARAN, 200 filled @15000)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#message-7-bist-itch-order-executed-garan-market-order-60-executed" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Message 7 — BIST ITCH Order Executed (GARAN market order, 60 executed)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#message-8-bist-ouch-order-executed-garan-partial-fill" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Message 8 — BIST OUCH Order Executed (GARAN, partial fill)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#message-9-nasdaq-itch-order-executed-aapl-market-order-60-executed" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Message 9 — NASDAQ ITCH Order Executed (AAPL market order, 60 executed)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#message-10-nasdaq-ouch-order-executed-aapl-partial-fill" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Message 10 — NASDAQ OUCH Order Executed (AAPL, partial fill)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#message-11-bist-itch-order-delete-garan-market-order" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Message 11 — BIST ITCH Order Delete (GARAN market order)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#message-12-bist-ouch-order-cancelled-garan" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Message 12 — BIST OUCH Order Cancelled (GARAN)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#message-13-nasdaq-itch-order-delete-aapl-market-order" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Message 13 — NASDAQ ITCH Order Delete (AAPL market order)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#message-14-nasdaq-ouch-order-cancelled-aapl" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Message 14 — NASDAQ OUCH Order Cancelled (AAPL)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#message-15-fix-cancel-confirm-garan" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Message 15 — FIX Cancel Confirm (GARAN)
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#part-2-check-risk" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Part 2 — Check Risk
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Part 2 — Check Risk">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#check-1-pass" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Check 1 — Pass
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#check-2-minordersizeexceeded" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Check 2 — MinOrderSizeExceeded
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#check-3-maxordersizeexceeded" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Check 3 — MaxOrderSizeExceeded
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#check-4-invalidlotsize" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Check 4 — InvalidLotSize
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#check-5-maxordernotionallimitexceeded-invalidpricerange" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Check 5 — MaxOrderNotionalLimitExceeded + InvalidPriceRange
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#check-6-pricetickinvalid" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Check 6 — PriceTickInvalid
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#check-7-fatfingercheckfailed" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Check 7 — FatFingerCheckFailed
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#check-8-maxpositionlimitexceeded" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Check 8 — MaxPositionLimitExceeded
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#check-9-maxnotionallimitexceeded" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Check 9 — MaxNotionalLimitExceeded
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#check-10-accountbalanceinsufficient-freemargininsufficient-maxleverageexceeded" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Check 10 — AccountBalanceInsufficient + FreeMarginInsufficient + MaxLeverageExceeded
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#check-11-maxopenordersreachedaccount" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Check 11 — MaxOpenOrdersReachedAccount
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#check-12-maxopenordersreachedsymbol" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Check 12 — MaxOpenOrdersReachedSymbol
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#check-13-selftradedetected" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Check 13 — SelfTradeDetected
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#check-14-unrealizedlosslimitexceeded" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Check 14 — UnrealizedLossLimitExceeded
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#check-15-realizedlosslimitexceeded" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Check 15 — RealizedLossLimitExceeded
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#check-16-maxorderratelimitexceededsymbol-maxorderratelimitexceededaccount" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Check 16 — MaxOrderRateLimitExceededSymbol + MaxOrderRateLimitExceededAccount
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#results" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Results
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#notes" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Notes
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../Benchmark/risk_benchmark/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Benchmark
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../Perf/risk_perf/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Perf
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+      
+      
+        
+          
+          
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_4_7" >
+        
+          
+          <label class="md-nav__link" for="__nav_4_7" id="__nav_4_7_label" tabindex="">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Builder
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_7_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_4_7">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Builder
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../builder_unit/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Unit
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../Benchmark/builder_benchmark/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Benchmark
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../Perf/builder_perf/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Perf
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../optimization/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Recent Optimization
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#overview" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Overview
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#test-environment" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Test Environment
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#test-cases" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Test Cases
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Test Cases">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#riskenginetestmixedmessagetraffic" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        RiskEngineTest.MixedMessageTraffic
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#part-1-update-risk" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Part 1 — Update Risk
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Part 1 — Update Risk">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#message-1-fix-new-order-garan-buy-50015000" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Message 1 — FIX New Order (GARAN, buy 500@15000)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#message-2-bist-ouch-order-accepted-garan-buy-10010000" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Message 2 — BIST OUCH Order Accepted (GARAN, buy 100@10000)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#message-3-bist-itch-add-order-garan-100010000-buy" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Message 3 — BIST ITCH Add Order (GARAN, 1000@10000 Buy)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#message-4-nasdaq-ouch-order-accepted-aapl-buy-100010000" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Message 4 — NASDAQ OUCH Order Accepted (AAPL, buy 1000@10000)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#message-5-nasdaq-itch-add-order-aapl-10010000-buy" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Message 5 — NASDAQ ITCH Add Order (AAPL, 100@10000 Buy)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#message-6-fix-partial-fill-garan-200-filled-15000" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Message 6 — FIX Partial Fill (GARAN, 200 filled @15000)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#message-7-bist-itch-order-executed-garan-market-order-60-executed" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Message 7 — BIST ITCH Order Executed (GARAN market order, 60 executed)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#message-8-bist-ouch-order-executed-garan-partial-fill" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Message 8 — BIST OUCH Order Executed (GARAN, partial fill)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#message-9-nasdaq-itch-order-executed-aapl-market-order-60-executed" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Message 9 — NASDAQ ITCH Order Executed (AAPL market order, 60 executed)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#message-10-nasdaq-ouch-order-executed-aapl-partial-fill" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Message 10 — NASDAQ OUCH Order Executed (AAPL, partial fill)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#message-11-bist-itch-order-delete-garan-market-order" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Message 11 — BIST ITCH Order Delete (GARAN market order)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#message-12-bist-ouch-order-cancelled-garan" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Message 12 — BIST OUCH Order Cancelled (GARAN)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#message-13-nasdaq-itch-order-delete-aapl-market-order" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Message 13 — NASDAQ ITCH Order Delete (AAPL market order)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#message-14-nasdaq-ouch-order-cancelled-aapl" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Message 14 — NASDAQ OUCH Order Cancelled (AAPL)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#message-15-fix-cancel-confirm-garan" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Message 15 — FIX Cancel Confirm (GARAN)
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#part-2-check-risk" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Part 2 — Check Risk
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Part 2 — Check Risk">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#check-1-pass" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Check 1 — Pass
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#check-2-minordersizeexceeded" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Check 2 — MinOrderSizeExceeded
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#check-3-maxordersizeexceeded" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Check 3 — MaxOrderSizeExceeded
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#check-4-invalidlotsize" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Check 4 — InvalidLotSize
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#check-5-maxordernotionallimitexceeded-invalidpricerange" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Check 5 — MaxOrderNotionalLimitExceeded + InvalidPriceRange
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#check-6-pricetickinvalid" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Check 6 — PriceTickInvalid
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#check-7-fatfingercheckfailed" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Check 7 — FatFingerCheckFailed
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#check-8-maxpositionlimitexceeded" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Check 8 — MaxPositionLimitExceeded
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#check-9-maxnotionallimitexceeded" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Check 9 — MaxNotionalLimitExceeded
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#check-10-accountbalanceinsufficient-freemargininsufficient-maxleverageexceeded" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Check 10 — AccountBalanceInsufficient + FreeMarginInsufficient + MaxLeverageExceeded
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#check-11-maxopenordersreachedaccount" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Check 11 — MaxOpenOrdersReachedAccount
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#check-12-maxopenordersreachedsymbol" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Check 12 — MaxOpenOrdersReachedSymbol
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#check-13-selftradedetected" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Check 13 — SelfTradeDetected
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#check-14-unrealizedlosslimitexceeded" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Check 14 — UnrealizedLossLimitExceeded
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#check-15-realizedlosslimitexceeded" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Check 15 — RealizedLossLimitExceeded
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#check-16-maxorderratelimitexceededsymbol-maxorderratelimitexceededaccount" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Check 16 — MaxOrderRateLimitExceededSymbol + MaxOrderRateLimitExceededAccount
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#results" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Results
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#notes" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Notes
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              
+              <article class="md-content__inner md-typeset">
+                
+                  
+
+
+
+<h1 id="risk-engine-unit-tests">Risk Engine — Unit Tests</h1>
+<h2 id="overview">Overview</h2>
+<p>Unit tests for <code>RiskEngine</code> — the component responsible for two distinct paths:</p>
+<ul>
+<li><strong>Update path</strong> (<code>update_risk()</code>) — processes incoming order lifecycle events (new, partial fill, execution, cancel) from <code>store_to_risk</code>, updating <code>AccountRisk</code>, <code>SymbolRisk</code>, and <code>OrderRisk</code> structs with exposure, position, PnL, and margin calculations.</li>
+<li><strong>Check path</strong> (<code>check_risk()</code>) — validates outbound orders from strategy against all configured risk limits before forwarding to the builder, returning structured reject reasons for any violation.</li>
+</ul>
+<p>Tests are written with <strong>Google Test (gtest)</strong>. The test is split into two sequential sections within a single test case, sharing the same <code>RiskEngine</code> instance.</p>
+<hr />
+<h2 id="test-environment">Test Environment</h2>
+<table>
+<thead>
+<tr>
+<th>Component</th>
+<th>Role</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>RiskEngine</code></td>
+<td>System under test</td>
+</tr>
+<tr>
+<td><code>OrderManager</code></td>
+<td>Used for symbol metadata initialization</td>
+</tr>
+<tr>
+<td><code>MarketBook</code></td>
+<td>Updated alongside risk engine for ITCH messages</td>
+</tr>
+<tr>
+<td><code>Limits</code></td>
+<td>Provides account and symbol limit configurations</td>
+</tr>
+<tr>
+<td><code>store_to_risk</code></td>
+<td>Input queue for update path — <code>Order*</code> pushed by test</td>
+</tr>
+<tr>
+<td><code>strategy_to_risk</code></td>
+<td>Input queue for check path — <code>Order*</code> pushed by test</td>
+</tr>
+<tr>
+<td><code>risk_to_strategy</code></td>
+<td>Output queue — <code>OrderWithRejectReason</code> popped for verification</td>
+</tr>
+<tr>
+<td><code>risk_to_builder</code></td>
+<td>Output queue — approved orders forwarded here</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Risk struct layout verified per update:</strong></p>
+<table>
+<thead>
+<tr>
+<th>Struct</th>
+<th>Fields tracked</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>AccountRisk</code></td>
+<td><code>current_exposure</code>, <code>positional_exposure</code>, <code>used_margin</code>, <code>balance</code>, <code>current_leverage</code>, <code>daily_realized_pnl</code>, <code>total_unrealized_pnl</code>, <code>open_orders_count</code></td>
+</tr>
+<tr>
+<td><code>SymbolRisk</code></td>
+<td><code>open_orders_count</code>, <code>pending_notional_scaled</code>, <code>net_position</code>, <code>cost_basis_scaled</code>, <code>unrealized_pnl</code>, <code>best_bid</code>, <code>best_ask</code></td>
+</tr>
+<tr>
+<td><code>OrderRisk</code></td>
+<td><code>price</code>, <code>remaining_qty</code>, <code>status</code>, <code>symbol_index</code>, <code>side</code>, <code>active</code></td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h2 id="test-cases">Test Cases</h2>
+<h3 id="riskenginetestmixedmessagetraffic">RiskEngineTest.MixedMessageTraffic</h3>
+<p>End-to-end test of both risk paths across BIST and NASDAQ, covering full order lifecycle and all configured risk limit checks.</p>
+<hr />
+<h2 id="part-1-update-risk">Part 1 — Update Risk</h2>
+<p>15 orders processed through <code>update_risk()</code> in sequence. BIST (GARAN) and NASDAQ (AAPL) run in parallel — each venue has independent <code>AccountRisk</code> and <code>SymbolRisk</code> state.</p>
+<p><strong>Scaling notes:</strong> <code>remaining_qty</code> in <code>OrderRisk</code> is stored in round lots (quantity / round_lot_size). <code>current_leverage</code> uses a 10,000 scale factor. Fee deductions use a 1,000,000 scale factor.</p>
+<hr />
+<h4 id="message-1-fix-new-order-garan-buy-50015000">Message 1 — FIX New Order (GARAN, buy 500@15000)</h4>
+<p><code>update_risk()</code> registers a new pending order. No position yet — only exposure and margin.</p>
+<p><strong>AccountRisk (BIST):</strong></p>
+<table>
+<thead>
+<tr>
+<th>Field</th>
+<th>Expected</th>
+<th>Notes</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>current_exposure</code></td>
+<td>7,500,000</td>
+<td>price × qty × side_mult</td>
+</tr>
+<tr>
+<td><code>positional_exposure</code></td>
+<td>0</td>
+<td>No fill yet</td>
+</tr>
+<tr>
+<td><code>used_margin</code></td>
+<td>7,500,000</td>
+<td>abs(notional)</td>
+</tr>
+<tr>
+<td><code>balance</code></td>
+<td>10,000,000</td>
+<td>Unchanged</td>
+</tr>
+<tr>
+<td><code>current_leverage</code></td>
+<td>7,500</td>
+<td>notional × 10,000 / balance</td>
+</tr>
+<tr>
+<td><code>open_orders_count</code></td>
+<td>1</td>
+<td></td>
+</tr>
+</tbody>
+</table>
+<p><strong>SymbolRisk (GARAN):</strong></p>
+<table>
+<thead>
+<tr>
+<th>Field</th>
+<th>Expected</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>open_orders_count</code></td>
+<td>1</td>
+</tr>
+<tr>
+<td><code>pending_notional_scaled</code></td>
+<td>7,500,000</td>
+</tr>
+<tr>
+<td><code>net_position</code></td>
+<td>0</td>
+</tr>
+<tr>
+<td><code>best_bid</code></td>
+<td>0</td>
+</tr>
+<tr>
+<td><code>best_ask</code></td>
+<td>0</td>
+</tr>
+</tbody>
+</table>
+<p><strong>OrderRisk:</strong> price=15000, remaining_qty=50 (round lots), status=New, active=true</p>
+<hr />
+<h4 id="message-2-bist-ouch-order-accepted-garan-buy-10010000">Message 2 — BIST OUCH Order Accepted (GARAN, buy 100@10000)</h4>
+<p>Second pending order added. notional_bist accumulates.</p>
+<p><strong>AccountRisk (BIST):</strong></p>
+<table>
+<thead>
+<tr>
+<th>Field</th>
+<th>Expected</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>current_exposure</code></td>
+<td>8,500,000</td>
+</tr>
+<tr>
+<td><code>used_margin</code></td>
+<td>8,500,000</td>
+</tr>
+<tr>
+<td><code>open_orders_count</code></td>
+<td>2</td>
+</tr>
+</tbody>
+</table>
+<p><strong>SymbolRisk:</strong> <code>open_orders_count</code>=2, <code>pending_notional_scaled</code>=8,500,000</p>
+<p><strong>OrderRisk:</strong> price=10000, remaining_qty=10 (round lots), status=New, active=true</p>
+<hr />
+<h4 id="message-3-bist-itch-add-order-garan-100010000-buy">Message 3 — BIST ITCH Add Order (GARAN, 1000@10000 Buy)</h4>
+<p>Market order — not our order. Updates <code>SymbolRisk.best_bid</code> via market data path.</p>
+<p><strong>SymbolRisk:</strong> <code>best_bid</code>=10000, <code>best_ask</code>=0 — no PnL change, no position change.</p>
+<hr />
+<h4 id="message-4-nasdaq-ouch-order-accepted-aapl-buy-100010000">Message 4 — NASDAQ OUCH Order Accepted (AAPL, buy 1000@10000)</h4>
+<p>First NASDAQ order. Independent <code>AccountRisk</code> and <code>SymbolRisk</code> for NASDAQ venue.</p>
+<p><strong>AccountRisk (NASDAQ):</strong></p>
+<table>
+<thead>
+<tr>
+<th>Field</th>
+<th>Expected</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>current_exposure</code></td>
+<td>10,000,000</td>
+</tr>
+<tr>
+<td><code>used_margin</code></td>
+<td>10,000,000</td>
+</tr>
+<tr>
+<td><code>balance</code></td>
+<td>10,000,000</td>
+</tr>
+<tr>
+<td><code>current_leverage</code></td>
+<td>10,000</td>
+</tr>
+<tr>
+<td><code>open_orders_count</code></td>
+<td>1</td>
+</tr>
+</tbody>
+</table>
+<p><strong>OrderRisk:</strong> price=10000, remaining_qty=25 (round lots), status=New, active=true</p>
+<hr />
+<h4 id="message-5-nasdaq-itch-add-order-aapl-10010000-buy">Message 5 — NASDAQ ITCH Add Order (AAPL, 100@10000 Buy)</h4>
+<p>Market order. Updates NASDAQ <code>best_bid</code>=10000. Net position and PnL remain 0 — no fill yet.</p>
+<hr />
+<h4 id="message-6-fix-partial-fill-garan-200-filled-15000">Message 6 — FIX Partial Fill (GARAN, 200 filled @15000)</h4>
+<p>First fill event. Balance decreases by filled nominal + maker fee. Position opens.</p>
+<p><strong>AccountRisk (BIST):</strong></p>
+<table>
+<thead>
+<tr>
+<th>Field</th>
+<th>Expected</th>
+<th>Notes</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>positional_exposure</code></td>
+<td>3,000,000</td>
+<td>200 × 15000</td>
+</tr>
+<tr>
+<td><code>used_margin</code></td>
+<td>5,500,000</td>
+<td>notional − filled nominal</td>
+</tr>
+<tr>
+<td><code>balance</code></td>
+<td>&lt; 10,000,000</td>
+<td>Deducted by nominal + fee</td>
+</tr>
+<tr>
+<td><code>open_orders_count</code></td>
+<td>2</td>
+<td>FIX + OUCH still open</td>
+</tr>
+</tbody>
+</table>
+<p><strong>SymbolRisk:</strong> <code>net_position</code>=200, <code>pending_notional_scaled</code>=5,500,000, <code>cost_basis_scaled</code>=3,000,000</p>
+<p><strong>OrderRisk (FIX):</strong> remaining_qty=30 (round lots), status=Partial</p>
+<hr />
+<h4 id="message-7-bist-itch-order-executed-garan-market-order-60-executed">Message 7 — BIST ITCH Order Executed (GARAN market order, 60 executed)</h4>
+<p>Market order partial fill. Updates <code>MarketBook</code>. Unrealized PnL calculated against <code>best_bid</code>.</p>
+<p>Since average entry price (cost_basis / net_position) is 15000 and best_bid is 10000:</p>
+<p><code>unrealized_pnl = (best_bid − avg_price) × net_position = (10000 − 15000) × 200 = −1,000,000</code></p>
+<p><strong>AccountRisk:</strong> <code>total_unrealized_pnl</code> = pnl_bist (negative)</p>
+<p><strong>SymbolRisk:</strong> <code>unrealized_pnl</code> = pnl_bist, <code>best_bid</code>=10000</p>
+<hr />
+<h4 id="message-8-bist-ouch-order-executed-garan-partial-fill">Message 8 — BIST OUCH Order Executed (GARAN, partial fill)</h4>
+<p>Second fill on OUCH order. Balance decreases further. net_position and cost_basis accumulate.</p>
+<p><strong>OrderRisk (OUCH):</strong> remaining_qty=4 (round lots), status=Partial, active=true</p>
+<hr />
+<h4 id="message-9-nasdaq-itch-order-executed-aapl-market-order-60-executed">Message 9 — NASDAQ ITCH Order Executed (AAPL market order, 60 executed)</h4>
+<p>Market order execution. NASDAQ ITCH order is not our order — net_position stays 0, PnL stays 0.</p>
+<p><strong>SymbolRisk (AAPL):</strong> <code>net_position</code>=0, <code>unrealized_pnl</code>=0, <code>cost_basis_scaled</code>=0</p>
+<hr />
+<h4 id="message-10-nasdaq-ouch-order-executed-aapl-partial-fill">Message 10 — NASDAQ OUCH Order Executed (AAPL, partial fill)</h4>
+<p>Our NASDAQ order partially filled.</p>
+<p><strong>AccountRisk (NASDAQ):</strong> <code>positional_exposure</code>=filled nominal, <code>open_orders_count</code>=1</p>
+<p><strong>OrderRisk (NASDAQ OUCH):</strong> remaining_qty=15 (round lots), status=Partial, active=true</p>
+<hr />
+<h4 id="message-11-bist-itch-order-delete-garan-market-order">Message 11 — BIST ITCH Order Delete (GARAN market order)</h4>
+<p>Market order removed from book. <code>best_bid</code> drops to 0. Unrealized PnL value preserved in SymbolRisk — risk engine does not recalculate on book delete, only on new market data.</p>
+<p><strong>SymbolRisk:</strong> <code>best_bid</code>=0, <code>best_ask</code>=0, <code>unrealized_pnl</code>=pnl_bist (unchanged)</p>
+<hr />
+<h4 id="message-12-bist-ouch-order-cancelled-garan">Message 12 — BIST OUCH Order Cancelled (GARAN)</h4>
+<p>OUCH order cancelled with remaining quantity. <code>pending_notional</code> reduced by cancelled portion. <code>OrderRisk</code> entry removed from map.</p>
+<p><strong>AccountRisk:</strong> <code>open_orders_count</code>=1 (only FIX remains)</p>
+<p><strong>SymbolRisk:</strong> <code>pending_notional_scaled</code> reduced, <code>open_orders_count</code>=1</p>
+<p><strong>OrderRisk:</strong> <code>nullptr</code> — confirmed removed from map</p>
+<hr />
+<h4 id="message-13-nasdaq-itch-order-delete-aapl-market-order">Message 13 — NASDAQ ITCH Order Delete (AAPL market order)</h4>
+<p>Market order removed. NASDAQ <code>best_bid</code>=0. NASDAQ net_position and PnL unchanged.</p>
+<hr />
+<h4 id="message-14-nasdaq-ouch-order-cancelled-aapl">Message 14 — NASDAQ OUCH Order Cancelled (AAPL)</h4>
+<p>NASDAQ OUCH order fully cancelled. All pending notional cleared.</p>
+<p><strong>AccountRisk (NASDAQ):</strong> <code>used_margin</code>=0, <code>open_orders_count</code>=0</p>
+<p><strong>SymbolRisk:</strong> <code>pending_notional_scaled</code>=0, <code>open_orders_count</code>=0</p>
+<p><strong>OrderRisk:</strong> <code>nullptr</code> — confirmed removed</p>
+<hr />
+<h4 id="message-15-fix-cancel-confirm-garan">Message 15 — FIX Cancel Confirm (GARAN)</h4>
+<p>FIX order cancelled. Remaining pending notional removed.</p>
+<p><strong>AccountRisk (BIST):</strong> <code>open_orders_count</code>=0</p>
+<p><strong>SymbolRisk:</strong> <code>open_orders_count</code>=0</p>
+<p><strong>OrderRisk:</strong> <code>nullptr</code> — confirmed removed</p>
+<hr />
+<h2 id="part-2-check-risk">Part 2 — Check Risk</h2>
+<p>Risk state reset to clean baseline before check tests begin. Tick size table initialized (GARAN: tick size 10, range 0–100M). <code>best_bid</code>=10000, <code>best_ask</code>=10000.</p>
+<p>15 orders tested against <code>check_risk()</code>. Each order is designed to trigger a specific limit violation. One order passes all checks.</p>
+<hr />
+<h4 id="check-1-pass">Check 1 — Pass</h4>
+<p>Valid order within all limits. <code>risk_to_strategy</code> receives <code>rej_order.order == nullptr</code> — order forwarded to builder, not rejected.</p>
+<hr />
+<h4 id="check-2-minordersizeexceeded">Check 2 — <code>MinOrderSizeExceeded</code></h4>
+<p>Order quantity below the configured minimum order size for the symbol.</p>
+<hr />
+<h4 id="check-3-maxordersizeexceeded">Check 3 — <code>MaxOrderSizeExceeded</code></h4>
+<p>Order quantity above the configured maximum order size for the symbol.</p>
+<hr />
+<h4 id="check-4-invalidlotsize">Check 4 — <code>InvalidLotSize</code></h4>
+<p>Order quantity is not a multiple of the symbol's round lot size.</p>
+<hr />
+<h4 id="check-5-maxordernotionallimitexceeded-invalidpricerange">Check 5 — <code>MaxOrderNotionalLimitExceeded</code> + <code>InvalidPriceRange</code></h4>
+<p><code>best_bid</code> set to 180,000 before check. Order price deviates beyond the allowed range from best bid, and the resulting notional exceeds the per-order notional limit. Both flags set simultaneously in the reject bitmask.</p>
+<hr />
+<h4 id="check-6-pricetickinvalid">Check 6 — <code>PriceTickInvalid</code></h4>
+<p>Order price is not aligned to the tick size (tick size = 10, price not divisible by 10).</p>
+<hr />
+<h4 id="check-7-fatfingercheckfailed">Check 7 — <code>FatFingerCheckFailed</code></h4>
+<p>Order price deviates beyond the fat finger threshold from the reference price.</p>
+<hr />
+<h4 id="check-8-maxpositionlimitexceeded">Check 8 — <code>MaxPositionLimitExceeded</code></h4>
+<p><code>net_position</code> set to 960 before check — the incoming order would push position beyond the configured symbol position limit.</p>
+<hr />
+<h4 id="check-9-maxnotionallimitexceeded">Check 9 — <code>MaxNotionalLimitExceeded</code></h4>
+<p><code>current_exposure</code> set to 49,900,000 before check — the incoming order's notional would push account exposure beyond the configured notional limit.</p>
+<hr />
+<h4 id="check-10-accountbalanceinsufficient-freemargininsufficient-maxleverageexceeded">Check 10 — <code>AccountBalanceInsufficient</code> + <code>FreeMarginInsufficient</code> + <code>MaxLeverageExceeded</code></h4>
+<p><code>balance</code> set to 10,000 before check. Three limits triggered simultaneously — insufficient balance, free margin below required level, and resulting leverage above maximum. All three flags set in reject bitmask.</p>
+<hr />
+<h4 id="check-11-maxopenordersreachedaccount">Check 11 — <code>MaxOpenOrdersReachedAccount</code></h4>
+<p><code>open_orders_count</code> set to 5 at account level — at the configured maximum. New order rejected.</p>
+<hr />
+<h4 id="check-12-maxopenordersreachedsymbol">Check 12 — <code>MaxOpenOrdersReachedSymbol</code></h4>
+<p><code>open_orders_count</code> set to 3 at symbol level — at the configured maximum for this symbol.</p>
+<hr />
+<h4 id="check-13-selftradedetected">Check 13 — <code>SelfTradeDetected</code></h4>
+<p>An <code>OrderRisk</code> entry is manually inserted at the same price, side, symbol, and venue as the incoming order before the check. Self-trade detection identifies the matching resting order.</p>
+<hr />
+<h4 id="check-14-unrealizedlosslimitexceeded">Check 14 — <code>UnrealizedLossLimitExceeded</code></h4>
+<p>Unrealized PnL on the position (best_bid below avg entry) has breached the configured unrealized loss limit.</p>
+<hr />
+<h4 id="check-15-realizedlosslimitexceeded">Check 15 — <code>RealizedLossLimitExceeded</code></h4>
+<p><code>avg_entry_price</code> set to 30,000 before check. Closing at current price would realize a loss beyond the configured daily realized loss limit.</p>
+<hr />
+<h4 id="check-16-maxorderratelimitexceededsymbol-maxorderratelimitexceededaccount">Check 16 — <code>MaxOrderRateLimitExceededSymbol</code> + <code>MaxOrderRateLimitExceededAccount</code></h4>
+<p>Checks whether the number of orders sent within a predefined time window exceeds the allowed limit. Implemented using rate-limit token buckets.</p>
+<hr />
+<h2 id="results">Results</h2>
+<div class="highlight"><pre><span></span><code>Running main() from googletest/src/gtest_main.cc
+[==========] Running 1 test from 1 test suite.
+[----------] Global test environment set-up.
+[----------] 1 test from RiskEngineTest
+[ RUN      ] RiskEngineTest.MixedMessageTraffic
+[       OK ] RiskEngineTest.MixedMessageTraffic (21 ms)
+[----------] 1 test from RiskEngineTest (21 ms total)
+[----------] Global test environment tear-down
+[==========] 1 test from 1 test suite ran. (21 ms total)
+[  PASSED  ] 1 test.
+</code></pre></div>
+<hr />
+<h2 id="notes">Notes</h2>
+<ul>
+<li>BIST and NASDAQ venue state is fully independent — <code>AccountRisk</code>, <code>SymbolRisk</code>, and <code>OrderRisk</code> maps are per-venue. Cross-venue leakage would be caught immediately by the sequential assertions.</li>
+<li>Multiple reject flags in a single bitmask (checks 5, 10) confirm that <code>check_risk()</code> evaluates all limits independently and accumulates all violations before returning — it does not short-circuit on the first failure.</li>
+<li>The 21ms runtime reflects purely in-process computation with no I/O or network overhead.</li>
+</ul>
+
+
+
+
+
+
+
+
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    
+    
+      
+      
+      <script id="__config" type="application/json">{"annotate": null, "base": "../..", "features": ["navigation.tabs", "navigation.tabs.sticky", "navigation.sections", "navigation.indexes", "navigation.expand", "content.code.annotate"], "search": "../../assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script>
+    
+    
+      <script src="../../assets/javascripts/bundle.79ae519e.min.js"></script>
+      
+    
+  </body>
+</html>

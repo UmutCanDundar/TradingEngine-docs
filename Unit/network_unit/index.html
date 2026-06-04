@@ -1,0 +1,2351 @@
+
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+      
+      
+        <link rel="canonical" href="https://UmutCanDundar.github.io/TradingEngine-Portfolio/Unit/network_unit/">
+      
+      
+        <link rel="prev" href="../../Pipeline/perf_pipeline/">
+      
+      
+        <link rel="next" href="../parser_unit/">
+      
+      
+        
+      
+      
+      <link rel="icon" href="../../assets/images/favicon.png">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.7.6">
+    
+    
+      
+        <title>Unit - TradingEngine</title>
+      
+    
+    
+      <link rel="stylesheet" href="../../assets/stylesheets/main.484c7ddc.min.css">
+      
+        
+        <link rel="stylesheet" href="../../assets/stylesheets/palette.ab4e12ef.min.css">
+      
+      
+
+
+    
+    
+      
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,700,700i%7CRoboto+Mono:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
+      
+    
+    
+      <link rel="stylesheet" href="../../stylesheets/extra.css">
+    
+    <script>__md_scope=new URL("../..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+  </head>
+  
+  
+    
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="slate" data-md-color-primary="teal" data-md-color-accent="indigo">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#network-unit-tests" class="md-skip">
+          Skip to content
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+  
+
+<header class="md-header md-header--shadow md-header--lifted" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Header">
+    <a href="../.." title="TradingEngine" class="md-header__button md-logo" aria-label="TradingEngine" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            TradingEngine
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              Unit
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+      
+    
+    
+    
+    
+      
+      
+        <label class="md-header__button md-icon" for="__search">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        </label>
+        <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Search" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="Search">
+        
+        <button type="reset" class="md-search__icon md-icon" title="Clear" aria-label="Clear" tabindex="-1">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+        </button>
+      </nav>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" tabindex="0" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Initializing search
+          </div>
+          <ol class="md-search-result__list" role="presentation"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+      
+    
+    
+  </nav>
+  
+    
+      
+<nav class="md-tabs" aria-label="Tabs" data-md-component="tabs">
+  <div class="md-grid">
+    <ul class="md-tabs__list">
+      
+        
+  
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../.." class="md-tabs__link">
+        
+  
+  
+    
+  
+  Overview
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../../architecture/" class="md-tabs__link">
+        
+  
+  
+    
+  
+  Architecture
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../../design/" class="md-tabs__link">
+        
+  
+  
+    
+  
+  Design
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+    
+  
+  
+    
+    
+      <li class="md-tabs__item md-tabs__item--active">
+        <a href="../../tests/" class="md-tabs__link">
+          
+  
+  
+    
+  
+  Tests
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../../optimization/" class="md-tabs__link">
+        
+  
+  
+    
+  
+  Recent Optimization
+
+      </a>
+    </li>
+  
+
+      
+    </ul>
+  </div>
+</nav>
+    
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+  
+
+
+<nav class="md-nav md-nav--primary md-nav--lifted" aria-label="Navigation" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href="../.." title="TradingEngine" class="md-nav__button md-logo" aria-label="TradingEngine" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    TradingEngine
+  </label>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../.." class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Overview
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../architecture/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Architecture
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../design/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Design
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+    
+  
+  
+  
+    
+    
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+      
+        
+        
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4" checked>
+        
+          
+          <label class="md-nav__link" for="__nav_4" id="__nav_4_label" tabindex="">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Tests
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_4_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_4">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Tests
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../tests/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Overview
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+      
+      
+        
+          
+          
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_4_2" >
+        
+          
+          <label class="md-nav__link" for="__nav_4_2" id="__nav_4_2_label" tabindex="">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Pipeline
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_2_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_4_2">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Pipeline
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../Pipeline/pipeline/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Overview
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../Pipeline/benchmark_pipeline/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Benchmark
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../Pipeline/perf_pipeline/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Perf
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+    
+  
+  
+  
+    
+    
+      
+        
+      
+    
+    
+    
+      
+      
+        
+          
+          
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_3" checked>
+        
+          
+          <label class="md-nav__link" for="__nav_4_3" id="__nav_4_3_label" tabindex="">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Network
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_3_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_4_3">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Network
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+    
+  
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Unit
+  
+
+    
+  </span>
+  
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Unit
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#overview" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Overview
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#test-environment" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Test Environment
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#test-cases" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Test Cases
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Test Cases">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#networkiotestnetworkiotestall" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        NetworkIOTest.NetworkIOTestAll
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="NetworkIOTest.NetworkIOTestAll">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#1-socket-initialization" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        1. Socket Initialization
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#2-tcp-handshake" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        2. TCP Handshake
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#3-login-sequence" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        3. Login Sequence
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#4-outbound-order-sending-tx-path" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        4. Outbound Order Sending (Tx Path)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#5-inbound-packet-delivery-rx-path" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        5. Inbound Packet Delivery (Rx Path)
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#results" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Results
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#notes" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Notes
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+      
+      
+        
+          
+          
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_4_4" >
+        
+          
+          <label class="md-nav__link" for="__nav_4_4" id="__nav_4_4_label" tabindex="">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Parser
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_4_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_4_4">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Parser
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../parser_unit/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Unit
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../Benchmark/parser_benchmark/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Benchmark
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../Perf/parser_perf/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Perf
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+      
+      
+        
+          
+          
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_4_5" >
+        
+          
+          <label class="md-nav__link" for="__nav_4_5" id="__nav_4_5_label" tabindex="">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Order Manager
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_5_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_4_5">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Order Manager
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../order_manager_unit/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Unit
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../Benchmark/order_manager_benchmark/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Benchmark
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../Perf/order_manager_perf/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Perf
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+      
+      
+        
+          
+          
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_4_6" >
+        
+          
+          <label class="md-nav__link" for="__nav_4_6" id="__nav_4_6_label" tabindex="">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Risk
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_6_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_4_6">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Risk
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../risk_unit/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Unit
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../Benchmark/risk_benchmark/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Benchmark
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../Perf/risk_perf/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Perf
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+      
+      
+        
+          
+          
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_4_7" >
+        
+          
+          <label class="md-nav__link" for="__nav_4_7" id="__nav_4_7_label" tabindex="">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Builder
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_7_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_4_7">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Builder
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../builder_unit/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Unit
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../Benchmark/builder_benchmark/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Benchmark
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../Perf/builder_perf/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Perf
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../optimization/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Recent Optimization
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#overview" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Overview
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#test-environment" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Test Environment
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#test-cases" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Test Cases
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Test Cases">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#networkiotestnetworkiotestall" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        NetworkIOTest.NetworkIOTestAll
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="NetworkIOTest.NetworkIOTestAll">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#1-socket-initialization" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        1. Socket Initialization
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#2-tcp-handshake" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        2. TCP Handshake
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#3-login-sequence" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        3. Login Sequence
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#4-outbound-order-sending-tx-path" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        4. Outbound Order Sending (Tx Path)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#5-inbound-packet-delivery-rx-path" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        5. Inbound Packet Delivery (Rx Path)
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#results" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Results
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#notes" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Notes
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              
+              <article class="md-content__inner md-typeset">
+                
+                  
+
+
+
+<h1 id="network-unit-tests">Network — Unit Tests</h1>
+<h2 id="overview">Overview</h2>
+<p>Unit tests for <code>NetworkIO</code> — the component responsible for managing all socket connections, handling the epoll event loop, sending outbound packets, and delivering inbound packets to the parser queue as <code>RxPacket</code> structs.</p>
+<p>Tests are written with <strong>Google Test (gtest)</strong>. The test suite spins up fake TCP servers and UDP senders on localhost to exercise the full network I/O path without requiring real exchange connectivity.</p>
+<hr />
+<h2 id="test-environment">Test Environment</h2>
+<table>
+<thead>
+<tr>
+<th>Component</th>
+<th>Role</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>FakeTCPServer</code></td>
+<td>Accepts connections, receives sent data, sends test packets back — one instance per TCP session</td>
+</tr>
+<tr>
+<td><code>FakeUDPSender</code></td>
+<td>Sends UDP datagrams to NetworkIO's bound ports</td>
+</tr>
+<tr>
+<td><code>NetworkIO</code></td>
+<td>System under test — runs <code>recv_send()</code> on a dedicated thread</td>
+</tr>
+<tr>
+<td><code>Builder_Dispatch</code></td>
+<td>Used to generate outbound <code>TxPacket</code>s from test orders</td>
+</tr>
+<tr>
+<td><code>SessionManager</code></td>
+<td>Tracks login state per session</td>
+</tr>
+</tbody>
+</table>
+<p>Five sessions are simulated:</p>
+<table>
+<thead>
+<tr>
+<th>Session</th>
+<th>Port</th>
+<th>Transport</th>
+<th>Venue</th>
+<th>Protocol</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>0</td>
+<td>9876</td>
+<td>TCP</td>
+<td>BIST</td>
+<td>FIX</td>
+</tr>
+<tr>
+<td>1</td>
+<td>1234</td>
+<td>TCP</td>
+<td>BIST</td>
+<td>OUCH</td>
+</tr>
+<tr>
+<td>2</td>
+<td>4321</td>
+<td>TCP</td>
+<td>NASDAQ</td>
+<td>OUCH</td>
+</tr>
+<tr>
+<td>3</td>
+<td>5000</td>
+<td>UDP</td>
+<td>BIST</td>
+<td>ITCH</td>
+</tr>
+<tr>
+<td>4</td>
+<td>6000</td>
+<td>UDP</td>
+<td>NASDAQ</td>
+<td>ITCH</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h2 id="test-cases">Test Cases</h2>
+<h3 id="networkiotestnetworkiotestall">NetworkIOTest.NetworkIOTestAll</h3>
+<p>End-to-end integration of the full NetworkIO path — connection establishment, session login, outbound order sending, and inbound packet delivery across all five sessions simultaneously.</p>
+<hr />
+<h4 id="1-socket-initialization">1. Socket Initialization</h4>
+<p>Verifies that <code>NetworkIO</code> correctly initializes socket state for each TCP session before the event loop starts.</p>
+<p><strong>Checked fields:</strong></p>
+<ul>
+<li><code>connection_pending</code> is <code>true</code> for all three TCP sessions — sockets have called <code>::connect()</code> and are waiting for the handshake (EINPROGRESS state)</li>
+<li><code>epoll_data</code> encoding is correct for each session: <code>session_index | venue &lt;&lt; 8 | protocol &lt;&lt; 16</code></li>
+</ul>
+<table>
+<thead>
+<tr>
+<th>Session</th>
+<th>Expected epoll_data encoding</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>0 (FIX BIST)</td>
+<td><code>0 \| BIST &lt;&lt; 8 \| FIX &lt;&lt; 16</code></td>
+</tr>
+<tr>
+<td>1 (OUCH BIST)</td>
+<td><code>1 \| BIST &lt;&lt; 8 \| OUCH &lt;&lt; 16</code></td>
+</tr>
+<tr>
+<td>2 (OUCH NASDAQ)</td>
+<td><code>2 \| NASDAQ &lt;&lt; 8 \| OUCH &lt;&lt; 16</code></td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h4 id="2-tcp-handshake">2. TCP Handshake</h4>
+<p>Verifies that all three TCP connections complete successfully once <code>recv_send()</code> starts processing epoll events.</p>
+<p>NetworkIO handles <code>EINPROGRESS</code> on the epoll loop — on <code>EPOLLOUT</code> for a pending socket it completes the handshake and transitions the socket to connected state. The test waits for all three fake servers to receive the accepted client connection before proceeding.</p>
+<hr />
+<h4 id="3-login-sequence">3. Login Sequence</h4>
+<p>Verifies that NetworkIO sends login request messages to each server immediately after connection, and that sessions transition to logged-in state after receiving login acknowledgements.</p>
+<ul>
+<li>FIX session (0): <code>SessionState</code> is set manually — FIX login ack is handled by <code>Parser_FIX</code>, not <code>SBTPacketHandler</code>, so the test simulates this by calling <code>setSessionLoggedIn(0, true)</code> directly</li>
+<li>OUCH BIST (1) and OUCH NASDAQ (2): fake servers send back <code>sbt_login_accepted_bist</code> and <code>sbt_login_accepted_nq</code> — <code>SBTPacketHandler</code> processes these and updates <code>SessionManager</code></li>
+</ul>
+<p>All three sessions reach logged-in state before the traffic phase begins.</p>
+<hr />
+<h4 id="4-outbound-order-sending-tx-path">4. Outbound Order Sending (Tx Path)</h4>
+<p>Verifies that NetworkIO correctly transmits outbound packets built by <code>Builder_Dispatch</code>.</p>
+<p>Three test orders are pushed to the <code>risk_to_builder</code> queue and dispatched:</p>
+<table>
+<thead>
+<tr>
+<th>Order</th>
+<th>Venue</th>
+<th>Protocol</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>fix_new_order</code></td>
+<td>BIST</td>
+<td>FIX</td>
+</tr>
+<tr>
+<td><code>ouch_new_order</code></td>
+<td>BIST</td>
+<td>OUCH</td>
+</tr>
+<tr>
+<td><code>NQouch_new_order</code></td>
+<td>NASDAQ</td>
+<td>OUCH</td>
+</tr>
+</tbody>
+</table>
+<p>The test waits until each fake TCP server receives exactly 2 messages — the login request sent on connection plus the order packet. Confirms the Tx path from <code>builder_to_sender</code> queue through <code>NetworkIO::send()</code> to the socket.</p>
+<hr />
+<h4 id="5-inbound-packet-delivery-rx-path">5. Inbound Packet Delivery (Rx Path)</h4>
+<p>Verifies that NetworkIO correctly receives inbound market data and order acknowledgements, wraps them as <code>RxPacket</code> structs with correct venue/protocol tagging, and delivers them to the <code>receiver_to_parser</code> queue.</p>
+<p>Five test packets are injected by the fake servers/senders:</p>
+<table>
+<thead>
+<tr>
+<th>Packet</th>
+<th>Transport</th>
+<th>Source</th>
+<th>Expected bytes</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>FIX order ack (ExecutionReport)</td>
+<td>TCP</td>
+<td>FIX server</td>
+<td>125 bytes</td>
+</tr>
+<tr>
+<td>OUCH BIST order ack</td>
+<td>TCP</td>
+<td>OUCH BIST server</td>
+<td>140 bytes</td>
+</tr>
+<tr>
+<td>OUCH NASDAQ order ack</td>
+<td>TCP</td>
+<td>OUCH NASDAQ server</td>
+<td>67 bytes</td>
+</tr>
+<tr>
+<td>ITCH BIST add order</td>
+<td>UDP</td>
+<td>ITCH BIST sender</td>
+<td>45 bytes</td>
+</tr>
+<tr>
+<td>ITCH NASDAQ add order</td>
+<td>UDP</td>
+<td>ITCH NASDAQ sender</td>
+<td>36 bytes</td>
+</tr>
+</tbody>
+</table>
+<p>The test collects all 5 <code>RxPacket*</code> from the queue, then validates each one by venue+protocol routing:</p>
+<p><strong>FIX order ack (125 bytes):</strong></p>
+<table>
+<thead>
+<tr>
+<th>Field</th>
+<th>Byte offset</th>
+<th>Expected</th>
+<th>Meaning</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>rxPkt-&gt;len</code></td>
+<td>—</td>
+<td>125</td>
+<td>Total packet length</td>
+</tr>
+<tr>
+<td><code>data[19]</code></td>
+<td>19</td>
+<td><code>'8'</code></td>
+<td><code>35=MsgType</code> = ExecutionReport</td>
+</tr>
+<tr>
+<td><code>data[78]</code></td>
+<td>78</td>
+<td><code>'G'</code></td>
+<td><code>55=Symbol</code> starts with G (GARAN)</td>
+</tr>
+<tr>
+<td><code>data[87]</code></td>
+<td>87</td>
+<td><code>'1'</code></td>
+<td><code>54=Side</code> = Buy</td>
+</tr>
+<tr>
+<td><code>data[92]</code></td>
+<td>92</td>
+<td><code>'1'</code></td>
+<td><code>38=Qty</code> starts with 1 (100)</td>
+</tr>
+<tr>
+<td><code>data[110]</code></td>
+<td>110</td>
+<td><code>'0'</code></td>
+<td><code>39=OrdStatus</code> = New</td>
+</tr>
+<tr>
+<td><code>venue</code></td>
+<td>—</td>
+<td><code>BIST</code></td>
+<td>Correctly tagged</td>
+</tr>
+<tr>
+<td><code>protocol</code></td>
+<td>—</td>
+<td><code>FIX</code></td>
+<td>Correctly tagged</td>
+</tr>
+</tbody>
+</table>
+<p><strong>OUCH BIST order ack (140 bytes):</strong></p>
+<table>
+<thead>
+<tr>
+<th>Field</th>
+<th>Byte offset</th>
+<th>Expected</th>
+<th>Meaning</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>rxPkt-&gt;len</code></td>
+<td>—</td>
+<td>140</td>
+<td>Total packet length</td>
+</tr>
+<tr>
+<td><code>data[3]</code></td>
+<td>3</td>
+<td><code>'A'</code></td>
+<td>message_type = Accepted</td>
+</tr>
+<tr>
+<td><code>data[30]</code></td>
+<td>30</td>
+<td><code>'B'</code></td>
+<td>side = Buy</td>
+</tr>
+<tr>
+<td><code>data[46]</code></td>
+<td>46</td>
+<td><code>0x64</code></td>
+<td>quantity last byte = 100</td>
+</tr>
+<tr>
+<td><code>data[49]</code></td>
+<td>49</td>
+<td><code>0x27</code></td>
+<td>price high byte</td>
+</tr>
+<tr>
+<td><code>data[50]</code></td>
+<td>50</td>
+<td><code>0x10</code></td>
+<td>price = 10000</td>
+</tr>
+<tr>
+<td><code>venue</code></td>
+<td>—</td>
+<td><code>BIST</code></td>
+<td>Correctly tagged</td>
+</tr>
+<tr>
+<td><code>protocol</code></td>
+<td>—</td>
+<td><code>OUCH</code></td>
+<td>Correctly tagged</td>
+</tr>
+</tbody>
+</table>
+<p><strong>OUCH NASDAQ order ack (67 bytes):</strong></p>
+<table>
+<thead>
+<tr>
+<th>Field</th>
+<th>Byte offset</th>
+<th>Expected</th>
+<th>Meaning</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>rxPkt-&gt;len</code></td>
+<td>—</td>
+<td>67</td>
+<td>Total packet length</td>
+</tr>
+<tr>
+<td><code>data[3]</code></td>
+<td>3</td>
+<td><code>'A'</code></td>
+<td>message_type = Accepted</td>
+</tr>
+<tr>
+<td><code>data[16]</code></td>
+<td>16</td>
+<td><code>'S'</code></td>
+<td>side = Sell</td>
+</tr>
+<tr>
+<td><code>data[20]</code></td>
+<td>20</td>
+<td><code>0x64</code></td>
+<td>quantity last byte = 100</td>
+</tr>
+<tr>
+<td><code>venue</code></td>
+<td>—</td>
+<td><code>NASDAQ</code></td>
+<td>Correctly tagged</td>
+</tr>
+<tr>
+<td><code>protocol</code></td>
+<td>—</td>
+<td><code>OUCH</code></td>
+<td>Correctly tagged</td>
+</tr>
+</tbody>
+</table>
+<p><strong>ITCH BIST add order (45 bytes):</strong></p>
+<table>
+<thead>
+<tr>
+<th>Field</th>
+<th>Byte offset</th>
+<th>Expected</th>
+<th>Meaning</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>rxPkt-&gt;len</code></td>
+<td>—</td>
+<td>45</td>
+<td>Total packet length</td>
+</tr>
+<tr>
+<td><code>data[0]</code></td>
+<td>0</td>
+<td><code>'A'</code></td>
+<td>message_type = Add Order</td>
+</tr>
+<tr>
+<td><code>data[17]</code></td>
+<td>17</td>
+<td><code>'B'</code></td>
+<td>side = Buy</td>
+</tr>
+<tr>
+<td><code>data[29]</code></td>
+<td>29</td>
+<td><code>0x64</code></td>
+<td>quantity last byte = 100</td>
+</tr>
+<tr>
+<td><code>data[30]</code></td>
+<td>30</td>
+<td><code>0x00</code></td>
+<td>price byte 0</td>
+</tr>
+<tr>
+<td><code>data[33]</code></td>
+<td>33</td>
+<td><code>0x10</code></td>
+<td>price last byte</td>
+</tr>
+<tr>
+<td><code>venue</code></td>
+<td>—</td>
+<td><code>BIST</code></td>
+<td>Correctly tagged</td>
+</tr>
+<tr>
+<td><code>protocol</code></td>
+<td>—</td>
+<td><code>ITCH</code></td>
+<td>Correctly tagged</td>
+</tr>
+</tbody>
+</table>
+<p><strong>ITCH NASDAQ add order (36 bytes):</strong></p>
+<table>
+<thead>
+<tr>
+<th>Field</th>
+<th>Byte offset</th>
+<th>Expected</th>
+<th>Meaning</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>rxPkt-&gt;len</code></td>
+<td>—</td>
+<td>36</td>
+<td>Total packet length</td>
+</tr>
+<tr>
+<td><code>data[0]</code></td>
+<td>0</td>
+<td><code>'A'</code></td>
+<td>message_type = Add Order</td>
+</tr>
+<tr>
+<td><code>data[19]</code></td>
+<td>19</td>
+<td><code>'S'</code></td>
+<td>side = Sell</td>
+</tr>
+<tr>
+<td><code>data[23]</code></td>
+<td>23</td>
+<td><code>0x64</code></td>
+<td>shares last byte = 100</td>
+</tr>
+<tr>
+<td><code>data[24]</code></td>
+<td>24</td>
+<td><code>'A'</code></td>
+<td>stock[0] = A</td>
+</tr>
+<tr>
+<td><code>data[32]</code></td>
+<td>32</td>
+<td><code>0x05</code></td>
+<td>price byte 0</td>
+</tr>
+<tr>
+<td><code>data[35]</code></td>
+<td>35</td>
+<td><code>0x00</code></td>
+<td>price last byte</td>
+</tr>
+<tr>
+<td><code>venue</code></td>
+<td>—</td>
+<td><code>NASDAQ</code></td>
+<td>Correctly tagged</td>
+</tr>
+<tr>
+<td><code>protocol</code></td>
+<td>—</td>
+<td><code>ITCH</code></td>
+<td>Correctly tagged</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h2 id="results">Results</h2>
+<div class="highlight"><pre><span></span><code>Running main() from googletest/src/gtest_main.cc
+[==========] Running 1 test from 1 test suite.
+[----------] Global test environment set-up.
+[----------] 1 test from NetworkIOTest
+[ RUN      ] NetworkIOTest.NetworkIOTestAll
+[       OK ] NetworkIOTest.NetworkIOTestAll (237 ms)
+[----------] 1 test from NetworkIOTest (237 ms total)
+[----------] Global test environment tear-down
+[==========] 1 test from 1 test suite ran. (237 ms total)
+[  PASSED  ] 1 test.
+</code></pre></div>
+<hr />
+<h2 id="notes">Notes</h2>
+<ul>
+<li>The 237ms runtime includes TCP handshake latency on loopback, login sequence synchronization, and condition variable wait overhead — not representative of production packet processing latency.</li>
+</ul>
+
+
+
+
+
+
+
+
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    
+    
+      
+      
+      <script id="__config" type="application/json">{"annotate": null, "base": "../..", "features": ["navigation.tabs", "navigation.tabs.sticky", "navigation.sections", "navigation.indexes", "navigation.expand", "content.code.annotate"], "search": "../../assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script>
+    
+    
+      <script src="../../assets/javascripts/bundle.79ae519e.min.js"></script>
+      
+    
+  </body>
+</html>

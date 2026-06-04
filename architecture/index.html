@@ -1,0 +1,2207 @@
+
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+      
+      
+        <link rel="canonical" href="https://UmutCanDundar.github.io/TradingEngine-Portfolio/architecture/">
+      
+      
+        <link rel="prev" href="..">
+      
+      
+        <link rel="next" href="../design/">
+      
+      
+        
+      
+      
+      <link rel="icon" href="../assets/images/favicon.png">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.7.6">
+    
+    
+      
+        <title>Architecture - TradingEngine</title>
+      
+    
+    
+      <link rel="stylesheet" href="../assets/stylesheets/main.484c7ddc.min.css">
+      
+        
+        <link rel="stylesheet" href="../assets/stylesheets/palette.ab4e12ef.min.css">
+      
+      
+
+
+    
+    
+      
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,700,700i%7CRoboto+Mono:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
+      
+    
+    
+      <link rel="stylesheet" href="../stylesheets/extra.css">
+    
+    <script>__md_scope=new URL("..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+  </head>
+  
+  
+    
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="slate" data-md-color-primary="teal" data-md-color-accent="indigo">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#architecture" class="md-skip">
+          Skip to content
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+  
+
+<header class="md-header md-header--shadow md-header--lifted" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Header">
+    <a href=".." title="TradingEngine" class="md-header__button md-logo" aria-label="TradingEngine" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            TradingEngine
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              Architecture
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+      
+    
+    
+    
+    
+      
+      
+        <label class="md-header__button md-icon" for="__search">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        </label>
+        <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Search" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="Search">
+        
+        <button type="reset" class="md-search__icon md-icon" title="Clear" aria-label="Clear" tabindex="-1">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+        </button>
+      </nav>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" tabindex="0" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Initializing search
+          </div>
+          <ol class="md-search-result__list" role="presentation"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+      
+    
+    
+  </nav>
+  
+    
+      
+<nav class="md-tabs" aria-label="Tabs" data-md-component="tabs">
+  <div class="md-grid">
+    <ul class="md-tabs__list">
+      
+        
+  
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href=".." class="md-tabs__link">
+        
+  
+  
+    
+  
+  Overview
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+    
+  
+  
+    <li class="md-tabs__item md-tabs__item--active">
+      <a href="./" class="md-tabs__link">
+        
+  
+  
+    
+  
+  Architecture
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../design/" class="md-tabs__link">
+        
+  
+  
+    
+  
+  Design
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../tests/" class="md-tabs__link">
+          
+  
+  
+    
+  
+  Tests
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../optimization/" class="md-tabs__link">
+        
+  
+  
+    
+  
+  Recent Optimization
+
+      </a>
+    </li>
+  
+
+      
+    </ul>
+  </div>
+</nav>
+    
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+  
+
+
+<nav class="md-nav md-nav--primary md-nav--lifted" aria-label="Navigation" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href=".." title="TradingEngine" class="md-nav__button md-logo" aria-label="TradingEngine" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    TradingEngine
+  </label>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href=".." class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Overview
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+    
+  
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Architecture
+  
+
+    
+  </span>
+  
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Architecture
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#architecture-decision" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Architecture Decision
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#threading-model" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Threading Model
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Threading Model">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#network-design-decision" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Network Design Decision
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#risk-check-design-decision" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Risk Check Design Decision
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#source-structure" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Source Structure
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#automated-compenents" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Automated Compenents
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#infrastructure-tooling" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Infrastructure &amp; Tooling
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../design/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Design
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_4" >
+        
+          
+          <label class="md-nav__link" for="__nav_4" id="__nav_4_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Tests
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_4_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_4">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Tests
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../tests/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Overview
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_4_2" >
+        
+          
+          <label class="md-nav__link" for="__nav_4_2" id="__nav_4_2_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Pipeline
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_2_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_4_2">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Pipeline
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../Pipeline/pipeline/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Overview
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../Pipeline/benchmark_pipeline/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Benchmark
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../Pipeline/perf_pipeline/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Perf
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+      
+        
+      
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_4_3" >
+        
+          
+          <label class="md-nav__link" for="__nav_4_3" id="__nav_4_3_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Network
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_3_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_4_3">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Network
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../Unit/network_unit/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Unit
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_4_4" >
+        
+          
+          <label class="md-nav__link" for="__nav_4_4" id="__nav_4_4_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Parser
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_4_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_4_4">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Parser
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../Unit/parser_unit/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Unit
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../Benchmark/parser_benchmark/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Benchmark
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../Perf/parser_perf/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Perf
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_4_5" >
+        
+          
+          <label class="md-nav__link" for="__nav_4_5" id="__nav_4_5_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Order Manager
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_5_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_4_5">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Order Manager
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../Unit/order_manager_unit/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Unit
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../Benchmark/order_manager_benchmark/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Benchmark
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../Perf/order_manager_perf/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Perf
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_4_6" >
+        
+          
+          <label class="md-nav__link" for="__nav_4_6" id="__nav_4_6_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Risk
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_6_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_4_6">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Risk
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../Unit/risk_unit/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Unit
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../Benchmark/risk_benchmark/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Benchmark
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../Perf/risk_perf/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Perf
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_4_7" >
+        
+          
+          <label class="md-nav__link" for="__nav_4_7" id="__nav_4_7_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Builder
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_7_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_4_7">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Builder
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../Unit/builder_unit/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Unit
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../Benchmark/builder_benchmark/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Benchmark
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../Perf/builder_perf/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Perf
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../optimization/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Recent Optimization
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#architecture-decision" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Architecture Decision
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#threading-model" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Threading Model
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Threading Model">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#network-design-decision" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Network Design Decision
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#risk-check-design-decision" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Risk Check Design Decision
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#source-structure" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Source Structure
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#automated-compenents" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Automated Compenents
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#infrastructure-tooling" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Infrastructure &amp; Tooling
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              
+              <article class="md-content__inner md-typeset">
+                
+                  
+
+
+
+<h1 id="architecture">Architecture</h1>
+<p><img alt="Architecture Diagram" src="../assets/architecture.png" />
+<a href="../assets/architecture.png" target="_blank">Architecture Diagram</a></p>
+<h2 id="architecture-decision">Architecture Decision</h2>
+<p><strong>Unified dispatch over per-protocol pipelines</strong> — Parser and builder dispatch units handle all protocol/venue combinations (FIX, OUCH BIST, OUCH NASDAQ, ITCH BIST, ITCH NASDAQ) within a single thread each. The target hardware has 10 cores / 16 threads; each main pipeline stage is pinned to a dedicated core, leaving no headroom for per-protocol pipelines under normal load. Per-protocol class boundaries are kept clean so splitting into independent pipelines later requires minimal structural change.</p>
+<h2 id="threading-model">Threading Model</h2>
+<p>Each component is pinned to a dedicated physical core with 
+SCHED_FIFO to eliminate scheduling jitter.</p>
+<table>
+<thead>
+<tr>
+<th>Component</th>
+<th>Core</th>
+<th>Thread</th>
+<th>Policy</th>
+<th>Priority</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Network Rx/Tx</td>
+<td>P-core 1</td>
+<td>Thread 0</td>
+<td>SCHED_FIFO</td>
+<td>max</td>
+</tr>
+<tr>
+<td>Parser</td>
+<td>P-core 2</td>
+<td>Thread 2</td>
+<td>SCHED_FIFO</td>
+<td>max</td>
+</tr>
+<tr>
+<td>Order Manager</td>
+<td>P-core 3</td>
+<td>Thread 4</td>
+<td>SCHED_FIFO</td>
+<td>max</td>
+</tr>
+<tr>
+<td>Strategy</td>
+<td>P-core 4</td>
+<td>Thread 6</td>
+<td>SCHED_FIFO</td>
+<td>max</td>
+</tr>
+<tr>
+<td>Builder</td>
+<td>P-core 5</td>
+<td>Thread 8</td>
+<td>SCHED_FIFO</td>
+<td>max</td>
+</tr>
+<tr>
+<td>Risk Update</td>
+<td>P-core 6</td>
+<td>Thread 10</td>
+<td>SCHED_FIFO</td>
+<td>max</td>
+</tr>
+<tr>
+<td>Risk Check</td>
+<td>E-core 7</td>
+<td>Thread 12</td>
+<td>SCHED_FIFO</td>
+<td>max</td>
+</tr>
+<tr>
+<td>Database</td>
+<td>E-core 8</td>
+<td>Thread 13</td>
+<td>SCHED_FIFO</td>
+<td>max/2</td>
+</tr>
+<tr>
+<td>Main</td>
+<td>E-core 9</td>
+<td>Thread 14</td>
+<td>SCHED OTHER</td>
+<td>default</td>
+</tr>
+</tbody>
+</table>
+<h3 id="network-design-decision">Network Design Decision</h3>
+<p>Network Rx and Tx share a single thread on one P-core. 
+Separating them would require dedicating an additional 
+P-core to Tx — given the limited P-core count, the same 
+loop handles both directions. E-cores were not considered 
+for network due to their lower single-thread performance 
+and cache characteristics.</p>
+<h3 id="risk-check-design-decision">Risk Check Design Decision</h3>
+<p>Risk Check is read-heavy — it validates positions and limits 
+without mutating state. With P-cores fully allocated to 
+latency-critical write path components, Risk Check was 
+assigned to an E-core. Its read-only nature makes it 
+tolerant of the lower single-thread throughput of E-cores.</p>
+<h2 id="source-structure">Source Structure</h2>
+<table>
+<thead>
+<tr>
+<th>Module</th>
+<th>File</th>
+<th>Purpose</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>src</strong></td>
+<td><code>TradingEngine.h/cpp</code></td>
+<td>Engine entry point, thread orchestration</td>
+</tr>
+<tr>
+<td><strong>src</strong></td>
+<td><code>main.cpp</code></td>
+<td>Application entry point</td>
+</tr>
+<tr>
+<td><strong>core</strong></td>
+<td><code>Order.h</code></td>
+<td>Core order data structure</td>
+</tr>
+<tr>
+<td><strong>core</strong></td>
+<td><code>HashTables.h/cpp</code></td>
+<td>Symbol lookup and exec ID dedup</td>
+</tr>
+<tr>
+<td><strong>core</strong></td>
+<td><code>MessagePool.h</code></td>
+<td>Preallocated message pool</td>
+</tr>
+<tr>
+<td><strong>core</strong></td>
+<td><code>MessageWithVenue.h</code></td>
+<td>Venue-tagged message wrapper</td>
+</tr>
+<tr>
+<td><strong>core</strong></td>
+<td><code>Protocol-Venue.h</code></td>
+<td>Protocol and venue enums</td>
+</tr>
+<tr>
+<td><strong>database</strong></td>
+<td><code>ClickhouseWriter.h/cpp</code></td>
+<td>Async trade/order logging to ClickHouse <em>(not finished)</em></td>
+</tr>
+<tr>
+<td><strong>database</strong></td>
+<td><code>DbTypes.h</code></td>
+<td>Database type definitions</td>
+</tr>
+<tr>
+<td><strong>flows</strong></td>
+<td><code>BuilderFlow.h/cpp</code></td>
+<td>Builder thread loop</td>
+</tr>
+<tr>
+<td><strong>flows</strong></td>
+<td><code>NetworkFlow.h/cpp</code></td>
+<td>Network thread loop</td>
+</tr>
+<tr>
+<td><strong>flows</strong></td>
+<td><code>OrderFlow.h/cpp</code></td>
+<td>OrderManager thread loop</td>
+</tr>
+<tr>
+<td><strong>flows</strong></td>
+<td><code>ParserFlow.h/cpp</code></td>
+<td>Parser thread loop</td>
+</tr>
+<tr>
+<td><strong>flows</strong></td>
+<td><code>RiskFlow.h/cpp</code></td>
+<td>Risk thread loop</td>
+</tr>
+<tr>
+<td><strong>market</strong></td>
+<td><code>MarketBook.h/cpp</code></td>
+<td>Aggregated order book, atomic best bid/ask</td>
+</tr>
+<tr>
+<td><strong>network</strong></td>
+<td><code>NetworkIO.h/cpp</code></td>
+<td>epoll-based non-blocking socket I/O</td>
+</tr>
+<tr>
+<td><strong>network</strong></td>
+<td><code>NetworkPackets.h</code></td>
+<td>Packet buffer definitions</td>
+</tr>
+<tr>
+<td><strong>network</strong></td>
+<td><code>NetworkPendingQueue.h</code></td>
+<td>Pending packet queue</td>
+</tr>
+<tr>
+<td><strong>order_management</strong></td>
+<td><code>OrderManager.h/cpp</code></td>
+<td>Order state management</td>
+</tr>
+<tr>
+<td><strong>order_management/fillers</strong></td>
+<td><code>FillerFIX.h/cpp</code></td>
+<td>FIX order fill handler</td>
+</tr>
+<tr>
+<td><strong>order_management/fillers</strong></td>
+<td><code>FillerITCH_BIST.h/cpp</code></td>
+<td>ITCH BIST order fill handler</td>
+</tr>
+<tr>
+<td><strong>order_management/fillers</strong></td>
+<td><code>FillerITCH_NASDAQ.h/cpp</code></td>
+<td>ITCH NASDAQ order fill handler</td>
+</tr>
+<tr>
+<td><strong>order_management/fillers</strong></td>
+<td><code>FillerOUCH_BIST.h/cpp</code></td>
+<td>OUCH BIST order fill handler</td>
+</tr>
+<tr>
+<td><strong>order_management/fillers</strong></td>
+<td><code>FillerOUCH_NASDAQ.h/cpp</code></td>
+<td>OUCH NASDAQ order fill handler</td>
+</tr>
+<tr>
+<td><strong>protocol</strong></td>
+<td><code>Builder_Dispatch.h/cpp</code></td>
+<td>Builder dispatch and routing</td>
+</tr>
+<tr>
+<td><strong>protocol</strong></td>
+<td><code>Parser_Dispatch.h/cpp</code></td>
+<td>Parser dispatch and routing</td>
+</tr>
+<tr>
+<td><strong>protocol/builders/FIX</strong></td>
+<td><code>Builder_FIX.h/cpp</code></td>
+<td>FIX 5.0 message serializer</td>
+</tr>
+<tr>
+<td><strong>protocol/builders/OUCH</strong></td>
+<td><code>Builder_OUCH_BIST.h/cpp</code></td>
+<td>OUCH BIST message serializer</td>
+</tr>
+<tr>
+<td><strong>protocol/builders/OUCH</strong></td>
+<td><code>Builder_OUCH_NASDAQ.h/cpp</code></td>
+<td>OUCH NASDAQ message serializer</td>
+</tr>
+<tr>
+<td><strong>protocol/parsers/FIX</strong></td>
+<td><code>Parser_FIX.h/cpp</code></td>
+<td>FIX 5.0 message deserializer</td>
+</tr>
+<tr>
+<td><strong>protocol/parsers/ITCH</strong></td>
+<td><code>Parser_ITCH_BIST.h/cpp</code></td>
+<td>ITCH BIST message deserializer</td>
+</tr>
+<tr>
+<td><strong>protocol/parsers/ITCH</strong></td>
+<td><code>Parser_ITCH_NASDAQ.h/cpp</code></td>
+<td>ITCH NASDAQ message deserializer</td>
+</tr>
+<tr>
+<td><strong>protocol/parsers/OUCH</strong></td>
+<td><code>Parser_OUCH_BIST.h/cpp</code></td>
+<td>OUCH BIST message deserializer</td>
+</tr>
+<tr>
+<td><strong>protocol/parsers/OUCH</strong></td>
+<td><code>Parser_OUCH_NASDAQ.h/cpp</code></td>
+<td>OUCH NASDAQ message deserializer</td>
+</tr>
+<tr>
+<td><strong>protocol/types</strong></td>
+<td><code>FIXMessage.h</code></td>
+<td>FIX message type definitions</td>
+</tr>
+<tr>
+<td><strong>protocol/types</strong></td>
+<td><code>ITCHTypes_BIST.h</code></td>
+<td>ITCH BIST type definitions</td>
+</tr>
+<tr>
+<td><strong>protocol/types</strong></td>
+<td><code>ITCHTypes_NASDAQ.h</code></td>
+<td>ITCH NASDAQ type definitions</td>
+</tr>
+<tr>
+<td><strong>protocol/types</strong></td>
+<td><code>OUCHTypes_BIST.h</code></td>
+<td>OUCH BIST type definitions</td>
+</tr>
+<tr>
+<td><strong>protocol/types</strong></td>
+<td><code>OUCHTypes_NASDAQ.h</code></td>
+<td>OUCH NASDAQ type definitions</td>
+</tr>
+<tr>
+<td><strong>risk</strong></td>
+<td><code>RiskEngine.h/cpp</code></td>
+<td>Pre/post trade risk evaluation</td>
+</tr>
+<tr>
+<td><strong>risk</strong></td>
+<td><code>Limits.h/cpp</code></td>
+<td>Risk limit configuration</td>
+</tr>
+<tr>
+<td><strong>session</strong></td>
+<td><code>SessionManager.h/cpp</code></td>
+<td>Connection and login state</td>
+</tr>
+<tr>
+<td><strong>session</strong></td>
+<td><code>LoginController.h/cpp</code></td>
+<td>Login sequence management</td>
+</tr>
+<tr>
+<td><strong>session</strong></td>
+<td><code>SoupBinTcp.h/cpp</code></td>
+<td>SBT session layer</td>
+</tr>
+<tr>
+<td><strong>session</strong></td>
+<td><code>Sequence_FIX.h</code></td>
+<td>FIX sequence tracking</td>
+</tr>
+<tr>
+<td><strong>session</strong></td>
+<td><code>Sequence_SBT.h</code></td>
+<td>SBT sequence tracking</td>
+</tr>
+<tr>
+<td><strong>utils</strong></td>
+<td><code>Logger.h/cpp</code></td>
+<td>spdlog-based logging</td>
+</tr>
+<tr>
+<td><strong>utils</strong></td>
+<td><code>ErrorHandler.h/cpp</code></td>
+<td>Error handling and recovery</td>
+</tr>
+<tr>
+<td><strong>utils</strong></td>
+<td><code>Endian.h</code></td>
+<td>Byte order utilities</td>
+</tr>
+<tr>
+<td><strong>utils</strong></td>
+<td><code>common.h</code></td>
+<td>Shared constants and macros</td>
+</tr>
+<tr>
+<td><strong>utils</strong></td>
+<td><code>config_utils.h/cpp</code></td>
+<td>Config loading utilities</td>
+</tr>
+</tbody>
+</table>
+<h2 id="automated-compenents">Automated Compenents</h2>
+<table>
+<thead>
+<tr>
+<th>Module</th>
+<th>File</th>
+<th>Purpose</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>generated</strong></td>
+<td><code>GeneratedITCHMessages_BIST.h</code></td>
+<td>Code-generated ITCH BIST messages</td>
+</tr>
+<tr>
+<td><strong>generated</strong></td>
+<td><code>GeneratedITCHMessages_NASDAQ.h</code></td>
+<td>Code-generated ITCH NASDAQ messages</td>
+</tr>
+<tr>
+<td><strong>generated</strong></td>
+<td><code>GeneratedOUCHMessages_BIST.h</code></td>
+<td>Code-generated OUCH BIST messages</td>
+</tr>
+<tr>
+<td><strong>generated</strong></td>
+<td><code>GeneratedOUCHMessages_NASDAQ.h</code></td>
+<td>Code-generated OUCH NASDAQ messages</td>
+</tr>
+<tr>
+<td><strong>generated</strong></td>
+<td><code>GeneratedSymbolTables.h</code></td>
+<td>Code-generated symbol tables</td>
+</tr>
+<tr>
+<td><strong>generated</strong></td>
+<td><code>GeneratedErrorMap.h</code></td>
+<td>Code-generated error map</td>
+</tr>
+</tbody>
+</table>
+<h2 id="infrastructure-tooling">Infrastructure &amp; Tooling</h2>
+<table>
+<thead>
+<tr>
+<th>Module</th>
+<th>File</th>
+<th>Purpose</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>config</strong></td>
+<td><code>Limits.json</code></td>
+<td>Risk limits per venue and symbol</td>
+</tr>
+<tr>
+<td><strong>config</strong></td>
+<td><code>Sessions.json</code></td>
+<td>Session configuration</td>
+</tr>
+<tr>
+<td><strong>scripts/tools/codegen</strong></td>
+<td><code>GenerateITCHMessages_BIST.py</code></td>
+<td>ITCH BIST message type generator</td>
+</tr>
+<tr>
+<td><strong>scripts/tools/codegen</strong></td>
+<td><code>GenerateITCHMessages_NASDAQ.py</code></td>
+<td>ITCH NASDAQ message type generator</td>
+</tr>
+<tr>
+<td><strong>scripts/tools/codegen</strong></td>
+<td><code>GenerateOUCHMessages_BIST.py</code></td>
+<td>OUCH BIST message type generator</td>
+</tr>
+<tr>
+<td><strong>scripts/tools/codegen</strong></td>
+<td><code>GenerateOUCHMessages_NASDAQ.py</code></td>
+<td>OUCH NASDAQ message type generator</td>
+</tr>
+<tr>
+<td><strong>scripts/tools/codegen</strong></td>
+<td><code>GenerateSymbolTables.py</code></td>
+<td>Symbol table generator</td>
+</tr>
+<tr>
+<td><strong>scripts/test</strong></td>
+<td><code>run_all_unit_test.sh</code></td>
+<td>Run all unit tests</td>
+</tr>
+<tr>
+<td><strong>scripts/test</strong></td>
+<td><code>run_all_bench_test.sh</code></td>
+<td>Run all benchmarks</td>
+</tr>
+<tr>
+<td><strong>scripts/test</strong></td>
+<td><code>run_all_perf_test.sh</code></td>
+<td>Run all perf tests</td>
+</tr>
+<tr>
+<td><strong>scripts/test</strong></td>
+<td><code>run_all_pipeline_test.sh</code></td>
+<td>Run all pipeline tests</td>
+</tr>
+<tr>
+<td><strong>scripts/test</strong></td>
+<td><code>run_all_test.sh</code></td>
+<td>Run all tests</td>
+</tr>
+<tr>
+<td><strong>test/unit</strong></td>
+<td>—</td>
+<td>Unit tests (gtest)</td>
+</tr>
+<tr>
+<td><strong>test/benchmark</strong></td>
+<td>—</td>
+<td>Google Benchmark latency tests</td>
+</tr>
+<tr>
+<td><strong>test/perf</strong></td>
+<td>—</td>
+<td>Performance stat profiling targets (perf)</td>
+</tr>
+<tr>
+<td><strong>test/pipeline</strong></td>
+<td>—</td>
+<td>End-to-end pipeline tests</td>
+</tr>
+<tr>
+<td><strong>test/data</strong></td>
+<td>—</td>
+<td>Test datasets</td>
+</tr>
+</tbody>
+</table>
+
+
+
+
+
+
+
+
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    
+    
+      
+      
+      <script id="__config" type="application/json">{"annotate": null, "base": "..", "features": ["navigation.tabs", "navigation.tabs.sticky", "navigation.sections", "navigation.indexes", "navigation.expand", "content.code.annotate"], "search": "../assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script>
+    
+    
+      <script src="../assets/javascripts/bundle.79ae519e.min.js"></script>
+      
+    
+  </body>
+</html>

@@ -1,0 +1,2271 @@
+
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+      
+      
+        <link rel="canonical" href="https://UmutCanDundar.github.io/TradingEngine-Portfolio/optimization/">
+      
+      
+        <link rel="prev" href="../Perf/builder_perf/">
+      
+      
+      
+        
+      
+      
+      <link rel="icon" href="../assets/images/favicon.png">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.7.6">
+    
+    
+      
+        <title>Recent Optimization - TradingEngine</title>
+      
+    
+    
+      <link rel="stylesheet" href="../assets/stylesheets/main.484c7ddc.min.css">
+      
+        
+        <link rel="stylesheet" href="../assets/stylesheets/palette.ab4e12ef.min.css">
+      
+      
+
+
+    
+    
+      
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,700,700i%7CRoboto+Mono:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
+      
+    
+    
+      <link rel="stylesheet" href="../stylesheets/extra.css">
+    
+    <script>__md_scope=new URL("..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+  </head>
+  
+  
+    
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="slate" data-md-color-primary="teal" data-md-color-accent="indigo">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#recent-optimization" class="md-skip">
+          Skip to content
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+  
+
+<header class="md-header md-header--shadow md-header--lifted" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Header">
+    <a href=".." title="TradingEngine" class="md-header__button md-logo" aria-label="TradingEngine" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            TradingEngine
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              Recent Optimization
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+      
+    
+    
+    
+    
+      
+      
+        <label class="md-header__button md-icon" for="__search">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        </label>
+        <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Search" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="Search">
+        
+        <button type="reset" class="md-search__icon md-icon" title="Clear" aria-label="Clear" tabindex="-1">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+        </button>
+      </nav>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" tabindex="0" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Initializing search
+          </div>
+          <ol class="md-search-result__list" role="presentation"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+      
+    
+    
+  </nav>
+  
+    
+      
+<nav class="md-tabs" aria-label="Tabs" data-md-component="tabs">
+  <div class="md-grid">
+    <ul class="md-tabs__list">
+      
+        
+  
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href=".." class="md-tabs__link">
+        
+  
+  
+    
+  
+  Overview
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../architecture/" class="md-tabs__link">
+        
+  
+  
+    
+  
+  Architecture
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../design/" class="md-tabs__link">
+        
+  
+  
+    
+  
+  Design
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../tests/" class="md-tabs__link">
+          
+  
+  
+    
+  
+  Tests
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+  
+    
+  
+  
+    <li class="md-tabs__item md-tabs__item--active">
+      <a href="./" class="md-tabs__link">
+        
+  
+  
+    
+  
+  Recent Optimization
+
+      </a>
+    </li>
+  
+
+      
+    </ul>
+  </div>
+</nav>
+    
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+  
+
+
+<nav class="md-nav md-nav--primary md-nav--lifted" aria-label="Navigation" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href=".." title="TradingEngine" class="md-nav__button md-logo" aria-label="TradingEngine" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    TradingEngine
+  </label>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href=".." class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Overview
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../architecture/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Architecture
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../design/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Design
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_4" >
+        
+          
+          <label class="md-nav__link" for="__nav_4" id="__nav_4_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Tests
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_4_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_4">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Tests
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../tests/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Overview
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_4_2" >
+        
+          
+          <label class="md-nav__link" for="__nav_4_2" id="__nav_4_2_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Pipeline
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_2_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_4_2">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Pipeline
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../Pipeline/pipeline/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Overview
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../Pipeline/benchmark_pipeline/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Benchmark
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../Pipeline/perf_pipeline/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Perf
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+      
+        
+      
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_4_3" >
+        
+          
+          <label class="md-nav__link" for="__nav_4_3" id="__nav_4_3_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Network
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_3_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_4_3">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Network
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../Unit/network_unit/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Unit
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_4_4" >
+        
+          
+          <label class="md-nav__link" for="__nav_4_4" id="__nav_4_4_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Parser
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_4_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_4_4">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Parser
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../Unit/parser_unit/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Unit
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../Benchmark/parser_benchmark/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Benchmark
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../Perf/parser_perf/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Perf
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_4_5" >
+        
+          
+          <label class="md-nav__link" for="__nav_4_5" id="__nav_4_5_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Order Manager
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_5_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_4_5">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Order Manager
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../Unit/order_manager_unit/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Unit
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../Benchmark/order_manager_benchmark/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Benchmark
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../Perf/order_manager_perf/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Perf
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_4_6" >
+        
+          
+          <label class="md-nav__link" for="__nav_4_6" id="__nav_4_6_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Risk
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_6_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_4_6">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Risk
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../Unit/risk_unit/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Unit
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../Benchmark/risk_benchmark/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Benchmark
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../Perf/risk_perf/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Perf
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_4_7" >
+        
+          
+          <label class="md-nav__link" for="__nav_4_7" id="__nav_4_7_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Builder
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_7_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_4_7">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Builder
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../Unit/builder_unit/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Unit
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../Benchmark/builder_benchmark/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Benchmark
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../Perf/builder_perf/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Perf
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+    
+  
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Recent Optimization
+  
+
+    
+  </span>
+  
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Recent Optimization
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#opt-1-ordermanager-follyconcurrenthashmap-concurrentfixedflatmap-2026-06-03" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Opt-1 — OrderManager:: folly::ConcurrentHashMap → ConcurrentFixedFlatMap (2026-06-03)
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#benchmark-comparison-bm_ordermanagermixedtraffic" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Benchmark Comparison (BM_OrderManager/MixedTraffic)
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#performance-comparison" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Performance Comparison
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Performance Comparison">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#key-counters-p-core-store-thread" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Key Counters (P-core / Store Thread)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#icache-hotspots" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        ICache Hotspots
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#dcache-hotspots" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        DCache Hotspots
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#false-sharing-c2c" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        False Sharing (C2C)
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#summary" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Summary
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#opt-2-builder_fixtransact_time-localtime_r-per-call-precomputed-second-table-2026-06-03" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Opt-2 — Builder_FIX::transact_time: localtime_r per call → precomputed second table (2026-06-03)
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#benchmark-comparison-bm_builder_fix_neworder" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Benchmark Comparison (BM_Builder_FIX_newOrder)
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#performance-comparison_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Performance Comparison
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#cpubranch-hotspots" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        CPU+Branch Hotspots
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#summary_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Summary
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#opt-1-ordermanager-follyconcurrenthashmap-concurrentfixedflatmap-2026-06-03" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Opt-1 — OrderManager:: folly::ConcurrentHashMap → ConcurrentFixedFlatMap (2026-06-03)
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#benchmark-comparison-bm_ordermanagermixedtraffic" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Benchmark Comparison (BM_OrderManager/MixedTraffic)
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#performance-comparison" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Performance Comparison
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Performance Comparison">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#key-counters-p-core-store-thread" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Key Counters (P-core / Store Thread)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#icache-hotspots" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        ICache Hotspots
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#dcache-hotspots" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        DCache Hotspots
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#false-sharing-c2c" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        False Sharing (C2C)
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#summary" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Summary
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#opt-2-builder_fixtransact_time-localtime_r-per-call-precomputed-second-table-2026-06-03" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Opt-2 — Builder_FIX::transact_time: localtime_r per call → precomputed second table (2026-06-03)
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#benchmark-comparison-bm_builder_fix_neworder" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Benchmark Comparison (BM_Builder_FIX_newOrder)
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#performance-comparison_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Performance Comparison
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#cpubranch-hotspots" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        CPU+Branch Hotspots
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#summary_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Summary
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              
+              <article class="md-content__inner md-typeset">
+                
+                  
+
+
+
+<h1 id="recent-optimization">Recent Optimization</h1>
+<p>The optimizations on this page were identified through profiling and benchmarking runs conducted against the baseline implementation. Perf results highlighted the bottlenecks; the changes below are the direct response to those findings.</p>
+<hr />
+<h2 id="opt-1-ordermanager-follyconcurrenthashmap-concurrentfixedflatmap-2026-06-03">Opt-1 — OrderManager:: <br><code>folly::ConcurrentHashMap</code> → <code>ConcurrentFixedFlatMap</code> <small>(2026-06-03)</small></h2>
+<p><code>folly::ConcurrentHashMap</code> was replaced with a custom <code>mmap</code>-backed, fixed-capacity, open-addressing <code>ConcurrentFixedFlatMap</code>. The map is accessed exclusively by the store thread — concurrent access never occurs — making folly's hazard pointer and mutex machinery pure overhead.</p>
+<p>Additionally, folly is not a modular library: even when only <code>ConcurrentHashMap</code> was used, the entire library was pulled into every build. Removing it cut full build time by <strong>~2x</strong>.</p>
+<hr />
+<h2 id="benchmark-comparison-bm_ordermanagermixedtraffic">Benchmark Comparison (<code>BM_OrderManager/MixedTraffic</code>)</h2>
+<table>
+<thead>
+<tr>
+<th>Metric</th>
+<th>Before (folly)</th>
+<th>After (ConcurrentFixedFlatMap)</th>
+<th>Δ</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Mean latency</td>
+<td>2584 ns</td>
+<td>2621 ns</td>
+<td>+1.4% (within noise)</td>
+</tr>
+<tr>
+<td>p50 cycles</td>
+<td>7,261</td>
+<td>7,736</td>
+<td>+6.5%</td>
+</tr>
+<tr>
+<td>p95 cycles</td>
+<td>7,941</td>
+<td>8,643</td>
+<td>+8.8%</td>
+</tr>
+<tr>
+<td>p99 cycles</td>
+<td>8,903</td>
+<td>9,471</td>
+<td>+6.4%</td>
+</tr>
+<tr>
+<td>p999 cycles</td>
+<td>183,912</td>
+<td>17,400</td>
+<td><strong>−91%</strong></td>
+</tr>
+<tr>
+<td>Max cycles</td>
+<td>632,706</td>
+<td>144,687</td>
+<td><strong>−77%</strong></td>
+</tr>
+</tbody>
+</table>
+<p>Mean and steady-state cycle counts are effectively unchanged — the hot path cost of the map swap is neutral. The significant gain is in tail latency: p999 dropped <strong>−91%</strong> and max cycles <strong>−77%</strong>, directly attributable to the elimination of folly's hazard pointer reclamation and deferred free paths that caused occasional long stalls.</p>
+<hr />
+<h2 id="performance-comparison">Performance Comparison</h2>
+<h3 id="key-counters-p-core-store-thread">Key Counters (P-core / Store Thread)</h3>
+<table>
+<thead>
+<tr>
+<th>Metric</th>
+<th>Before</th>
+<th>After</th>
+<th>Δ</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>P-core IPC</td>
+<td>0.35</td>
+<td>3.33</td>
+<td><strong>+9.5x</strong></td>
+</tr>
+<tr>
+<td>P-core cycles</td>
+<td>226.9B</td>
+<td>13.8B</td>
+<td><strong>−94%</strong></td>
+</tr>
+<tr>
+<td>P-core instructions</td>
+<td>79.8B</td>
+<td>45.9B</td>
+<td><strong>−42%</strong></td>
+</tr>
+<tr>
+<td>Branch miss rate</td>
+<td>1.00%</td>
+<td>0.01%</td>
+<td><strong>−99%</strong></td>
+</tr>
+<tr>
+<td>L1-D miss rate</td>
+<td>3.48%</td>
+<td>0.08%</td>
+<td><strong>−98%</strong></td>
+</tr>
+<tr>
+<td>L1-I misses</td>
+<td>372M</td>
+<td>302M</td>
+<td><strong>−19%</strong></td>
+</tr>
+<tr>
+<td>dTLB misses</td>
+<td>1,495,210</td>
+<td>485,986</td>
+<td><strong>−67%</strong></td>
+</tr>
+<tr>
+<td>iTLB misses</td>
+<td>132,210</td>
+<td>7,533</td>
+<td><strong>−94%</strong></td>
+</tr>
+<tr>
+<td>Local HITM</td>
+<td>45,310</td>
+<td>0</td>
+<td><strong>−100%</strong></td>
+</tr>
+</tbody>
+</table>
+<p>IPC and cycle improvements are partly attributable to the removal of consumer spin-loops. Instruction count reduction and icache hotspot changes reflect application-level gains only.</p>
+<hr />
+<h3 id="icache-hotspots">ICache Hotspots</h3>
+<table>
+<thead>
+<tr>
+<th>Symbol</th>
+<th>Before (self%)</th>
+<th>After (self%)</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>folly::ConcurrentHashMap::eraseImpl</code></td>
+<td><strong>11.02%</strong></td>
+<td>—</td>
+</tr>
+<tr>
+<td><code>pthread_mutex_lock</code> (folly internal)</td>
+<td><strong>5.11%</strong></td>
+<td>—</td>
+</tr>
+<tr>
+<td><code>folly::ConcurrentHashMap::emplace</code></td>
+<td>1.01%</td>
+<td>—</td>
+</tr>
+<tr>
+<td><code>ConcurrentFixedFlatMap::erase</code></td>
+<td>—</td>
+<td>1.49%</td>
+</tr>
+</tbody>
+</table>
+<p>Three folly symbols previously consumed <strong>29.26% icache self</strong> combined. All are gone.</p>
+<hr />
+<h3 id="dcache-hotspots">DCache Hotspots</h3>
+<table>
+<thead>
+<tr>
+<th>Symbol</th>
+<th>Before (self%)</th>
+<th>After (self%)</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Consumer spin-loops (3×)</td>
+<td>~51% total</td>
+<td>—</td>
+</tr>
+<tr>
+<td><code>folly::ConcurrentHashMap::eraseImpl</code></td>
+<td><strong>4.21%</strong></td>
+<td>—</td>
+</tr>
+<tr>
+<td><code>ConcurrentFixedFlatMap::erase</code></td>
+<td>—</td>
+<td>6.02%</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h3 id="false-sharing-c2c">False Sharing (C2C)</h3>
+<table>
+<thead>
+<tr>
+<th>Metric</th>
+<th>Before</th>
+<th>After</th>
+<th>Δ</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Shared cache lines</td>
+<td>19</td>
+<td>0</td>
+<td><strong>−100%</strong></td>
+</tr>
+<tr>
+<td>Local HITM</td>
+<td>45,310</td>
+<td>0</td>
+<td><strong>−100%</strong></td>
+</tr>
+<tr>
+<td>Store HITs on shared lines</td>
+<td>83,941</td>
+<td>0</td>
+<td><strong>−100%</strong></td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h2 id="summary">Summary</h2>
+<table>
+<thead>
+<tr>
+<th>Category</th>
+<th>Gain</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Build time</td>
+<td><strong>~2x faster</strong> — folly dependency removed entirely</td>
+</tr>
+<tr>
+<td>ICache overhead</td>
+<td>folly symbols: <strong>29.26% → 0%</strong></td>
+</tr>
+<tr>
+<td>DCache overhead</td>
+<td><code>eraseImpl</code>: <strong>4.21% → 0%</strong></td>
+</tr>
+<tr>
+<td>iTLB misses</td>
+<td><strong>−94%</strong></td>
+</tr>
+<tr>
+<td>dTLB misses</td>
+<td><strong>−67%</strong></td>
+</tr>
+<tr>
+<td>False sharing / HITM</td>
+<td><strong>−100%</strong></td>
+</tr>
+</tbody>
+</table>
+<p>back to <a href="../Perf/order_manager_perf/#findings">OrderManager perf findings</a></p>
+<h2 id="opt-2-builder_fixtransact_time-localtime_r-per-call-precomputed-second-table-2026-06-03">Opt-2 — Builder_FIX::transact_time: <br><code>localtime_r</code> per call → precomputed second table <br><small>(2026-06-03)</small></h2>
+<p>Each FIX order previously called <code>localtime_r</code> to format the <code>TransactTime</code> field, making timestamp formatting a syscall-level cost on every message. A static <code>char g_second_table[86400][17]</code> is now built once at startup — covering all 86400 seconds of the day — so the hot path is a single <code>memcpy(17 bytes)</code> + millisecond suffix append.</p>
+<hr />
+<h2 id="benchmark-comparison-bm_builder_fix_neworder">Benchmark Comparison (<code>BM_Builder_FIX_newOrder</code>)</h2>
+<table>
+<thead>
+<tr>
+<th>Metric</th>
+<th>Before</th>
+<th>After</th>
+<th>Δ</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Mean latency</td>
+<td>175 ns</td>
+<td>100 ns</td>
+<td><strong>−43%</strong></td>
+</tr>
+<tr>
+<td>p50 cycles</td>
+<td>440</td>
+<td>222</td>
+<td><strong>−50%</strong></td>
+</tr>
+<tr>
+<td>p95 cycles</td>
+<td>454.6</td>
+<td>228.4</td>
+<td><strong>−50%</strong></td>
+</tr>
+<tr>
+<td>p99 cycles</td>
+<td>497.4</td>
+<td>269.8</td>
+<td><strong>−46%</strong></td>
+</tr>
+<tr>
+<td>p999 cycles</td>
+<td>584</td>
+<td>319.2</td>
+<td><strong>−45%</strong></td>
+</tr>
+<tr>
+<td>Max cycles</td>
+<td>87,758</td>
+<td>66,680</td>
+<td><strong>−24%</strong></td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h2 id="performance-comparison_1">Performance Comparison</h2>
+<table>
+<thead>
+<tr>
+<th>Metric</th>
+<th>Before</th>
+<th>After</th>
+<th>Δ</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Wall time</td>
+<td>0.97 s</td>
+<td>0.55 s</td>
+<td><strong>−43%</strong></td>
+</tr>
+<tr>
+<td>P-core IPC</td>
+<td>3.52</td>
+<td>2.14</td>
+<td>— ¹</td>
+</tr>
+<tr>
+<td>P-core cycles</td>
+<td>4.18B @ 4.87 GHz</td>
+<td>2.68B @ 4.84 GHz</td>
+<td><strong>−36%</strong></td>
+</tr>
+<tr>
+<td>P-core instructions</td>
+<td>14.72B</td>
+<td>5.74B</td>
+<td><strong>−61%</strong></td>
+</tr>
+<tr>
+<td>Branch miss rate</td>
+<td>0.00%</td>
+<td>0.01%</td>
+<td>flat</td>
+</tr>
+<tr>
+<td>L1-D miss rate</td>
+<td>0.03%</td>
+<td>0.10%</td>
+<td>+0.07pp</td>
+</tr>
+<tr>
+<td>LLC miss rate</td>
+<td>63.7%</td>
+<td>67.1%</td>
+<td>flat ²</td>
+</tr>
+<tr>
+<td>dTLB misses</td>
+<td>27,127</td>
+<td>69,994</td>
+<td>+158% ³</td>
+</tr>
+<tr>
+<td>iTLB misses</td>
+<td>272,287</td>
+<td>251,955</td>
+<td><strong>−7%</strong></td>
+</tr>
+</tbody>
+</table>
+<p>IPC drop reflects fewer instructions retiring per cycle, not a regression — instruction count fell 61%, so the workload is simply lighter.</p>
+<p>LLC miss rate stays high in both runs due to page-fault overhead dominating the profile (see hotspots below).</p>
+<p>dTLB increase is from the 1.4 MB <code>g_second_table</code> region touching new pages on first access.</p>
+<hr />
+<h2 id="cpubranch-hotspots">CPU+Branch Hotspots</h2>
+<table>
+<thead>
+<tr>
+<th>Symbol</th>
+<th>Before (self%)</th>
+<th>After (self%)</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>Builder_FIX::transact_time</code> / <code>epoch_to_transact_time</code></td>
+<td><strong>6.05% + 3.61%</strong></td>
+<td>—</td>
+</tr>
+</tbody>
+</table>
+<p><code>transact_time</code> overhead is gone. Page-fault share grew because the total instruction budget shrank — the same number of page faults now represents a larger fraction of a shorter run.</p>
+<hr />
+<h2 id="summary_1">Summary</h2>
+<table>
+<thead>
+<tr>
+<th>Category</th>
+<th>Gain</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Mean latency</td>
+<td><strong>−43%</strong> (175 ns → 100 ns)</td>
+</tr>
+<tr>
+<td>p50 cycles</td>
+<td><strong>−50%</strong> (440 → 222)</td>
+</tr>
+<tr>
+<td>p99 cycles</td>
+<td><strong>−46%</strong> (497 → 270)</td>
+</tr>
+<tr>
+<td>Instructions retired</td>
+<td><strong>−61%</strong></td>
+</tr>
+<tr>
+<td>Wall time</td>
+<td><strong>−43%</strong></td>
+</tr>
+<tr>
+<td><code>localtime_r</code> syscall per message</td>
+<td><strong>eliminated</strong></td>
+</tr>
+</tbody>
+</table>
+<p>back to <a href="../Perf/builder_perf/#fix-findings">Builder_Dispatch perf findings</a></p>
+
+
+
+
+
+
+
+
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    
+    
+      
+      
+      <script id="__config" type="application/json">{"annotate": null, "base": "..", "features": ["navigation.tabs", "navigation.tabs.sticky", "navigation.sections", "navigation.indexes", "navigation.expand", "content.code.annotate"], "search": "../assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script>
+    
+    
+      <script src="../assets/javascripts/bundle.79ae519e.min.js"></script>
+      
+    
+  </body>
+</html>

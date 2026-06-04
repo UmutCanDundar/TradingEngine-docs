@@ -1,0 +1,2374 @@
+
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+      
+      
+        <link rel="canonical" href="https://UmutCanDundar.github.io/TradingEngine-Portfolio/Pipeline/benchmark_pipeline/">
+      
+      
+        <link rel="prev" href="../pipeline/">
+      
+      
+        <link rel="next" href="../perf_pipeline/">
+      
+      
+        
+      
+      
+      <link rel="icon" href="../../assets/images/favicon.png">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.7.6">
+    
+    
+      
+        <title>Benchmark - TradingEngine</title>
+      
+    
+    
+      <link rel="stylesheet" href="../../assets/stylesheets/main.484c7ddc.min.css">
+      
+        
+        <link rel="stylesheet" href="../../assets/stylesheets/palette.ab4e12ef.min.css">
+      
+      
+
+
+    
+    
+      
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,700,700i%7CRoboto+Mono:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
+      
+    
+    
+      <link rel="stylesheet" href="../../stylesheets/extra.css">
+    
+    <script>__md_scope=new URL("../..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+  </head>
+  
+  
+    
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="slate" data-md-color-primary="teal" data-md-color-accent="indigo">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#pipeline-benchmark-results" class="md-skip">
+          Skip to content
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+  
+
+<header class="md-header md-header--shadow md-header--lifted" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Header">
+    <a href="../.." title="TradingEngine" class="md-header__button md-logo" aria-label="TradingEngine" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            TradingEngine
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              Benchmark
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+      
+    
+    
+    
+    
+      
+      
+        <label class="md-header__button md-icon" for="__search">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        </label>
+        <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Search" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="Search">
+        
+        <button type="reset" class="md-search__icon md-icon" title="Clear" aria-label="Clear" tabindex="-1">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+        </button>
+      </nav>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" tabindex="0" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Initializing search
+          </div>
+          <ol class="md-search-result__list" role="presentation"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+      
+    
+    
+  </nav>
+  
+    
+      
+<nav class="md-tabs" aria-label="Tabs" data-md-component="tabs">
+  <div class="md-grid">
+    <ul class="md-tabs__list">
+      
+        
+  
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../.." class="md-tabs__link">
+        
+  
+  
+    
+  
+  Overview
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../../architecture/" class="md-tabs__link">
+        
+  
+  
+    
+  
+  Architecture
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../../design/" class="md-tabs__link">
+        
+  
+  
+    
+  
+  Design
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+    
+  
+  
+    
+    
+      <li class="md-tabs__item md-tabs__item--active">
+        <a href="../../tests/" class="md-tabs__link">
+          
+  
+  
+    
+  
+  Tests
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../../optimization/" class="md-tabs__link">
+        
+  
+  
+    
+  
+  Recent Optimization
+
+      </a>
+    </li>
+  
+
+      
+    </ul>
+  </div>
+</nav>
+    
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+  
+
+
+<nav class="md-nav md-nav--primary md-nav--lifted" aria-label="Navigation" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href="../.." title="TradingEngine" class="md-nav__button md-logo" aria-label="TradingEngine" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    TradingEngine
+  </label>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../.." class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Overview
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../architecture/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Architecture
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../design/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Design
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+    
+  
+  
+  
+    
+    
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+      
+        
+        
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4" checked>
+        
+          
+          <label class="md-nav__link" for="__nav_4" id="__nav_4_label" tabindex="">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Tests
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_4_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_4">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Tests
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../tests/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Overview
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+    
+  
+  
+  
+    
+    
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+      
+      
+        
+          
+          
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_2" checked>
+        
+          
+          <label class="md-nav__link" for="__nav_4_2" id="__nav_4_2_label" tabindex="">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Pipeline
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_2_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_4_2">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Pipeline
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../pipeline/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Overview
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+    
+  
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Benchmark
+  
+
+    
+  </span>
+  
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Benchmark
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#test-setup" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Test Setup
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#results-rx" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Results (Rx)
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Results (Rx)">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#fix-bist" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        FIX BIST
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#ouch-bist" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        OUCH BIST
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#ouch-nq" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        OUCH NQ
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#itch-bist" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        ITCH BIST
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#itch-nq" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        ITCH NQ
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#results-tx" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Results (Tx)
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Results (Tx)">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#fix-bist_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        FIX BIST
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#ouch-bist_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        OUCH BIST
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#ouch-nq_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        OUCH NQ
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#summary-best-profile-performanceidle-across-all-protocols" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Summary — Best Profile (Performance/idle) Across All Protocols
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Summary — Best Profile (Performance/idle) Across All Protocols">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#rx" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Rx
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#tx" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Tx
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#notes" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Notes
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../perf_pipeline/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Perf
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+      
+        
+      
+    
+    
+    
+      
+      
+        
+          
+          
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_4_3" >
+        
+          
+          <label class="md-nav__link" for="__nav_4_3" id="__nav_4_3_label" tabindex="">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Network
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_3_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_4_3">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Network
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../Unit/network_unit/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Unit
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+      
+      
+        
+          
+          
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_4_4" >
+        
+          
+          <label class="md-nav__link" for="__nav_4_4" id="__nav_4_4_label" tabindex="">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Parser
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_4_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_4_4">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Parser
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../Unit/parser_unit/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Unit
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../Benchmark/parser_benchmark/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Benchmark
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../Perf/parser_perf/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Perf
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+      
+      
+        
+          
+          
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_4_5" >
+        
+          
+          <label class="md-nav__link" for="__nav_4_5" id="__nav_4_5_label" tabindex="">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Order Manager
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_5_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_4_5">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Order Manager
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../Unit/order_manager_unit/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Unit
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../Benchmark/order_manager_benchmark/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Benchmark
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../Perf/order_manager_perf/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Perf
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+      
+      
+        
+          
+          
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_4_6" >
+        
+          
+          <label class="md-nav__link" for="__nav_4_6" id="__nav_4_6_label" tabindex="">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Risk
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_6_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_4_6">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Risk
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../Unit/risk_unit/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Unit
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../Benchmark/risk_benchmark/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Benchmark
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../Perf/risk_perf/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Perf
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+      
+      
+        
+          
+          
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_4_7" >
+        
+          
+          <label class="md-nav__link" for="__nav_4_7" id="__nav_4_7_label" tabindex="">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Builder
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_7_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_4_7">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Builder
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../Unit/builder_unit/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Unit
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../Benchmark/builder_benchmark/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Benchmark
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../Perf/builder_perf/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Perf
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../optimization/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Recent Optimization
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#test-setup" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Test Setup
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#results-rx" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Results (Rx)
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Results (Rx)">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#fix-bist" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        FIX BIST
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#ouch-bist" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        OUCH BIST
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#ouch-nq" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        OUCH NQ
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#itch-bist" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        ITCH BIST
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#itch-nq" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        ITCH NQ
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#results-tx" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Results (Tx)
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Results (Tx)">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#fix-bist_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        FIX BIST
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#ouch-bist_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        OUCH BIST
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#ouch-nq_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        OUCH NQ
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#summary-best-profile-performanceidle-across-all-protocols" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Summary — Best Profile (Performance/idle) Across All Protocols
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Summary — Best Profile (Performance/idle) Across All Protocols">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#rx" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Rx
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#tx" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Tx
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#notes" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Notes
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              
+              <article class="md-content__inner md-typeset">
+                
+                  
+
+
+
+<h1 id="pipeline-benchmark-results">Pipeline Benchmark Results</h1>
+<p>End-to-end latency from network ingress to risk check completion, measured across four CPU frequency profiles and two load conditions. All values are <strong>medians</strong> with CV (coefficient of variation) shown in parentheses.</p>
+<hr />
+<h2 id="test-setup">Test Setup</h2>
+<p>Each benchmark,</p>
+<ul>
+<li>
+<p>receives a single <strong>new order acknowledgement packet</strong> through the complete Rx pipeline — from raw network bytes arriving on the socket, through protocol parsing, to risk update completion,</p>
+</li>
+<li>
+<p>sends a single <strong>new order packet</strong> through the complete Tx pipeline — from risk checking to the packet being written to the network. </p>
+</li>
+</ul>
+<hr />
+<h2 id="results-rx">Results (Rx)</h2>
+<h3 id="fix-bist">FIX BIST</h3>
+<table>
+<thead>
+<tr>
+<th>Profile</th>
+<th>Median ns</th>
+<th>p50 cycles</th>
+<th>p99 cycles</th>
+<th>p999 cycles</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>1 — Performance/idle</td>
+<td>3540 (3.29%)</td>
+<td>8953 (1.23%)</td>
+<td>10281 (5.12%)</td>
+<td>268932 (1.10%)</td>
+</tr>
+<tr>
+<td>2 — Powersave/idle</td>
+<td>3698 (2.35%)</td>
+<td>9389 (1.15%)</td>
+<td>11417 (6.55%)</td>
+<td>225777 (0.28%)</td>
+</tr>
+<tr>
+<td>3 — Performance/no idle</td>
+<td>4741 (3.18%)</td>
+<td>11479 (1.15%)</td>
+<td>12875 (7.51%)</td>
+<td>293037 (0.16%)</td>
+</tr>
+<tr>
+<td>4 — Performance/no turbo</td>
+<td>5302 (1.82%)</td>
+<td>13466 (0.77%)</td>
+<td>14720 (2.24%)</td>
+<td>319932 (0.27%)</td>
+</tr>
+</tbody>
+</table>
+<h3 id="ouch-bist">OUCH BIST</h3>
+<table>
+<thead>
+<tr>
+<th>Profile</th>
+<th>Median ns</th>
+<th>p50 cycles</th>
+<th>p99 cycles</th>
+<th>p999 cycles</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>1 — Performance/idle</td>
+<td>3636 (1.19%)</td>
+<td>9217 (0.64%)</td>
+<td>10270 (6.58%)</td>
+<td>261272 (0.36%)</td>
+</tr>
+<tr>
+<td>2 — Powersave/idle</td>
+<td>3850 (3.15%)</td>
+<td>9389 (1.13%)</td>
+<td>11837 (7.53%)</td>
+<td>226221 (0.83%)</td>
+</tr>
+<tr>
+<td>3 — Performance/no idle</td>
+<td>4778 (2.59%)</td>
+<td>11163 (0.55%)</td>
+<td>12321 (5.97%)</td>
+<td>292276 (0.35%)</td>
+</tr>
+<tr>
+<td>4 — Performance/no turbo</td>
+<td>5277 (1.84%)</td>
+<td>13448 (0.90%)</td>
+<td>14483 (1.13%)</td>
+<td>319413 (0.31%)</td>
+</tr>
+</tbody>
+</table>
+<h3 id="ouch-nq">OUCH NQ</h3>
+<table>
+<thead>
+<tr>
+<th>Profile</th>
+<th>Median ns</th>
+<th>p50 cycles</th>
+<th>p99 cycles</th>
+<th>p999 cycles</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>1 — Performance/idle</td>
+<td>3686 (3.25%)</td>
+<td>9135 (0.55%)</td>
+<td>10090 (5.06%)</td>
+<td>260618 (0.35%)</td>
+</tr>
+<tr>
+<td>2 — Powersave/idle</td>
+<td>3749 (1.90%)</td>
+<td>9515 (1.03%)</td>
+<td>11430 (7.17%)</td>
+<td>228628 (0.94%)</td>
+</tr>
+<tr>
+<td>3 — Performance/no idle</td>
+<td>4830 (0.95%)</td>
+<td>12016 (0.50%)</td>
+<td>13168 (5.56%)</td>
+<td>295660 (1.65%)</td>
+</tr>
+<tr>
+<td>4 — Performance/no turbo</td>
+<td>5369 (3.35%)</td>
+<td>13375 (0.86%)</td>
+<td>14372 (0.86%)</td>
+<td>319407 (1.41%)</td>
+</tr>
+</tbody>
+</table>
+<h3 id="itch-bist">ITCH BIST</h3>
+<table>
+<thead>
+<tr>
+<th>Profile</th>
+<th>Median ns</th>
+<th>p50 cycles</th>
+<th>p99 cycles</th>
+<th>p999 cycles</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>1 — Performance/idle</td>
+<td>2147 (1.99%)</td>
+<td>5523 (1.14%)</td>
+<td>6047 (5.45%)</td>
+<td>10321 (11.06%)</td>
+</tr>
+<tr>
+<td>2 — Powersave/idle</td>
+<td>2272 (1.06%)</td>
+<td>5827 (0.86%)</td>
+<td>6344 (0.95%)</td>
+<td>12505 (0.98%)</td>
+</tr>
+<tr>
+<td>3 — Performance/no idle</td>
+<td>2230 (3.54%)</td>
+<td>6246 (0.93%)</td>
+<td>6789 (0.98%)</td>
+<td>10514 (0.80%)</td>
+</tr>
+<tr>
+<td>4 — Performance/no turbo</td>
+<td>3030 (5.96%)</td>
+<td>8195 (1.38%)</td>
+<td>8867 (1.77%)</td>
+<td>12799 (1.06%)</td>
+</tr>
+</tbody>
+</table>
+<h3 id="itch-nq">ITCH NQ</h3>
+<table>
+<thead>
+<tr>
+<th>Profile</th>
+<th>Median ns</th>
+<th>p50 cycles</th>
+<th>p99 cycles</th>
+<th>p999 cycles</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>1 — Performance/idle</td>
+<td>2260 (2.09%)</td>
+<td>5905 (0.72%)</td>
+<td>6418 (0.93%)</td>
+<td>9969 (10.51%)</td>
+</tr>
+<tr>
+<td>2 — Powersave/idle</td>
+<td>2552 (7.48%)</td>
+<td>6247 (1.13%)</td>
+<td>6793 (2.36%)</td>
+<td>13020 (1.27%)</td>
+</tr>
+<tr>
+<td>3 — Performance/no idle</td>
+<td>2390 (3.06%)</td>
+<td>6457 (0.50%)</td>
+<td>6974 (0.95%)</td>
+<td>10897 (1.09%)</td>
+</tr>
+<tr>
+<td>4 — Performance/no turbo</td>
+<td>3607 (4.70%)</td>
+<td>8876 (1.58%)</td>
+<td>9547 (1.53%)</td>
+<td>13650 (1.07%)</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h2 id="results-tx">Results (Tx)</h2>
+<h3 id="fix-bist_1">FIX BIST</h3>
+<table>
+<thead>
+<tr>
+<th>Profile</th>
+<th>Median ns</th>
+<th>p50 cycles</th>
+<th>p99 cycles</th>
+<th>p999 cycles</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>1 — Performance/idle</td>
+<td>3177 (1.48%)</td>
+<td>8911 (1.12%)</td>
+<td>11304 (3.19%)</td>
+<td>15766 (3.39%)</td>
+</tr>
+<tr>
+<td>2 — Powersave/idle</td>
+<td>3247 (1.12%)</td>
+<td>9153 (0.51%)</td>
+<td>11615 (4.44%)</td>
+<td>15450 (7.23%)</td>
+</tr>
+<tr>
+<td>3 — Performance/no idle</td>
+<td>4552 (0.62%)</td>
+<td>12980 (0.29%)</td>
+<td>16160 (4.72%)</td>
+<td>18271 (0.70%)</td>
+</tr>
+<tr>
+<td>4 — Performance/no turbo</td>
+<td>4637 (1.12%)</td>
+<td>12954 (0.88%)</td>
+<td>16461 (0.78%)</td>
+<td>19281 (0.48%)</td>
+</tr>
+</tbody>
+</table>
+<h3 id="ouch-bist_1">OUCH BIST</h3>
+<table>
+<thead>
+<tr>
+<th>Profile</th>
+<th>Median ns</th>
+<th>p50 cycles</th>
+<th>p99 cycles</th>
+<th>p999 cycles</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>1 — Performance/idle</td>
+<td>2865 (1.43%)</td>
+<td>7984 (1.14%)</td>
+<td>8916 (8.47%)</td>
+<td>14765 (1.02%)</td>
+</tr>
+<tr>
+<td>2 — Powersave/idle</td>
+<td>2956 (0.84%)</td>
+<td>8304 (0.32%)</td>
+<td>9209 (8.96%)</td>
+<td>14766 (5.09%)</td>
+</tr>
+<tr>
+<td>3 — Performance/no idle</td>
+<td>4248 (1.32%)</td>
+<td>12123 (0.54%)</td>
+<td>13011 (7.83%)</td>
+<td>17133 (0.54%)</td>
+</tr>
+<tr>
+<td>4 — Performance/no turbo</td>
+<td>4304 (1.19%)</td>
+<td>12050 (0.87%)</td>
+<td>13120 (5.67%)</td>
+<td>18234 (0.65%)</td>
+</tr>
+</tbody>
+</table>
+<h3 id="ouch-nq_1">OUCH NQ</h3>
+<table>
+<thead>
+<tr>
+<th>Profile</th>
+<th>Median ns</th>
+<th>p50 cycles</th>
+<th>p99 cycles</th>
+<th>p999 cycles</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>1 — Performance/idle</td>
+<td>2862 (1.56%)</td>
+<td>8074 (1.23%)</td>
+<td>8705 (7.63%)</td>
+<td>14930 (2.34%)</td>
+</tr>
+<tr>
+<td>2 — Powersave/idle</td>
+<td>3003 (2.04%)</td>
+<td>8428 (1.43%)</td>
+<td>9041 (6.18%)</td>
+<td>14984 (1.95%)</td>
+</tr>
+<tr>
+<td>3 — Performance/no idle</td>
+<td>4252 (1.43%)</td>
+<td>12036 (0.69%)</td>
+<td>12873 (0.94%)</td>
+<td>17260 (0.48%)</td>
+</tr>
+<tr>
+<td>4 — Performance/no turbo</td>
+<td>4264 (0.97%)</td>
+<td>12111 (0.71%)</td>
+<td>12773 (0.78%)</td>
+<td>18119 (0.48%)</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h2 id="summary-best-profile-performanceidle-across-all-protocols">Summary — Best Profile (Performance/idle) Across All Protocols</h2>
+<p>Performance/idle (Profile 1) represents the ceiling: highest clock frequency, lowest system contention. The table below compares all five protocols under this single profile.</p>
+<h3 id="rx">Rx</h3>
+<table>
+<thead>
+<tr>
+<th>Protocol / Venue</th>
+<th>Median ns</th>
+<th>p50 cycles</th>
+<th>p99 cycles</th>
+<th>p999 cycles</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>FIX</td>
+<td>3540 (3.29%)</td>
+<td>8953 (1.23%)</td>
+<td>10281 (5.12%)</td>
+<td>268932 (1.10%)</td>
+</tr>
+<tr>
+<td>OUCH BIST</td>
+<td>3636 (1.19%)</td>
+<td>9217 (0.64%)</td>
+<td>10270 (6.58%)</td>
+<td>261272 (0.36%)</td>
+</tr>
+<tr>
+<td>OUCH NQ</td>
+<td>3686 (3.25%)</td>
+<td>9135 (0.55%)</td>
+<td>10090 (5.06%)</td>
+<td>260618 (0.35%)</td>
+</tr>
+<tr>
+<td>ITCH BIST</td>
+<td>2147 (1.99%)</td>
+<td>5523 (1.14%)</td>
+<td>6047 (5.45%)</td>
+<td>10321 (11.06%)</td>
+</tr>
+<tr>
+<td>ITCH NQ</td>
+<td>2260 (2.09%)</td>
+<td>5905 (0.72%)</td>
+<td>6418 (0.93%)</td>
+<td>9969 (10.51%)</td>
+</tr>
+</tbody>
+</table>
+<h3 id="tx">Tx</h3>
+<table>
+<thead>
+<tr>
+<th>Protocol/Venue</th>
+<th>Median ns</th>
+<th>p50 cycles</th>
+<th>p99 cycles</th>
+<th>p999 cycles</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>FIX</td>
+<td>3177 (1.48%)</td>
+<td>8911 (1.12%)</td>
+<td>11304 (3.19%)</td>
+<td>15766 (3.39%)</td>
+</tr>
+<tr>
+<td>OUCH BIST</td>
+<td>2865 (1.43%)</td>
+<td>7984 (1.14%)</td>
+<td>8916 (8.47%)</td>
+<td>14765 (1.02%)</td>
+</tr>
+<tr>
+<td>OUCH NQ</td>
+<td>2862 (1.56%)</td>
+<td>8074 (1.23%)</td>
+<td>8705 (7.63%)</td>
+<td>14930 (2.34%)</td>
+</tr>
+</tbody>
+</table>
+<h3 id="notes">Notes</h3>
+<p><strong>Why Performance/idle (Profile 1) wins despite CPU scaling enabled:</strong> </p>
+<p>When C-states are active, threads do not all run at peak load simultaneously, so the CPU can boost individual cores to 4700 MHz. When idle is disabled (Profiles 3) all cores are held active at once, and the chip cannot sustain maximum frequency across all of them — settling around 3200 MHz under thermal/power constraints. The result is that idle-enabled runs achieve higher per-core clock rates even though the benchmark issued a scaling warning.</p>
+<p><strong>ITCH vs FIX/OUCH gap (~40% fewer cycles):</strong> </p>
+<p>Not a parsing difference. ITCH carries market order data that does not affect our risk profiles, so the risk engine bypasses most of its update path for these messages. FIX and OUCH order acknowledgements trigger the full update.</p>
+<p><strong>CV elevation:</strong> </p>
+<p>Occasional CV spikes — particularly at p99/p999 — are measurement artefacts rather than pipeline instability. With only 10 iterations, a single outlier sample disproportionately inflates the percentile. The p50 CV remains below 2% in almost all cases, confirming the hot path itself is stable.</p>
+<p><strong>Turbo vs no-turbo (Profile 4):</strong> </p>
+<p>With turbo disabled, the CPU is capped at 2400 MHz regardless of load. Beyond the frequency penalty, turbo-off runs did not show better stability — p999 CV is comparable to or worse than turbo-on profiles. Given both the latency cost and the absence of a stability benefit, turbo-enabled is the preferred deployment configuration.</p>
+
+
+
+
+
+
+
+
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    
+    
+      
+      
+      <script id="__config" type="application/json">{"annotate": null, "base": "../..", "features": ["navigation.tabs", "navigation.tabs.sticky", "navigation.sections", "navigation.indexes", "navigation.expand", "content.code.annotate"], "search": "../../assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script>
+    
+    
+      <script src="../../assets/javascripts/bundle.79ae519e.min.js"></script>
+      
+    
+  </body>
+</html>
