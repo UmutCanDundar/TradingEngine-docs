@@ -1,0 +1,60 @@
+site_name: TradingEngine
+site_url: https://UmutCanDundar.github.io/TradingEngine-Portfolio
+
+theme:
+  name: material
+  palette:
+    scheme: slate
+    primary: teal
+  features:
+    - navigation.tabs
+    - navigation.tabs.sticky
+    - navigation.sections
+    - navigation.indexes
+    - navigation.expand
+    - content.code.annotate
+
+extra_css:
+  - stylesheets/extra.css
+  
+markdown_extensions:
+  - pymdownx.highlight
+  - pymdownx.superfences:
+      custom_fences:
+        - name: mermaid
+          class: mermaid
+          format: !!python/name:pymdownx.superfences.fence_code_format
+  - tables
+  - admonition
+  - attr_list
+  - md_in_html
+
+nav:
+  - Overview: index.md
+  - Architecture: architecture.md
+  - Design: design.md
+  - Tests:
+    - Overview: tests.md
+    - Pipeline:
+      - Overview: Pipeline/pipeline.md
+      - Benchmark: Pipeline/benchmark_pipeline.md
+      - Perf: Pipeline/perf_pipeline.md
+    - Network:
+      - Unit: Unit/network_unit.md
+    - Parser:
+      - Unit: Unit/parser_unit.md
+      - Benchmark: Benchmark/parser_benchmark.md
+      - Perf: Perf/parser_perf.md
+    - Order Manager:
+      - Unit: Unit/order_manager_unit.md
+      - Benchmark: Benchmark/order_manager_benchmark.md
+      - Perf: Perf/order_manager_perf.md
+    - Risk:
+      - Unit: Unit/risk_unit.md
+      - Benchmark: Benchmark/risk_benchmark.md
+      - Perf: Perf/risk_perf.md
+    - Builder:
+      - Unit: Unit/builder_unit.md
+      - Benchmark: Benchmark/builder_benchmark.md
+      - Perf: Perf/builder_perf.md
+  - Recent Optimization: optimization.md

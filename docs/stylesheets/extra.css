@@ -1,0 +1,21 @@
+.md-nav__item--section > .md-nav__link {
+    font-size: 0.7rem;
+    font-weight: 700;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--md-default-fg-color--light) !important;
+    pointer-events: none;
+    padding-top: 1em;
+}
+
+.md-nav__item--section .md-nav__item .md-nav__link:hover,
+.md-nav__item--section .md-nav__item .md-nav__link--active {
+    background-color: var(--md-primary-fg-color);
+    color: var(--md-primary-bg-color) !important;
+    border-radius: 4px;
+    padding-left: 0.6rem;
+}
+
+.md-nav__item--section .md-nav__item {
+    padding-left: 0.8rem;
+}
