@@ -62,16 +62,16 @@ Overhead is the inclusive cost of a function and all its callees — high overhe
 | 16.47% | 0.00% | `std::thread` → `NetworkFlow::start()` |
 | 16.44% | 9.57% | `main::{lambda(int,int)#1}::operator()` |
 | 16.39% | 0.40% | `NetworkIO::recv_send()` |
-| 16.39% | 13.81% | `OrderFlow::start()` lambda |
-| 16.05% | 14.35% | `RiskFlow::start()` lambda |
-| 15.66% | 15.65% | `BuilderFlow::start()` lambda |
-| 15.39% | 14.62% | `ParserFlow::start()` lambda |
-| 13.51% | 0.24% | `entry_SYSCALL_64` [kernel] |
-| 13.25% | 0.43% | `do_syscall_64` [kernel] |
-| 11.83% | 0.16% | `x64_sys_call` [kernel] |
+| 16.39% | 13.81% | `OrderFlow::start()` |
+| 16.05% | 14.35% | `RiskFlow::start()` |
+| 15.66% | 15.65% | `BuilderFlow::start()` |
+| 15.39% | 14.62% | `ParserFlow::start()` |
+| 13.51% | 0.24% | `entry_SYSCALL_64` |
+| 13.25% | 0.43% | `do_syscall_64` |
+| 11.83% | 0.16% | `x64_sys_call` |
 | 9.44% | 1.33% | `epoll_wait` |
-| 4.66% | 0.00% | `__x64_sys_sendto` [kernel] |
-| 4.64% | 0.04% | `__sys_sendto` [kernel] |
+| 4.66% | 0.00% | `__x64_sys_sendto` |
+| 4.64% | 0.04% | `__sys_sendto` |
 
 P-core hosts all flow threads — `OrderFlow`, `RiskFlow`, `BuilderFlow`, `ParserFlow` all appear at 13–16% self time, load is evenly distributed. `NetworkIO::recv_send()` acts as a dispatcher at 0.40% self. The syscall chain (`entry_SYSCALL_64` → `sendto`) descends from 13.5% to 4.6% — this is the source of the icache miss pressure observed in the icache profile. `epoll_wait` at 1.33% self is expected.
 
@@ -79,8 +79,8 @@ P-core hosts all flow threads — `OrderFlow`, `RiskFlow`, `BuilderFlow`, `Parse
 
 | Overhead | Self | Symbol |
 |---|---|---|
-| 47.26% | 38.96% | `RiskFlow::start()` lambda |
-| 46.91% | 41.60% | `OrderFlow::start()` lambda |
+| 47.26% | 38.96% | `RiskFlow::start()` |
+| 46.91% | 41.60% | `OrderFlow::start()` |
 | 10.92% | 10.88% | `RiskEngine::check_risk()` |
 | 8.31% | 8.28% | `ClickhouseWriter::store()` |
 | 0.04% | 0.04% | `RiskEngine::check_venue_halt_and_circuit()` |
@@ -184,7 +184,7 @@ Receive path only — no transmit thread running. Used to isolate the Rx contrib
 | 17.11% | 10.08% | `main` (self) |
 | 16.47% | 0.00% | `std::thread` → `NetworkFlow::start()` |
 | 16.40% | 0.43% | `NetworkIO::recv_send()` |
-| 16.40% | 13.67% | `OrderFlow::start()` lambda |
+| 16.40% | 13.67% | `OrderFlow::start()` |
 
 Structure mirrors RxTx P-core exactly — same dispatcher pattern, same self-time distribution. `NetworkIO::recv_send()` at 0.43% self is consistent with RxTx (0.40%). The absence of `BuilderFlow` and `ParserFlow` in the top 10 here is a sampling artifact from the shorter symbol list, not a structural change; `OrderFlow` at 13.67% self confirms the thread load is equivalent.
 
@@ -192,8 +192,8 @@ Structure mirrors RxTx P-core exactly — same dispatcher pattern, same self-tim
 
 | Overhead | Self | Symbol |
 |---|---|---|
-| 47.42% | 40.97% | `RiskFlow::start()` lambda |
-| 46.69% | 41.32% | `OrderFlow::start()` lambda |
+| 47.42% | 40.97% | `RiskFlow::start()` |
+| 46.69% | 41.32% | `OrderFlow::start()` |
 | 9.00% | 8.99% | `RiskEngine::check_risk()` |
 | 8.51% | 8.48% | `ClickhouseWriter::store()` |
 
@@ -305,7 +305,7 @@ Transmit path only — no receive thread running. Used to isolate the Tx contrib
 | 17.22% | 10.41% | `main` (self) |
 | 16.45% | 0.00% | `std::thread` → `NetworkFlow::start()` |
 | 16.40% | 0.53% | `NetworkIO::recv_send()` |
-| 16.35% | 15.39% | `OrderFlow::start()` lambda |
+| 16.35% | 15.39% | `OrderFlow::start()` |
 
 `NetworkIO::recv_send()` self time rises to 0.53% vs 0.40% in RxTx. In Tx-only the dispatcher is spending proportionally more time on the send path — with no Rx work interleaved, send loop iterations dominate its budget.
 
@@ -315,8 +315,8 @@ Transmit path only — no receive thread running. Used to isolate the Tx contrib
 
 | Overhead | Self | Symbol |
 |---|---|---|
-| 47.09% | 38.95% | `RiskFlow::start()` lambda |
-| 46.56% | 43.78% | `OrderFlow::start()` lambda |
+| 47.09% | 38.95% | `RiskFlow::start()` |
+| 46.56% | 43.78% | `OrderFlow::start()` |
 | 10.90% | 10.88% | `RiskEngine::check_risk()` |
 | 6.10% | 6.08% | `ClickhouseWriter::store()` |
 
