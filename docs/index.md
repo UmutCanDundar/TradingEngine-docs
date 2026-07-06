@@ -159,10 +159,6 @@ TradingEngine/
 
 ## Build & Source Code
 
-This project is closed-source. The source code is available for review upon request during the interview process — please reach out directly.
-
-If you have been granted access, the following will get you up and running:
-
 ### Prerequisites
 
 - **Compiler:** g++ 13+ (C++23)
