@@ -2851,7 +2851,7 @@
 <td>3</td>
 <td><code>transact_time</code> + <code>epoch_to_transact_time</code> 7.63% CPU self — <code>localtime_r</code> syscall on every message</td>
 <td>Per-message syscall overhead on hot path</td>
-<td>⚠️ Cache <code>tm</code> struct, refresh only on second boundary <br><strong>(handled - see</strong> <a href="/TradingEngine-Portfolio/optimization/#opt-2-builder_fixtransact_time-localtime_r-per-call-precomputed-second-table-2026-06-03">Opt-2 in Recent Optimizations Page</a><strong>)</strong></td>
+<td>⚠️ Cache <code>tm</code> struct, refresh only on second boundary <br><strong>(handled - see</strong> <a href="/TradingEngine-docs/optimization/#opt-2-builder_fixtransact_time-localtime_r-per-call-precomputed-second-table-2026-06-03">Opt-2 in Recent Optimizations Page</a><strong>)</strong></td>
 </tr>
 <tr>
 <td>4</td>
