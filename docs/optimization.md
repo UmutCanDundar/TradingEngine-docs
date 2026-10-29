@@ -93,7 +93,7 @@ Three folly symbols previously consumed **29.26% icache self** combined. All are
 
 back to [OrderManager perf findings](Perf/order_manager_perf.md#findings)
 
-## Opt-2 — Builder_FIX::transact_time: <br>`localtime_r` per call → precomputed second table <br><small>(2026-06-03)</small> 
+## Opt-2 — Builder_FIX::transact_time: <br>`localtime_r` per call → precomputed second table <br><small>(2026-06-03)</small> { #opt-2 }
 
 Each FIX order previously called `localtime_r` to format the `TransactTime` field, making timestamp formatting a syscall-level cost on every message. A static `char g_second_table[86400][17]` is now built once at startup — covering all 86400 seconds of the day — so the hot path is a single `memcpy(17 bytes)` + millisecond suffix append.
 
