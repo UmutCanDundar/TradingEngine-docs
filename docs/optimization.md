@@ -159,7 +159,7 @@ back to [Builder_Dispatch perf findings](Perf/builder_perf.md#fix-findings)
 
 ---
 
-## Opt-3 — SPSC Queue: <br>`boost::lockfree::spsc_queue` → Custom `spsc queue` <small>(2026-10-29)</small>
+## Opt-3 — SPSC Queue: <br>`boost::lockfree::spsc_queue` → Custom `spsc queue` <small>(2026-10-29)</small> { #opt-3 }
 
 > **Note:** Both tests (Boost SPSC and Custom SPSC) were executed on the same day under comparable runtime conditions. Due to natural runtime jitter, system load variations, and minor environment fluctuations, baseline values may differ slightly from older snapshots stored in the main Test section.
 
