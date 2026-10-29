@@ -788,7 +788,7 @@
 </li>
         
           <li class="md-nav__item">
-  <a href="#findings-action-items" class="md-nav__link">
+  <a href="#rxtx-perf-findings" class="md-nav__link">
     <span class="md-ellipsis">
       
         Findings &amp; Action Items
@@ -899,7 +899,7 @@
 </li>
         
           <li class="md-nav__item">
-  <a href="#findings-action-items_1" class="md-nav__link">
+  <a href="#findings-action-items" class="md-nav__link">
     <span class="md-ellipsis">
       
         Findings &amp; Action Items
@@ -1010,7 +1010,7 @@
 </li>
         
           <li class="md-nav__item">
-  <a href="#findings-action-items_2" class="md-nav__link">
+  <a href="#findings-action-items_1" class="md-nav__link">
     <span class="md-ellipsis">
       
         Findings &amp; Action Items
@@ -1984,7 +1984,7 @@
 </li>
         
           <li class="md-nav__item">
-  <a href="#findings-action-items" class="md-nav__link">
+  <a href="#rxtx-perf-findings" class="md-nav__link">
     <span class="md-ellipsis">
       
         Findings &amp; Action Items
@@ -2095,7 +2095,7 @@
 </li>
         
           <li class="md-nav__item">
-  <a href="#findings-action-items_1" class="md-nav__link">
+  <a href="#findings-action-items" class="md-nav__link">
     <span class="md-ellipsis">
       
         Findings &amp; Action Items
@@ -2206,7 +2206,7 @@
 </li>
         
           <li class="md-nav__item">
-  <a href="#findings-action-items_2" class="md-nav__link">
+  <a href="#findings-action-items_1" class="md-nav__link">
     <span class="md-ellipsis">
       
         Findings &amp; Action Items
@@ -2627,7 +2627,7 @@
 <h3 id="flamegraph">Flamegraph</h3>
 <p><a href="../../assets/flamegraph_engine_RxTx.svg" target="_blank">RxTx Flamegraph</a></p>
 <hr />
-<h3 id="findings-action-items">Findings &amp; Action Items</h3>
+<h3 id="rxtx-perf-findings">Findings &amp; Action Items</h3>
 <table>
 <thead>
 <tr>
@@ -2672,7 +2672,7 @@
 <td>7</td>
 <td>The dominant of false sharing source is <code>boost::lockfree</code> queue state</td>
 <td>14,392 Local HITM events</td>
-<td>⚠️ Replaced with a custom SPSC queue <br><strong>(handled - see</strong> <a href="/TradingEngine-Portfolio/optimization/#opt-3-spsc-queue:-boost::lockfree::spsc_queue-custom-spsc-queue-2026-10-29">Opt-3 in Recent Optimizations Page</a><strong>)</strong></td>
+<td>⚠️ Replaced with a custom SPSC queue <br><strong>(handled - see</strong> <a href="/TradingEngine-Portfolio/optimization/#Opt-3-spsc-queue:boost::lockfree::spsc_queue-custom-spsc-queue-2026-10-29">Opt-3 in Recent Optimizations Page</a><strong>)</strong></td>
 </tr>
 </tbody>
 </table>
@@ -2932,7 +2932,7 @@ regardless.</p>
 <h3 id="flamegraph_1">Flamegraph</h3>
 <p><a href="../../assets/flamegraph_engine_Rx.svg" target="_blank">Rx Flamegraph</a></p>
 <hr />
-<h3 id="findings-action-items_1">Findings &amp; Action Items</h3>
+<h3 id="findings-action-items">Findings &amp; Action Items</h3>
 <p>Rx-only surfaces no independent optimization candidates. All findings from RxTx hold and the Rx path contributes cleanly:</p>
 <ul>
 <li>LLC miss rate in isolation (0.11%) confirms the Rx working set is well-contained — the 0.22% in RxTx is Tx-driven.</li>
@@ -3190,7 +3190,7 @@ creates contention on lines that neither path stresses alone.</p>
 <h3 id="flamegraph_2">Flamegraph</h3>
 <p><a href="../../assets/flamegraph_engine_Tx.svg" target="_blank">Tx Flamegraph</a></p>
 <hr />
-<h3 id="findings-action-items_2">Findings &amp; Action Items</h3>
+<h3 id="findings-action-items_1">Findings &amp; Action Items</h3>
 <p>Tx-only confirms and sharpens the RxTx findings. No new optimization candidates emerge, but causality is clearer:</p>
 <ul>
 <li>Sys time equivalence (Rx=6.16s ≈ Tx=6.72s ≈ RxTx=6.68s) proves the syscall budget is not directly related to Rx or Tx paths themselves.</li>
