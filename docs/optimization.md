@@ -91,7 +91,7 @@ Three folly symbols previously consumed **29.26% icache self** combined. All are
 | dTLB misses | **−67%** |
 | False sharing / HITM | **−100%** |
 
-back to [OrderManager perf findings](Perf/order_manager_perf.md#findings)
+back to [OrderManager perf findings](Perf/order_manager_perf.md/#findings)
 
 ## Opt-2 — Builder_FIX::transact_time: <br>`localtime_r` per call → precomputed second table <br><small>(2026-06-03)</small> { #opt-2 }
 
@@ -155,7 +155,7 @@ dTLB increase is from the 1.4 MB `g_second_table` region touching new pages on f
 | Wall time | **−43%** |
 | `localtime_r` syscall per message | **eliminated** |
 
-back to [Builder_Dispatch perf findings](Perf/builder_perf.md#fix-findings)
+back to [Builder_Dispatch perf findings](Perf/builder_perf.md/#builder-dispatch-findings)
 
 ---
 
@@ -269,4 +269,4 @@ While Boost provides a general-purpose concurrent queue, tailoring our custom im
 | L1-D Cache Load Misses | **~15.0% reduction** |
 | False sharing / Local HITM | **~46.8% dramatic reduction** |
 
-back to [Pipeline perf findings](Pipeline/perf_pipeline.md#rxtx-perf-findings)
+back to [Pipeline perf findings](Pipeline/perf_pipeline.md/#rxtx-perf-findings)
