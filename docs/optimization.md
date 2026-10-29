@@ -178,35 +178,35 @@ The benchmarks below compare the pipeline latencies between the old **Boost SPSC
 | Benchmark / Metric | Before (Boost SPSC) | After (Custom SPSC) | Δ |
 |---|---|---|---|
 | **BM_Network_to_Risk_FIX** | | | |
-| • Median time | 3555 ns | 3174 ns | **~10.7% Faster** |
-| • p50 cycles | 9,517 | 8,453 | **~11.2% Fewer cycles** |
-| • p95 cycles | 10,002 | 8,906 | **~11.0% Fewer cycles** |
-| • p99 cycles | 11,467 | 10,087 | **~12.0% Fewer cycles** |
-| • p999 cycles | 18,832 | 15,269 | **~18.9% Fewer cycles** |
+|  Median time | 3555 ns | 3174 ns | **~10.7% Faster** |
+|  p50 cycles | 9,517 | 8,453 | **~11.2% Fewer cycles** |
+|  p95 cycles | 10,002 | 8,906 | **~11.0% Fewer cycles** |
+|  p99 cycles | 11,467 | 10,087 | **~12.0% Fewer cycles** |
+|  p999 cycles | 18,832 | 15,269 | **~18.9% Fewer cycles** |
 | **BM_Network_to_Risk_OUCH_BIST** | | | |
-| • Median time | 3400 ns | 3107 ns | **~8.6% Faster** |
-| • p50 cycles | 9,058 | 8,283 | **~8.6% Fewer cycles** |
-| • p95 cycles | 9,504 | 8,720 | **~8.3% Fewer cycles** |
-| • p99 cycles | 10,332 | 9,947 | **~3.7% Fewer cycles** |
-| • p999 cycles | 16,601 | 15,232 | **~8.2% Fewer cycles** |
+|  Median time | 3400 ns | 3107 ns | **~8.6% Faster** |
+|  p50 cycles | 9,058 | 8,283 | **~8.6% Fewer cycles** |
+|  p95 cycles | 9,504 | 8,720 | **~8.3% Fewer cycles** |
+|  p99 cycles | 10,332 | 9,947 | **~3.7% Fewer cycles** |
+|  p999 cycles | 16,601 | 15,232 | **~8.2% Fewer cycles** |
 | **BM_Network_to_Risk_OUCH_NQ** | | | |
-| • Median time | 3390 ns | 3110 ns | **~8.3% Faster** |
-| • p50 cycles | 9,053 | 8,307 | **~8.2% Fewer cycles** |
-| • p95 cycles | 9,466 | 8,721 | **~7.9% Fewer cycles** |
-| • p99 cycles | 10,439 | 9,092 | **~12.9% Fewer cycles** |
-| • p999 cycles | 16,257 | 13,911 | **~14.4% Fewer cycles** |
+|  Median time | 3390 ns | 3110 ns | **~8.3% Faster** |
+|  p50 cycles | 9,053 | 8,307 | **~8.2% Fewer cycles** |
+|  p95 cycles | 9,466 | 8,721 | **~7.9% Fewer cycles** |
+|  p99 cycles | 10,439 | 9,092 | **~12.9% Fewer cycles** |
+|  p999 cycles | 16,257 | 13,911 | **~14.4% Fewer cycles** |
 | **BM_Network_to_Risk_ITCH_BIST** | | | |
-| • Median time | 2011 ns | 1747 ns | **~13.1% Faster** |
-| • p50 cycles | 5,670 | 4,946 | **~12.8% Fewer cycles** |
-| • p95 cycles | 6,008 | 5,332 | **~11.2% Fewer cycles** |
-| • p99 cycles | 6,310 | 5,514 | **~12.6% Fewer cycles** |
-| • p999 cycles | 11,920 | 8,747 | **~26.6% Fewer cycles** |
+|  Median time | 2011 ns | 1747 ns | **~13.1% Faster** |
+|  p50 cycles | 5,670 | 4,946 | **~12.8% Fewer cycles** |
+|  p95 cycles | 6,008 | 5,332 | **~11.2% Fewer cycles** |
+|  p99 cycles | 6,310 | 5,514 | **~12.6% Fewer cycles** |
+|  p999 cycles | 11,920 | 8,747 | **~26.6% Fewer cycles** |
 | **BM_Network_to_Risk_ITCH_NQ** | | | |
-| • Median time | 1989 ns | 1729 ns | **~13.1% Faster** |
-| • p50 cycles | 5,634 | 4,874 | **~13.5% Fewer cycles** |
-| • p95 cycles | 5,980 | 5,198 | **~13.1% Fewer cycles** |
-| • p99 cycles | 6,286 | 5,416 | **~13.8% Fewer cycles** |
-| • p999 cycles | 11,610 | 9,023 | **~22.3% Fewer cycles** |
+|  Median time | 1989 ns | 1729 ns | **~13.1% Faster** |
+|  p50 cycles | 5,634 | 4,874 | **~13.5% Fewer cycles** |
+|  p95 cycles | 5,980 | 5,198 | **~13.1% Fewer cycles** |
+|  p99 cycles | 6,286 | 5,416 | **~13.8% Fewer cycles** |
+|  p999 cycles | 11,610 | 9,023 | **~22.3% Fewer cycles** |
 
 ---
 
@@ -215,23 +215,23 @@ The benchmarks below compare the pipeline latencies between the old **Boost SPSC
 | Benchmark / Metric | Before (Boost SPSC) | After (Custom SPSC) | Δ |
 |---|---|---|---|
 | **BM_Risk_to_Network_FIX** | | | |
-| • Median time | 3075 ns | 2786 ns | **~9.4% Faster** |
-| • p50 cycles | 8,782 | 7,970 | **~9.3% Fewer cycles** |
-| • p95 cycles | 9,183 | 8,333 | **~9.3% Fewer cycles** |
-| • p99 cycles | 11,987 | 10,582 | **~11.7% Fewer cycles** |
-| • p999 cycles | 15,855 | 13,755 | **~13.2% Fewer cycles** |
+|  Median time | 3075 ns | 2786 ns | **~9.4% Faster** |
+|  p50 cycles | 8,782 | 7,970 | **~9.3% Fewer cycles** |
+|  p95 cycles | 9,183 | 8,333 | **~9.3% Fewer cycles** |
+|  p99 cycles | 11,987 | 10,582 | **~11.7% Fewer cycles** |
+|  p999 cycles | 15,855 | 13,755 | **~13.2% Fewer cycles** |
 | **BM_Risk_to_Network_OUCH_BIST** | | | |
-| • Median time | 2942 ns | 2608 ns | **~11.4% Faster** |
-| • p50 cycles | 8,433 | 7,422 | **~12.0% Fewer cycles** |
-| • p95 cycles | 8,714 | 7,718 | **~11.4% Fewer cycles** |
-| • p99 cycles | 10,049 | 9,955 | **~0.9% Fewer cycles** |
-| • p999 cycles | 15,100 | 12,851 | **~14.9% Fewer cycles** |
+|  Median time | 2942 ns | 2608 ns | **~11.4% Faster** |
+|  p50 cycles | 8,433 | 7,422 | **~12.0% Fewer cycles** |
+|  p95 cycles | 8,714 | 7,718 | **~11.4% Fewer cycles** |
+|  p99 cycles | 10,049 | 9,955 | **~0.9% Fewer cycles** |
+|  p999 cycles | 15,100 | 12,851 | **~14.9% Fewer cycles** |
 | **BM_Risk_to_Network_OUCH_NQ** | | | |
-| • Median time | 2983 ns | 2678 ns | **~10.2% Faster** |
-| • p50 cycles | 8,463 | 7,661 | **~9.5% Fewer cycles** |
-| • p95 cycles | 8,801 | 8,000 | **~9.1% Fewer cycles** |
-| • p99 cycles | 11,064 | 8,314 | **~24.9% Fewer cycles** |
-| • p999 cycles | 15,360 | 13,797 | **~10.2% Fewer cycles** |
+|  Median time | 2983 ns | 2678 ns | **~10.2% Faster** |
+|  p50 cycles | 8,463 | 7,661 | **~9.5% Fewer cycles** |
+|  p95 cycles | 8,801 | 8,000 | **~9.1% Fewer cycles** |
+|  p99 cycles | 11,064 | 8,314 | **~24.9% Fewer cycles** |
+|  p999 cycles | 15,360 | 13,797 | **~10.2% Fewer cycles** |
 
 ---
 
@@ -268,3 +268,5 @@ While Boost provides a general-purpose concurrent queue, tailoring our custom im
 | CPU Core Cycles | **~5.2% fewer cycles** consumed |
 | L1-D Cache Load Misses | **~15.0% reduction** |
 | False sharing / Local HITM | **~46.8% dramatic reduction** |
+
+back to [Pipeline perf findings](Pipeline/perf_pipeline.md#findings)
