@@ -189,7 +189,7 @@ No application struct false sharing is detected. The single locked access is a f
 | # | Finding | Impact | Status |
 |---|---|---|---|
 | 1 | IPC 0.35 — spin-wait consumer threads dominate; store-path IPC not directly measurable from this profile | Test harness artifact | ✅ No action needed |
-| 2 | `folly::ConcurrentHashMap::eraseImpl` 11.02% icache self + 4.21% dcache self — hazard pointer machinery on every OUCH/FIX ack erase | Primary icache overhead on OUCH/FIX paths | ⚠️ Replace folly::concurrenthashmap with custom map <br>**(handled - see** [Opt-1 in Recent Optimizations Page](../optimization.md#opt-1--ordermanager-follyconcurrenthashmap--concurrentfixedflatmap-2026-06-03)**)** |
+| 2 | `folly::ConcurrentHashMap::eraseImpl` 11.02% icache self + 4.21% dcache self — hazard pointer machinery on every OUCH/FIX ack erase | Primary icache overhead on OUCH/FIX paths | ⚠️ Replace folly::concurrenthashmap with custom map <br>**(handled - see** [Opt-1 in Recent Optimizations Page](../optimization.md/#opt-1)**)** |
 | 3 | HashTables::wyhash_small 13.13% icache self — hash function called on FIX execution report ID hashing | Optimization candidate — hash function is swappable | ⚠️ Identified, monitored |
 | 4 | `absl::flat_hash_map::find` 7.34% icache self — order lookup on every message | Expected; flat_hash_map is the correct choice here | ✅ No action needed |
 | 5 | `pthread_mutex_lock` 5.11% icache self — folly internal mutex on store path | Directly caused by finding 2; resolved by replacing `awaitingAck_orders_` | ⚠️ Resolved by finding 2 |

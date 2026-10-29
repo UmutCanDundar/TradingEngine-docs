@@ -142,7 +142,7 @@ L1-D miss rate at 0.03% confirms the Builder Dispatch working set (Order structs
 |---|---|---|---|
 | 1 | IPC 3.45 — compute-lean dispatch, healthy instruction throughput for field formatting workload | Expected characteristic | ✅ No action needed |
 | 2 | `finalizeChecksum` 9.45% CPU self — full buffer iteration on every message, largest single application self-time entry | Unnecessary CPU cost on every FIX message | ⚠️ Accumulate running checksum during field writes, remove final pass |
-| 3 | `transact_time` + `epoch_to_transact_time` 7.63% CPU self — `localtime_r` syscall on every message | Per-message syscall overhead on hot path | ⚠️ Cache `tm` struct, refresh only on second boundary <br>**(handled - see** [Opt-2 in Recent Optimizations Page](../optimization.md#opt-2)**)** |
+| 3 | `transact_time` + `epoch_to_transact_time` 7.63% CPU self — `localtime_r` syscall on every message | Per-message syscall overhead on hot path | ⚠️ Cache `tm` struct, refresh only on second boundary <br>**(handled - see** [Opt-2 in Recent Optimizations Page](../optimization.md/#opt-2)**)** |
 | 4 | Zero HITM / zero shared cache lines — single-threaded run, no contention possible | Expected | ✅ No action needed |
 
 ---

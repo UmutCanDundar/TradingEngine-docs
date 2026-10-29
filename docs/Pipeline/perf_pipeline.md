@@ -141,7 +141,7 @@ P-core hosts all flow threads — `OrderFlow`, `RiskFlow`, `BuilderFlow`, `Parse
 | 3 | L1-I miss 2.05B + sys time ~12% — sendto syscall overhead on Tx path | Icache/iTLB pressure + kernel time | ⚠️ Kernel bypass (DPDK/io_uring) candidate — pre-prod hardware redesign |
 | 5 | Branch miss rate 0.15–0.18% | Negligible | ✅ No action needed |
 | 6 | LLC miss rate 0.05–0.22% — working set fits in LLC | Healthy | ✅ No action needed |
-| 7 | The dominant of false sharing source is `boost::lockfree` queue state | 14,392 Local HITM events  | ⚠️ Replaced with a custom SPSC queue <br>**(handled - see** [Opt-3 in Recent Optimizations Page](../optimization.md#opt-3-spsc-queue:-boost::lockfree::spsc_queue-custom-spsc-queue-2026-10-29)**)**  |
+| 7 | The dominant of false sharing source is `boost::lockfree` queue state | 14,392 Local HITM events  | ⚠️ Replaced with a custom SPSC queue <br>**(handled - see** [Opt-3 in Recent Optimizations Page](../optimization.md/#opt-3)**)**  |
 
 ---
 
