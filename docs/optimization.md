@@ -156,3 +156,72 @@ dTLB increase is from the 1.4 MB `g_second_table` region touching new pages on f
 | `localtime_r` syscall per message | **eliminated** |
 
 back to [Builder_Dispatch perf findings](Perf/builder_perf.md#fix-findings)
+
+
+---
+
+## Opt-3 — SPSC Queue: <br>`boost::lockfree::spsc_queue` → Custom `spsc queue` <small>(2026-10-29)</small>
+
+> **Note:** Both tests (Boost SPSC and Custom SPSC) were executed on the same day under comparable runtime conditions. Due to natural runtime jitter, system load variations, and minor environment fluctuations, baseline values may differ slightly from older snapshots stored in the main Test section.
+
+The general-purpose **Boost SPSC Queue** (`boost::lockfree::spsc_queue`) was replaced with a custom, lightweight, cache-line aligned Single-Producer Single-Consumer (SPSC) ring-buffer queue specifically tailored for the trading engine's pipeline (`Rx` and `Tx` flows).
+
+---
+
+## Benchmark Comparison (`Rx` & `Tx` Pipelines)
+
+The benchmarks below compare the pipeline latencies between the old **Boost SPSC Queue** and the new **Custom SPSC Queue** across FIX, OUCH (BIST & NQ), and ITCH protocols. All values are measured in nanoseconds (time/median) and CPU cycles (`p50`, `p95`, `p99`, `p999`).
+
+### 1. Tx Pipeline (`Risk -> Network`)
+
+| Benchmark / Metric | Before (Boost SPSC) | After (Custom SPSC) | Δ |
+|---|---|---|---|
+| **BM_Risk_to_Network_FIX** <br>• Median time <br>• p50 cycles <br>• p95 cycles <br>• p99 cycles <br>• p999 cycles | <br>3075 ns<br>8,782<br>9,183<br>11,987<br>15,855 | <br>2786 ns<br>7,970<br>8,333<br>10,582<br>13,755 | <br>**~9.4% Faster**<br>**~9.3% Fewer cycles**<br>**~9.3% Fewer cycles**<br>**~11.7% Fewer cycles**<br>**~13.2% Fewer cycles** |
+| **BM_Risk_to_Network_OUCH_BIST** <br>• Median time <br>• p50 cycles <br>• p95 cycles <br>• p99 cycles <br>• p999 cycles | <br>2942 ns<br>8,433<br>8,714<br>10,049<br>15,100 | <br>2608 ns<br>7,422<br>7,718<br>9,955<br>12,851 | <br>**~11.4% Faster**<br>**~12.0% Fewer cycles**<br>**~11.4% Fewer cycles**<br>**~0.9% Fewer cycles**<br>**~14.9% Fewer cycles** |
+| **BM_Risk_to_Network_OUCH_NQ** <br>• Median time <br>• p50 cycles <br>• p95 cycles <br>• p99 cycles <br>• p999 cycles | <br>2983 ns<br>8,463<br>8,801<br>11,064<br>15,360 | <br>2678 ns<br>7,661<br>8,000<br>8,314<br>13,797 | <br>**~10.2% Faster**<br>**~9.5% Fewer cycles**<br>**~9.1% Fewer cycles**<br>**~24.9% Fewer cycles**<br>**~10.2% Fewer cycles** |
+
+### 2. Rx Pipeline (`Network -> Risk`)
+
+| Benchmark / Metric | Before (Boost SPSC) | After (Custom SPSC) | Δ |
+|---|---|---|---|
+| **BM_Network_to_Risk_FIX** <br>• Median time <br>• p50 cycles <br>• p95 cycles <br>• p99 cycles <br>• p999 cycles | <br>3555 ns<br>9,517<br>10,002<br>11,467<br>18,832 | <br>3174 ns<br>8,453<br>8,906<br>10,087<br>15,269 | <br>**~10.7% Faster**<br>**~11.2% Fewer cycles**<br>**~11.0% Fewer cycles**<br>**~12.0% Fewer cycles**<br>**~18.9% Fewer cycles** |
+| **BM_Network_to_Risk_OUCH_BIST** <br>• Median time <br>• p50 cycles <br>• p95 cycles <br>• p99 cycles <br>• p999 cycles | <br>3400 ns<br>9,058<br>9,504<br>10,332<br>16,601 | <br>3107 ns<br>8,283<br>8,720<br>9,947<br>15,232 | <br>**~8.6% Faster**<br>**~8.6% Fewer cycles**<br>**~8.3% Fewer cycles**<br>**~3.7% Fewer cycles**<br>**~8.2% Fewer cycles** |
+| **BM_Network_to_Risk_OUCH_NQ** <br>• Median time <br>• p50 cycles <br>• p95 cycles <br>• p99 cycles <br>• p999 cycles | <br>3390 ns<br>9,053<br>9,466<br>10,439<br>16,257 | <br>3110 ns<br>8,307<br>8,721<br>9,092<br>13,911 | <br>**~8.3% Faster**<br>**~8.2% Fewer cycles**<br>**~7.9% Fewer cycles**<br>**~12.9% Fewer cycles**<br>**~14.4% Fewer cycles** |
+| **BM_Network_to_Risk_ITCH_BIST** <br>• Median time <br>• p50 cycles <br>• p95 cycles <br>• p99 cycles <br>• p999 cycles | <br>2011 ns<br>5,670<br>6,008<br>6,310<br>11,920 | <br>1747 ns<br>4,946<br>5,332<br>5,514<br>8,747 | <br>**~13.1% Faster**<br>**~12.8% Fewer cycles**<br>**~11.2% Fewer cycles**<br>**~12.6% Fewer cycles**<br>**~26.6% Fewer cycles** |
+| **BM_Network_to_Risk_ITCH_NQ** <br>• Median time <br>• p50 cycles <br>• p95 cycles <br>• p99 cycles <br>• p999 cycles | <br>1989 ns<br>5,634<br>5,980<br>6,286<br>11,610 | <br>1729 ns<br>4,874<br>5,198<br>5,416<br>9,023 | <br>**~13.1% Faster**<br>**~13.5% Fewer cycles**<br>**~13.1% Fewer cycles**<br>**~13.8% Fewer cycles**<br>**~22.3% Fewer cycles** |
+
+---
+
+## Performance Comparison (`RxTx` Integration Stats)
+
+| Metric | Before (Boost SPSC) | After (Custom SPSC) | Δ |
+|---|---|---|---|
+| CPU Core Cycles | 129.48B | 122.68B | **~5.2% Fewer cycles** |
+| L1-D load misses | 164.75M | 139.98M | **~15.0% Reduction** |
+| LLC Loads | 134.03M | 110.66M | **~17.4% Reduction** |
+| Local HITM (C2C) | 18,714 | 9,949 | **~46.8% Dramatic Reduction** |
+
+---
+
+## Why It Won
+
+1. **Cache-Line Alignment (alignas(64)) & Index Striding:**
+Our custom queue explicitly enforces alignas(64) padding to isolate producer and consumer control variables onto separate cache lines. Furthermore, the internal slot layout and index remapping mechanism are designed such that advancing to the next slot (++index) strides directly to the next cache line (e.g., slot 0 resides on Cacheline 1, and incrementing remaps to Cacheline 2). This memory access layout is a key driver in reducing cache thrashing and inter-core invalidation costs (Local HITM dropped by 46.8%).
+
+2. **Explicit Memory Ordering (acquire / release):**
+We explicitly implemented fine-grained lock-free operations using std::memory_order_acquire and std::memory_order_release semantics. This avoids default sequential consistency barriers (seq_cst) and prevents unnecessary CPU pipeline stalls during inter-thread synchronization.
+
+3. **Domain-Specific Custom Implementation vs. General-Purpose Overhead:**
+While Boost provides a general-purpose concurrent queue, tailoring our custom implementation strictly for the trading engine's fixed single-producer single-consumer requirements eliminated unnecessary abstraction layers and template bloat. The streamlined index arithmetic leads to better L1 instruction/data cache utilization and lower tail latencies (p999 cycles improved up to 26.6%).
+
+---
+
+## Summary
+
+| Category | Gain |
+|---|---|
+| Pipeline Latency (Median) | **~8% to ~13% faster** across all protocol legs |
+| Tail Latency (`p999`) | Up to **~26.6% reduction** in extreme cases |
+| CPU Core Cycles | **~5.2% fewer cycles** consumed |
+| L1-D Cache Load Misses | **~15.0% reduction** |
+| False sharing / Local HITM | **~46.8% dramatic reduction** |
