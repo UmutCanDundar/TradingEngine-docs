@@ -1575,6 +1575,89 @@
   
 </li>
       
+        <li class="md-nav__item">
+  <a href="#opt-3-spsc-queue-boostlockfreespsc_queue-custom-spsc-queue-2026-10-29" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Opt-3 — SPSC Queue: boost::lockfree::spsc_queue → Custom spsc queue (2026-10-29)
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#benchmark-comparison-rx-tx-pipelines" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Benchmark Comparison (Rx &amp; Tx Pipelines)
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Benchmark Comparison (Rx &amp; Tx Pipelines)">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#1-tx-pipeline-risk-network" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        1. Tx Pipeline (Risk -&gt; Network)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#2-rx-pipeline-network-risk" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        2. Rx Pipeline (Network -&gt; Risk)
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#performance-comparison-rxtx-integration-stats" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Performance Comparison (RxTx Integration Stats)
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#why-it-won" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Why It Won
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#summary_2" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Summary
+      
+    </span>
+  </a>
+  
+</li>
+      
     </ul>
   
 </nav>
@@ -1749,6 +1832,89 @@
       
         <li class="md-nav__item">
   <a href="#summary_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Summary
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#opt-3-spsc-queue-boostlockfreespsc_queue-custom-spsc-queue-2026-10-29" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Opt-3 — SPSC Queue: boost::lockfree::spsc_queue → Custom spsc queue (2026-10-29)
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#benchmark-comparison-rx-tx-pipelines" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Benchmark Comparison (Rx &amp; Tx Pipelines)
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Benchmark Comparison (Rx &amp; Tx Pipelines)">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#1-tx-pipeline-risk-network" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        1. Tx Pipeline (Risk -&gt; Network)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#2-rx-pipeline-network-risk" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        2. Rx Pipeline (Network -&gt; Risk)
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#performance-comparison-rxtx-integration-stats" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Performance Comparison (RxTx Integration Stats)
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#why-it-won" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Why It Won
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#summary_2" class="md-nav__link">
     <span class="md-ellipsis">
       
         Summary
@@ -2212,6 +2378,175 @@
 </tbody>
 </table>
 <p>back to <a href="../Perf/builder_perf/#fix-findings">Builder_Dispatch perf findings</a></p>
+<hr />
+<h2 id="opt-3-spsc-queue-boostlockfreespsc_queue-custom-spsc-queue-2026-10-29">Opt-3 — SPSC Queue: <br><code>boost::lockfree::spsc_queue</code> → Custom <code>spsc queue</code> <small>(2026-10-29)</small></h2>
+<blockquote>
+<p><strong>Note:</strong> Both tests (Boost SPSC and Custom SPSC) were executed on the same day under comparable runtime conditions. Due to natural runtime jitter, system load variations, and minor environment fluctuations, baseline values may differ slightly from older snapshots stored in the main Test section.</p>
+</blockquote>
+<p>The general-purpose <strong>Boost SPSC Queue</strong> (<code>boost::lockfree::spsc_queue</code>) was replaced with a custom, lightweight, cache-line aligned Single-Producer Single-Consumer (SPSC) ring-buffer queue specifically tailored for the trading engine's pipeline (<code>Rx</code> and <code>Tx</code> flows).</p>
+<hr />
+<h2 id="benchmark-comparison-rx-tx-pipelines">Benchmark Comparison (<code>Rx</code> &amp; <code>Tx</code> Pipelines)</h2>
+<p>The benchmarks below compare the pipeline latencies between the old <strong>Boost SPSC Queue</strong> and the new <strong>Custom SPSC Queue</strong> across FIX, OUCH (BIST &amp; NQ), and ITCH protocols. All values are measured in nanoseconds (time/median) and CPU cycles (<code>p50</code>, <code>p95</code>, <code>p99</code>, <code>p999</code>).</p>
+<h3 id="1-tx-pipeline-risk-network">1. Tx Pipeline (<code>Risk -&gt; Network</code>)</h3>
+<table>
+<thead>
+<tr>
+<th>Benchmark / Metric</th>
+<th>Before (Boost SPSC)</th>
+<th>After (Custom SPSC)</th>
+<th>Δ</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>BM_Risk_to_Network_FIX</strong> <br>• Median time <br>• p50 cycles <br>• p95 cycles <br>• p99 cycles <br>• p999 cycles</td>
+<td><br>3075 ns<br>8,782<br>9,183<br>11,987<br>15,855</td>
+<td><br>2786 ns<br>7,970<br>8,333<br>10,582<br>13,755</td>
+<td><br><strong>~9.4% Faster</strong><br><strong>~9.3% Fewer cycles</strong><br><strong>~9.3% Fewer cycles</strong><br><strong>~11.7% Fewer cycles</strong><br><strong>~13.2% Fewer cycles</strong></td>
+</tr>
+<tr>
+<td><strong>BM_Risk_to_Network_OUCH_BIST</strong> <br>• Median time <br>• p50 cycles <br>• p95 cycles <br>• p99 cycles <br>• p999 cycles</td>
+<td><br>2942 ns<br>8,433<br>8,714<br>10,049<br>15,100</td>
+<td><br>2608 ns<br>7,422<br>7,718<br>9,955<br>12,851</td>
+<td><br><strong>~11.4% Faster</strong><br><strong>~12.0% Fewer cycles</strong><br><strong>~11.4% Fewer cycles</strong><br><strong>~0.9% Fewer cycles</strong><br><strong>~14.9% Fewer cycles</strong></td>
+</tr>
+<tr>
+<td><strong>BM_Risk_to_Network_OUCH_NQ</strong> <br>• Median time <br>• p50 cycles <br>• p95 cycles <br>• p99 cycles <br>• p999 cycles</td>
+<td><br>2983 ns<br>8,463<br>8,801<br>11,064<br>15,360</td>
+<td><br>2678 ns<br>7,661<br>8,000<br>8,314<br>13,797</td>
+<td><br><strong>~10.2% Faster</strong><br><strong>~9.5% Fewer cycles</strong><br><strong>~9.1% Fewer cycles</strong><br><strong>~24.9% Fewer cycles</strong><br><strong>~10.2% Fewer cycles</strong></td>
+</tr>
+</tbody>
+</table>
+<h3 id="2-rx-pipeline-network-risk">2. Rx Pipeline (<code>Network -&gt; Risk</code>)</h3>
+<table>
+<thead>
+<tr>
+<th>Benchmark / Metric</th>
+<th>Before (Boost SPSC)</th>
+<th>After (Custom SPSC)</th>
+<th>Δ</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>BM_Network_to_Risk_FIX</strong> <br>• Median time <br>• p50 cycles <br>• p95 cycles <br>• p99 cycles <br>• p999 cycles</td>
+<td><br>3555 ns<br>9,517<br>10,002<br>11,467<br>18,832</td>
+<td><br>3174 ns<br>8,453<br>8,906<br>10,087<br>15,269</td>
+<td><br><strong>~10.7% Faster</strong><br><strong>~11.2% Fewer cycles</strong><br><strong>~11.0% Fewer cycles</strong><br><strong>~12.0% Fewer cycles</strong><br><strong>~18.9% Fewer cycles</strong></td>
+</tr>
+<tr>
+<td><strong>BM_Network_to_Risk_OUCH_BIST</strong> <br>• Median time <br>• p50 cycles <br>• p95 cycles <br>• p99 cycles <br>• p999 cycles</td>
+<td><br>3400 ns<br>9,058<br>9,504<br>10,332<br>16,601</td>
+<td><br>3107 ns<br>8,283<br>8,720<br>9,947<br>15,232</td>
+<td><br><strong>~8.6% Faster</strong><br><strong>~8.6% Fewer cycles</strong><br><strong>~8.3% Fewer cycles</strong><br><strong>~3.7% Fewer cycles</strong><br><strong>~8.2% Fewer cycles</strong></td>
+</tr>
+<tr>
+<td><strong>BM_Network_to_Risk_OUCH_NQ</strong> <br>• Median time <br>• p50 cycles <br>• p95 cycles <br>• p99 cycles <br>• p999 cycles</td>
+<td><br>3390 ns<br>9,053<br>9,466<br>10,439<br>16,257</td>
+<td><br>3110 ns<br>8,307<br>8,721<br>9,092<br>13,911</td>
+<td><br><strong>~8.3% Faster</strong><br><strong>~8.2% Fewer cycles</strong><br><strong>~7.9% Fewer cycles</strong><br><strong>~12.9% Fewer cycles</strong><br><strong>~14.4% Fewer cycles</strong></td>
+</tr>
+<tr>
+<td><strong>BM_Network_to_Risk_ITCH_BIST</strong> <br>• Median time <br>• p50 cycles <br>• p95 cycles <br>• p99 cycles <br>• p999 cycles</td>
+<td><br>2011 ns<br>5,670<br>6,008<br>6,310<br>11,920</td>
+<td><br>1747 ns<br>4,946<br>5,332<br>5,514<br>8,747</td>
+<td><br><strong>~13.1% Faster</strong><br><strong>~12.8% Fewer cycles</strong><br><strong>~11.2% Fewer cycles</strong><br><strong>~12.6% Fewer cycles</strong><br><strong>~26.6% Fewer cycles</strong></td>
+</tr>
+<tr>
+<td><strong>BM_Network_to_Risk_ITCH_NQ</strong> <br>• Median time <br>• p50 cycles <br>• p95 cycles <br>• p99 cycles <br>• p999 cycles</td>
+<td><br>1989 ns<br>5,634<br>5,980<br>6,286<br>11,610</td>
+<td><br>1729 ns<br>4,874<br>5,198<br>5,416<br>9,023</td>
+<td><br><strong>~13.1% Faster</strong><br><strong>~13.5% Fewer cycles</strong><br><strong>~13.1% Fewer cycles</strong><br><strong>~13.8% Fewer cycles</strong><br><strong>~22.3% Fewer cycles</strong></td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h2 id="performance-comparison-rxtx-integration-stats">Performance Comparison (<code>RxTx</code> Integration Stats)</h2>
+<table>
+<thead>
+<tr>
+<th>Metric</th>
+<th>Before (Boost SPSC)</th>
+<th>After (Custom SPSC)</th>
+<th>Δ</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>CPU Core Cycles</td>
+<td>129.48B</td>
+<td>122.68B</td>
+<td><strong>~5.2% Fewer cycles</strong></td>
+</tr>
+<tr>
+<td>L1-D load misses</td>
+<td>164.75M</td>
+<td>139.98M</td>
+<td><strong>~15.0% Reduction</strong></td>
+</tr>
+<tr>
+<td>LLC Loads</td>
+<td>134.03M</td>
+<td>110.66M</td>
+<td><strong>~17.4% Reduction</strong></td>
+</tr>
+<tr>
+<td>Local HITM (C2C)</td>
+<td>18,714</td>
+<td>9,949</td>
+<td><strong>~46.8% Dramatic Reduction</strong></td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h2 id="why-it-won">Why It Won</h2>
+<ol>
+<li>
+<p><strong>Cache-Line Alignment (alignas(64)) &amp; Index Striding:</strong>
+Our custom queue explicitly enforces alignas(64) padding to isolate producer and consumer control variables onto separate cache lines. Furthermore, the internal slot layout and index remapping mechanism are designed such that advancing to the next slot (++index) strides directly to the next cache line (e.g., slot 0 resides on Cacheline 1, and incrementing remaps to Cacheline 2). This memory access layout is a key driver in reducing cache thrashing and inter-core invalidation costs (Local HITM dropped by 46.8%).</p>
+</li>
+<li>
+<p><strong>Explicit Memory Ordering (acquire / release):</strong>
+We explicitly implemented fine-grained lock-free operations using std::memory_order_acquire and std::memory_order_release semantics. This avoids default sequential consistency barriers (seq_cst) and prevents unnecessary CPU pipeline stalls during inter-thread synchronization.</p>
+</li>
+<li>
+<p><strong>Domain-Specific Custom Implementation vs. General-Purpose Overhead:</strong>
+While Boost provides a general-purpose concurrent queue, tailoring our custom implementation strictly for the trading engine's fixed single-producer single-consumer requirements eliminated unnecessary abstraction layers and template bloat. The streamlined index arithmetic leads to better L1 instruction/data cache utilization and lower tail latencies (p999 cycles improved up to 26.6%).</p>
+</li>
+</ol>
+<hr />
+<h2 id="summary_2">Summary</h2>
+<table>
+<thead>
+<tr>
+<th>Category</th>
+<th>Gain</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Pipeline Latency (Median)</td>
+<td><strong>~8% to ~13% faster</strong> across all protocol legs</td>
+</tr>
+<tr>
+<td>Tail Latency (<code>p999</code>)</td>
+<td>Up to <strong>~26.6% reduction</strong> in extreme cases</td>
+</tr>
+<tr>
+<td>CPU Core Cycles</td>
+<td><strong>~5.2% fewer cycles</strong> consumed</td>
+</tr>
+<tr>
+<td>L1-D Cache Load Misses</td>
+<td><strong>~15.0% reduction</strong></td>
+</tr>
+<tr>
+<td>False sharing / Local HITM</td>
+<td><strong>~46.8% dramatic reduction</strong></td>
+</tr>
+</tbody>
+</table>
 
 
 

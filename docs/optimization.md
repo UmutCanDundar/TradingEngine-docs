@@ -4,7 +4,7 @@ The optimizations on this page were identified through profiling and benchmarkin
 
 ---
 
-## Opt-1 — OrderManager:: <br>`folly::ConcurrentHashMap` → `ConcurrentFixedFlatMap` <small>(2026-06-03)</small> 
+## Opt-1 — OrderManager:: |`folly::ConcurrentHashMap` → `ConcurrentFixedFlatMap` <small>(2026-06-03)</small> 
 
 `folly::ConcurrentHashMap` was replaced with a custom `mmap`-backed, fixed-capacity, open-addressing `ConcurrentFixedFlatMap`. The map is accessed exclusively by the store thread — concurrent access never occurs — making folly's hazard pointer and mutex machinery pure overhead.
 
@@ -93,7 +93,7 @@ Three folly symbols previously consumed **29.26% icache self** combined. All are
 
 back to [OrderManager perf findings](Perf/order_manager_perf.md#findings)
 
-## Opt-2 — Builder_FIX::transact_time: <br>`localtime_r` per call → precomputed second table <br><small>(2026-06-03)</small> 
+## Opt-2 — Builder_FIX::transact_time: |`localtime_r` per call → precomputed second table |<small>(2026-06-03)</small> 
 
 Each FIX order previously called `localtime_r` to format the `TransactTime` field, making timestamp formatting a syscall-level cost on every message. A static `char g_second_table[86400][17]` is now built once at startup — covering all 86400 seconds of the day — so the hot path is a single `memcpy(17 bytes)` + millisecond suffix append.
 
@@ -160,7 +160,7 @@ back to [Builder_Dispatch perf findings](Perf/builder_perf.md#fix-findings)
 
 ---
 
-## Opt-3 — SPSC Queue: <br>`boost::lockfree::spsc_queue` → Custom `spsc queue` <small>(2026-10-29)</small>
+## Opt-3 — SPSC Queue: |`boost::lockfree::spsc_queue` → Custom `spsc queue` <small>(2026-10-29)</small>
 
 > **Note:** Both tests (Boost SPSC and Custom SPSC) were executed on the same day under comparable runtime conditions. Due to natural runtime jitter, system load variations, and minor environment fluctuations, baseline values may differ slightly from older snapshots stored in the main Test section.
 
@@ -176,19 +176,19 @@ The benchmarks below compare the pipeline latencies between the old **Boost SPSC
 
 | Benchmark / Metric | Before (Boost SPSC) | After (Custom SPSC) | Δ |
 |---|---|---|---|
-| **BM_Risk_to_Network_FIX** <br>• Median time <br>• p50 cycles <br>• p95 cycles <br>• p99 cycles <br>• p999 cycles | <br>3075 ns<br>8,782<br>9,183<br>11,987<br>15,855 | <br>2786 ns<br>7,970<br>8,333<br>10,582<br>13,755 | <br>**~9.4% Faster**<br>**~9.3% Fewer cycles**<br>**~9.3% Fewer cycles**<br>**~11.7% Fewer cycles**<br>**~13.2% Fewer cycles** |
-| **BM_Risk_to_Network_OUCH_BIST** <br>• Median time <br>• p50 cycles <br>• p95 cycles <br>• p99 cycles <br>• p999 cycles | <br>2942 ns<br>8,433<br>8,714<br>10,049<br>15,100 | <br>2608 ns<br>7,422<br>7,718<br>9,955<br>12,851 | <br>**~11.4% Faster**<br>**~12.0% Fewer cycles**<br>**~11.4% Fewer cycles**<br>**~0.9% Fewer cycles**<br>**~14.9% Fewer cycles** |
-| **BM_Risk_to_Network_OUCH_NQ** <br>• Median time <br>• p50 cycles <br>• p95 cycles <br>• p99 cycles <br>• p999 cycles | <br>2983 ns<br>8,463<br>8,801<br>11,064<br>15,360 | <br>2678 ns<br>7,661<br>8,000<br>8,314<br>13,797 | <br>**~10.2% Faster**<br>**~9.5% Fewer cycles**<br>**~9.1% Fewer cycles**<br>**~24.9% Fewer cycles**<br>**~10.2% Fewer cycles** |
+| **BM_Risk_to_Network_FIX** | Median time | p50 cycles | p95 cycles | p99 cycles | p999 cycles | |3075 ns|8,782|9,183|11,987|15,855 | |2786 ns|7,970|8,333|10,582|13,755 | |**~9.4% Faster**|**~9.3% Fewer cycles**|**~9.3% Fewer cycles**|**~11.7% Fewer cycles**|**~13.2% Fewer cycles** |
+| **BM_Risk_to_Network_OUCH_BIST** | Median time | p50 cycles | p95 cycles | p99 cycles | p999 cycles | |2942 ns|8,433|8,714|10,049|15,100 | |2608 ns|7,422|7,718|9,955|12,851 | |**~11.4% Faster**|**~12.0% Fewer cycles**|**~11.4% Fewer cycles**|**~0.9% Fewer cycles**|**~14.9% Fewer cycles** |
+| **BM_Risk_to_Network_OUCH_NQ** | Median time | p50 cycles | p95 cycles | p99 cycles | p999 cycles | |2983 ns|8,463|8,801|11,064|15,360 | |2678 ns|7,661|8,000|8,314|13,797 | |**~10.2% Faster**|**~9.5% Fewer cycles**|**~9.1% Fewer cycles**|**~24.9% Fewer cycles**|**~10.2% Fewer cycles** |
 
 ### 2. Rx Pipeline (`Network -> Risk`)
 
 | Benchmark / Metric | Before (Boost SPSC) | After (Custom SPSC) | Δ |
 |---|---|---|---|
-| **BM_Network_to_Risk_FIX** <br>• Median time <br>• p50 cycles <br>• p95 cycles <br>• p99 cycles <br>• p999 cycles | <br>3555 ns<br>9,517<br>10,002<br>11,467<br>18,832 | <br>3174 ns<br>8,453<br>8,906<br>10,087<br>15,269 | <br>**~10.7% Faster**<br>**~11.2% Fewer cycles**<br>**~11.0% Fewer cycles**<br>**~12.0% Fewer cycles**<br>**~18.9% Fewer cycles** |
-| **BM_Network_to_Risk_OUCH_BIST** <br>• Median time <br>• p50 cycles <br>• p95 cycles <br>• p99 cycles <br>• p999 cycles | <br>3400 ns<br>9,058<br>9,504<br>10,332<br>16,601 | <br>3107 ns<br>8,283<br>8,720<br>9,947<br>15,232 | <br>**~8.6% Faster**<br>**~8.6% Fewer cycles**<br>**~8.3% Fewer cycles**<br>**~3.7% Fewer cycles**<br>**~8.2% Fewer cycles** |
-| **BM_Network_to_Risk_OUCH_NQ** <br>• Median time <br>• p50 cycles <br>• p95 cycles <br>• p99 cycles <br>• p999 cycles | <br>3390 ns<br>9,053<br>9,466<br>10,439<br>16,257 | <br>3110 ns<br>8,307<br>8,721<br>9,092<br>13,911 | <br>**~8.3% Faster**<br>**~8.2% Fewer cycles**<br>**~7.9% Fewer cycles**<br>**~12.9% Fewer cycles**<br>**~14.4% Fewer cycles** |
-| **BM_Network_to_Risk_ITCH_BIST** <br>• Median time <br>• p50 cycles <br>• p95 cycles <br>• p99 cycles <br>• p999 cycles | <br>2011 ns<br>5,670<br>6,008<br>6,310<br>11,920 | <br>1747 ns<br>4,946<br>5,332<br>5,514<br>8,747 | <br>**~13.1% Faster**<br>**~12.8% Fewer cycles**<br>**~11.2% Fewer cycles**<br>**~12.6% Fewer cycles**<br>**~26.6% Fewer cycles** |
-| **BM_Network_to_Risk_ITCH_NQ** <br>• Median time <br>• p50 cycles <br>• p95 cycles <br>• p99 cycles <br>• p999 cycles | <br>1989 ns<br>5,634<br>5,980<br>6,286<br>11,610 | <br>1729 ns<br>4,874<br>5,198<br>5,416<br>9,023 | <br>**~13.1% Faster**<br>**~13.5% Fewer cycles**<br>**~13.1% Fewer cycles**<br>**~13.8% Fewer cycles**<br>**~22.3% Fewer cycles** |
+| **BM_Network_to_Risk_FIX** | Median time | p50 cycles | p95 cycles | p99 cycles | p999 cycles | |3555 ns|9,517|10,002|11,467|18,832 | |3174 ns|8,453|8,906|10,087|15,269 | |**~10.7% Faster**|**~11.2% Fewer cycles**|**~11.0% Fewer cycles**|**~12.0% Fewer cycles**|**~18.9% Fewer cycles** |
+| **BM_Network_to_Risk_OUCH_BIST** | Median time | p50 cycles | p95 cycles | p99 cycles | p999 cycles | |3400 ns|9,058|9,504|10,332|16,601 | |3107 ns|8,283|8,720|9,947|15,232 | |**~8.6% Faster**|**~8.6% Fewer cycles**|**~8.3% Fewer cycles**|**~3.7% Fewer cycles**|**~8.2% Fewer cycles** |
+| **BM_Network_to_Risk_OUCH_NQ** | Median time | p50 cycles | p95 cycles | p99 cycles | p999 cycles | |3390 ns|9,053|9,466|10,439|16,257 | |3110 ns|8,307|8,721|9,092|13,911 | |**~8.3% Faster**|**~8.2% Fewer cycles**|**~7.9% Fewer cycles**|**~12.9% Fewer cycles**|**~14.4% Fewer cycles** |
+| **BM_Network_to_Risk_ITCH_BIST** | Median time | p50 cycles | p95 cycles | p99 cycles | p999 cycles | |2011 ns|5,670|6,008|6,310|11,920 | |1747 ns|4,946|5,332|5,514|8,747 | |**~13.1% Faster**|**~12.8% Fewer cycles**|**~11.2% Fewer cycles**|**~12.6% Fewer cycles**|**~26.6% Fewer cycles** |
+| **BM_Network_to_Risk_ITCH_NQ** | Median time | p50 cycles | p95 cycles | p99 cycles | p999 cycles | |1989 ns|5,634|5,980|6,286|11,610 | |1729 ns|4,874|5,198|5,416|9,023 | |**~13.1% Faster**|**~13.5% Fewer cycles**|**~13.1% Fewer cycles**|**~13.8% Fewer cycles**|**~22.3% Fewer cycles** |
 
 ---
 
