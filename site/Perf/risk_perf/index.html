@@ -1,0 +1,2849 @@
+
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+      
+      
+        <link rel="canonical" href="https://UmutCanDundar.github.io/TradingEngine-Portfolio/Perf/risk_perf/">
+      
+      
+        <link rel="prev" href="../../Benchmark/risk_benchmark/">
+      
+      
+        <link rel="next" href="../../Unit/builder_unit/">
+      
+      
+        
+      
+      
+      <link rel="icon" href="../../assets/images/favicon.png">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.7.6">
+    
+    
+      
+        <title>Perf - TradingEngine</title>
+      
+    
+    
+      <link rel="stylesheet" href="../../assets/stylesheets/main.484c7ddc.min.css">
+      
+        
+        <link rel="stylesheet" href="../../assets/stylesheets/palette.ab4e12ef.min.css">
+      
+      
+
+
+    
+    
+      
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,700,700i%7CRoboto+Mono:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
+      
+    
+    
+      <link rel="stylesheet" href="../../stylesheets/extra.css">
+    
+    <script>__md_scope=new URL("../..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+  </head>
+  
+  
+    
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="slate" data-md-color-primary="teal" data-md-color-accent="indigo">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#risk-perf-analysis" class="md-skip">
+          Skip to content
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+  
+
+<header class="md-header md-header--shadow md-header--lifted" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Header">
+    <a href="../.." title="TradingEngine" class="md-header__button md-logo" aria-label="TradingEngine" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            TradingEngine
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              Perf
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+      
+    
+    
+    
+    
+      
+      
+        <label class="md-header__button md-icon" for="__search">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        </label>
+        <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Search" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="Search">
+        
+        <button type="reset" class="md-search__icon md-icon" title="Clear" aria-label="Clear" tabindex="-1">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+        </button>
+      </nav>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" tabindex="0" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Initializing search
+          </div>
+          <ol class="md-search-result__list" role="presentation"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+      
+    
+    
+  </nav>
+  
+    
+      
+<nav class="md-tabs" aria-label="Tabs" data-md-component="tabs">
+  <div class="md-grid">
+    <ul class="md-tabs__list">
+      
+        
+  
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../.." class="md-tabs__link">
+        
+  
+  
+    
+  
+  Overview
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../../architecture/" class="md-tabs__link">
+        
+  
+  
+    
+  
+  Architecture
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../../design/" class="md-tabs__link">
+        
+  
+  
+    
+  
+  Design
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+    
+  
+  
+    
+    
+      <li class="md-tabs__item md-tabs__item--active">
+        <a href="../../tests/" class="md-tabs__link">
+          
+  
+  
+    
+  
+  Tests
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../../optimization/" class="md-tabs__link">
+        
+  
+  
+    
+  
+  Recent Optimization
+
+      </a>
+    </li>
+  
+
+      
+    </ul>
+  </div>
+</nav>
+    
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+  
+
+
+<nav class="md-nav md-nav--primary md-nav--lifted" aria-label="Navigation" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href="../.." title="TradingEngine" class="md-nav__button md-logo" aria-label="TradingEngine" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    TradingEngine
+  </label>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../.." class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Overview
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../architecture/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Architecture
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../design/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Design
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+    
+  
+  
+  
+    
+    
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+      
+        
+        
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4" checked>
+        
+          
+          <label class="md-nav__link" for="__nav_4" id="__nav_4_label" tabindex="">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Tests
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_4_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_4">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Tests
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../tests/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Overview
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+      
+      
+        
+          
+          
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_4_2" >
+        
+          
+          <label class="md-nav__link" for="__nav_4_2" id="__nav_4_2_label" tabindex="">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Pipeline
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_2_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_4_2">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Pipeline
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../Pipeline/pipeline/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Overview
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../Pipeline/benchmark_pipeline/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Benchmark
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../Pipeline/perf_pipeline/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Perf
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+      
+        
+      
+    
+    
+    
+      
+      
+        
+          
+          
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_4_3" >
+        
+          
+          <label class="md-nav__link" for="__nav_4_3" id="__nav_4_3_label" tabindex="">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Network
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_3_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_4_3">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Network
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../Unit/network_unit/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Unit
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+      
+      
+        
+          
+          
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_4_4" >
+        
+          
+          <label class="md-nav__link" for="__nav_4_4" id="__nav_4_4_label" tabindex="">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Parser
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_4_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_4_4">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Parser
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../Unit/parser_unit/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Unit
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../Benchmark/parser_benchmark/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Benchmark
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../parser_perf/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Perf
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+      
+      
+        
+          
+          
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_4_5" >
+        
+          
+          <label class="md-nav__link" for="__nav_4_5" id="__nav_4_5_label" tabindex="">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Order Manager
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_5_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_4_5">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Order Manager
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../Unit/order_manager_unit/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Unit
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../Benchmark/order_manager_benchmark/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Benchmark
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../order_manager_perf/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Perf
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+    
+  
+  
+  
+    
+    
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+      
+      
+        
+          
+          
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_6" checked>
+        
+          
+          <label class="md-nav__link" for="__nav_4_6" id="__nav_4_6_label" tabindex="">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Risk
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_6_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_4_6">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Risk
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../Unit/risk_unit/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Unit
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../Benchmark/risk_benchmark/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Benchmark
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+    
+  
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Perf
+  
+
+    
+  </span>
+  
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Perf
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#test-setup" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Test Setup
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#at-a-glance" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        At a Glance
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#results-risk-update" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Results — Risk Update
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Results — Risk Update">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#key-metrics" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Key Metrics
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#hotspot-analysis" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Hotspot Analysis
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#cache-memory" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Cache &amp; Memory
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#false-sharing-c2c" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        False Sharing (C2C)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#flamegraph" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Flamegraph
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#findings-action-items" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Findings &amp; Action Items
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#results-risk-check" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Results — Risk Check
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Results — Risk Check">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#key-metrics_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Key Metrics
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#hotspot-analysis_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Hotspot Analysis
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Hotspot Analysis">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#p-core-cpubranch" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        P-Core (CPU+Branch)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#dcache-profile" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        DCache Profile
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#cache-memory_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Cache &amp; Memory
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#false-sharing-c2c_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        False Sharing (C2C)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#flamegraph_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Flamegraph
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#findings-action-items_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Findings &amp; Action Items
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#cross-scenario-update-vs-check" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Cross-Scenario: Update vs Check
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#raw-output" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Raw Output
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Raw Output">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#risk-update-raw" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Risk Update RAW
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#risk-check-raw" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Risk Check RAW
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+      
+      
+        
+          
+          
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_4_7" >
+        
+          
+          <label class="md-nav__link" for="__nav_4_7" id="__nav_4_7_label" tabindex="">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Builder
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_7_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_4_7">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Builder
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../Unit/builder_unit/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Unit
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../Benchmark/builder_benchmark/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Benchmark
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../builder_perf/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Perf
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../optimization/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Recent Optimization
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#test-setup" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Test Setup
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#at-a-glance" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        At a Glance
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#results-risk-update" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Results — Risk Update
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Results — Risk Update">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#key-metrics" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Key Metrics
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#hotspot-analysis" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Hotspot Analysis
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#cache-memory" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Cache &amp; Memory
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#false-sharing-c2c" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        False Sharing (C2C)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#flamegraph" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Flamegraph
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#findings-action-items" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Findings &amp; Action Items
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#results-risk-check" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Results — Risk Check
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Results — Risk Check">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#key-metrics_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Key Metrics
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#hotspot-analysis_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Hotspot Analysis
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Hotspot Analysis">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#p-core-cpubranch" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        P-Core (CPU+Branch)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#dcache-profile" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        DCache Profile
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#cache-memory_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Cache &amp; Memory
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#false-sharing-c2c_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        False Sharing (C2C)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#flamegraph_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Flamegraph
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#findings-action-items_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Findings &amp; Action Items
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#cross-scenario-update-vs-check" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Cross-Scenario: Update vs Check
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#raw-output" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Raw Output
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Raw Output">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#risk-update-raw" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Risk Update RAW
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#risk-check-raw" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Risk Check RAW
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              
+              <article class="md-content__inner md-typeset">
+                
+                  
+
+
+
+<h1 id="risk-perf-analysis">Risk — Perf Analysis</h1>
+<p>Profiling of the risk engine under two isolated scenarios: <strong>risk update</strong> (write path — <code>update_risk()</code> processing incoming order acknowledgements) and <strong>risk check</strong> (read path — <code>check_risk()</code> validating orders before submission).</p>
+<hr />
+<h2 id="test-setup">Test Setup</h2>
+<p>All perf tests were conducted under <strong>Profile 1 — Performance/Idle</strong>. For the full profile comparison and selection rationale, see <a href="pipeline.md#profile-selection">Pipeline Overview</a>.</p>
+<table>
+<thead>
+<tr>
+<th>Field</th>
+<th>Value</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>CPU</td>
+<td>13th Gen Intel Core i7-13620H (10C/16T)</td>
+</tr>
+<tr>
+<td>P-core max</td>
+<td>4900 MHz</td>
+</tr>
+<tr>
+<td>Kernel</td>
+<td>6.17.0-29-generic x86_64</td>
+</tr>
+<tr>
+<td>Governor</td>
+<td>performance</td>
+</tr>
+<tr>
+<td>NUMA</td>
+<td>Single node, 15714 MB total</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h2 id="at-a-glance">At a Glance</h2>
+<table>
+<thead>
+<tr>
+<th>Metric</th>
+<th>Risk Update</th>
+<th>Risk Check</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Wall time</td>
+<td>0.385 s</td>
+<td>0.192 s</td>
+</tr>
+<tr>
+<td>P-core IPC</td>
+<td>2.13</td>
+<td>5.47–5.51</td>
+</tr>
+<tr>
+<td>Branch miss rate</td>
+<td>0.01%</td>
+<td>0.00–0.01%</td>
+</tr>
+<tr>
+<td>L1-D miss rate</td>
+<td>0.24%</td>
+<td>0.01%</td>
+</tr>
+<tr>
+<td>LLC miss rate</td>
+<td>~0% (absolute)</td>
+<td>~0% (absolute)</td>
+</tr>
+<tr>
+<td>Local HITM</td>
+<td>0</td>
+<td>0</td>
+</tr>
+</tbody>
+</table>
+<p>Both paths are <strong>compute-bound in isolation</strong> — IPC well above 1.0 in both cases with negligible cache pressure. This confirms the finding from pipeline profiling: the risk engine itself is not the bottleneck; cross-thread queue contention and E-core clock limitations are.</p>
+<p>Risk check in particular stands out with IPC 5.47–5.51 and L1-D miss rate 0.01% — the check path is executing at near-peak efficiency when there is no concurrent writer on the shared structs.</p>
+<hr />
+<h2 id="results-risk-update">Results — Risk Update</h2>
+<p><code>update_risk()</code> processes order acknowledgements — updating <code>SymbolRisk</code>, <code>AccountRisk</code>, and <code>OrderRisk</code> fields on fill, partial fill, cancel, and new order events. The test drives 10M iterations with a 3-order mix (fixNew, fixPartial, fixCancel) through <code>store_to_risk</code>, with two consumer threads draining <code>risk_to_builder</code> and <code>risk_to_strategy</code>. Risk state is reset after each batch.</p>
+<table>
+<thead>
+<tr>
+<th>Field</th>
+<th>Value</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Wall time</td>
+<td>0.385 s</td>
+</tr>
+<tr>
+<td>User time</td>
+<td>0.381 s</td>
+</tr>
+<tr>
+<td>Sys time</td>
+<td>0.004 s</td>
+</tr>
+<tr>
+<td>CPUs utilized</td>
+<td>0.996</td>
+</tr>
+</tbody>
+</table>
+<p>Single-threaded execution on the update path — CPUs at ~1.0 confirms no meaningful parallel worker is active. Sys time at 0.004s is negligible. The two consumer threads (<code>risk_to_builder</code> and <code>risk_to_strategy</code>) drain their queues with <code>_mm_pause()</code> spin loops on CPU 0 and CPU 2; they consume negligible resources as the queues are always empty from their perspective (the update loop runs to completion before they can see data).</p>
+<hr />
+<h3 id="key-metrics">Key Metrics</h3>
+<table>
+<thead>
+<tr>
+<th>Metric</th>
+<th>P-Core</th>
+<th>E-Core</th>
+<th>Note</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Instructions</td>
+<td>3.96B</td>
+<td>1.17B</td>
+<td>E-core activity is startup/linker overhead</td>
+</tr>
+<tr>
+<td>Cycles</td>
+<td>1.86B @ 4.84 GHz</td>
+<td>1.33B @ 3.47 GHz</td>
+<td>P-core near boost</td>
+</tr>
+<tr>
+<td>IPC</td>
+<td>2.13</td>
+<td>0.88</td>
+<td>See note below</td>
+</tr>
+<tr>
+<td>Branch miss rate</td>
+<td>0.01%</td>
+<td>3.44%</td>
+<td>P-core excellent</td>
+</tr>
+<tr>
+<td>L1-D miss rate</td>
+<td>0.24%</td>
+<td>—</td>
+<td>Excellent</td>
+</tr>
+<tr>
+<td>LLC miss rate</td>
+<td>46.66% of 26,886 loads</td>
+<td>18.61% of 2.89M</td>
+<td>See note below</td>
+</tr>
+</tbody>
+</table>
+<p><strong>IPC at 2.13 on P-core — update_risk is compute-bound in isolation.</strong> The atomic fetch operations on <code>SymbolRisk</code> and <code>AccountRisk</code> fields are the dominant instructions; with a hot working set the P-core executes efficiently through the update chain. The E-core at 0.88 IPC and 3.44% branch miss reflects startup initialization rather than steady-state behavior — the E-core sample window is only 0.18% of total samples.</p>
+<p><strong>The 46.66% LLC miss rate on the P-core is an artifact of the small LLC load count (26,886 absolute loads).</strong> At this low denominator, a handful of cold startup misses produce a high percentage. The absolute LLC miss count (12,546 events) is negligible relative to the 1.12B L1-D load count — the application working set is comfortably L1/LLC-resident. The L1-D miss rate at 0.24% is the correct signal, and it is excellent.</p>
+<hr />
+<h3 id="hotspot-analysis">Hotspot Analysis</h3>
+<table>
+<thead>
+<tr>
+<th>Overhead</th>
+<th>Self</th>
+<th>Symbol</th>
+<th>Profile</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>89.59%</td>
+<td>46.68%</td>
+<td><code>RiskEngine::update_risk()</code></td>
+<td>CPU+Branch</td>
+</tr>
+<tr>
+<td>46.26%</td>
+<td>46.26%</td>
+<td><code>RiskEngine::update_risk_for_protocol_fix(AccountRisk&amp;, AccountLimit const&amp;, Order&amp;, OrderMetrics)</code></td>
+<td>CPU+Branch</td>
+</tr>
+<tr>
+<td>96.89%</td>
+<td>60.43%</td>
+<td><code>RiskEngine::update_risk()</code></td>
+<td>dcache</td>
+</tr>
+<tr>
+<td>35.83%</td>
+<td>35.03%</td>
+<td><code>RiskEngine::update_risk_for_protocol_fix(...)</code></td>
+<td>dcache</td>
+</tr>
+</tbody>
+</table>
+<p><code>update_risk()</code> at 46.68% CPU self and 60.43% dcache self is the clear hot function — it drives the update dispatch and carries the bulk of atomic write cost directly. <code>update_risk_for_protocol_fix()</code> at 46.26% CPU self and 35.03% dcache self is nearly as costly on the CPU dimension — FIX order acknowledgements trigger the full update path including <code>pending_notional_scaled</code> and <code>open_orders_count</code> updates on every event, and the function carries its full cost as a leaf (no further callees visible in the profile).</p>
+<p>The near-parity in CPU self-time between <code>update_risk</code> (46.68%) and <code>update_risk_for_protocol_fix</code> (46.26%) indicates the dispatch overhead in <code>update_risk</code> and the field write cost in the protocol-specific path are roughly balanced. In the dcache profile the split shifts toward <code>update_risk</code> (60.43% vs 35.03%), suggesting the dispatch and branching logic in <code>update_risk</code> generates proportionally more data access events than the targeted atomic writes in the FIX path.</p>
+<div class="admonition note">
+<p class="admonition-title">ICache profile — kernel page fault dominant</p>
+<p>The ICache record is dominated by kernel page-fault frames (<code>asm_exc_page_fault</code> → <code>__handle_mm_fault</code> → <code>do_anonymous_page</code> chain), consistent with the other Builder tests in this run. <code>update_risk()</code> is visible at 15.90% overhead — confirming it is sampled but suppressed by the kernel noise. This is a test harness artifact.</p>
+</div>
+<div class="admonition note">
+<p class="admonition-title">TLB profile — very low sample count</p>
+<p>The TLB record accumulated only ~33 samples at this test duration. The top entry is <code>snprintf</code> at 72.73% self — this is a logging or initialization call rather than steady-state update path behavior. The dTLB miss absolute count (42,252) is low in absolute terms and is consistent with startup and OS activity rather than the update loop itself. The TLB profile is not meaningful at this sample depth.</p>
+</div>
+<hr />
+<h3 id="cache-memory">Cache &amp; Memory</h3>
+<table>
+<thead>
+<tr>
+<th>Metric</th>
+<th>Value</th>
+<th>Note</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>L1-D miss rate</td>
+<td>0.24%</td>
+<td>Excellent — hot struct fields stay in L1</td>
+</tr>
+<tr>
+<td>LLC miss rate</td>
+<td>~0% absolute</td>
+<td>12,546 events — negligible</td>
+</tr>
+<tr>
+<td>L1-I misses</td>
+<td>381,033</td>
+<td>Elevated — kernel page fault text pages; not an app icache concern</td>
+</tr>
+<tr>
+<td>dTLB misses</td>
+<td>42,252</td>
+<td>Low absolute — TLB profile dominated by startup/OS activity</td>
+</tr>
+<tr>
+<td>iTLB misses</td>
+<td>2,464</td>
+<td>Very low</td>
+</tr>
+</tbody>
+</table>
+<p><strong>L1-D miss rate at 0.24% is excellent in isolation.</strong> The <code>SymbolRisk</code> and <code>AccountRisk</code> fields written by <code>update_risk()</code> are hot in L1 — they are written repeatedly on consecutive calls and stay resident. The elevated L1-I misses (381K) are attributable to kernel page-fault text pages, identical in character to the Builder Dispatch findings, not to the update logic itself.</p>
+<hr />
+<h3 id="false-sharing-c2c">False Sharing (C2C)</h3>
+<table>
+<thead>
+<tr>
+<th>Metric</th>
+<th>Value</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Total shared cache lines</td>
+<td>0</td>
+</tr>
+<tr>
+<td>Local HITM</td>
+<td>0</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Zero HITM — no false sharing in isolation.</strong> Single-threaded update with no concurrent reader on the risk structs. The HITM events seen in pipeline profiling for <code>update_risk()</code> are entirely caused by the concurrent <code>check_risk()</code> thread reading the same struct fields — not by anything inherent to the update path itself.</p>
+<hr />
+<h3 id="flamegraph">Flamegraph</h3>
+<p><a href="../../assets/flamegraph_risk_update.svg" target="_blank">Risk Update Flamegraph</a></p>
+<hr />
+<h3 id="findings-action-items">Findings &amp; Action Items</h3>
+<table>
+<thead>
+<tr>
+<th>#</th>
+<th>Finding</th>
+<th>Impact</th>
+<th>Status</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>1</td>
+<td>IPC 2.13 — update path is compute-bound in isolation</td>
+<td>Implementation is efficient</td>
+<td>✅ No action needed</td>
+</tr>
+<tr>
+<td>2</td>
+<td>L1-D miss 0.24% — struct fields stay hot in L1</td>
+<td>Excellent</td>
+<td>✅ No action needed</td>
+</tr>
+<tr>
+<td>3</td>
+<td>Zero HITM in isolation — pipeline HITM is cross-thread, not update-internal</td>
+<td>Confirms struct layout is not the root cause</td>
+<td>✅ Confirmed</td>
+</tr>
+<tr>
+<td>4</td>
+<td><code>update_risk_for_protocol_fix</code> 46.26% CPU self — FIX path is near-equal cost to dispatch itself</td>
+<td>Expected — FIX carries full order state update; both branches are correctly weighted</td>
+<td>✅ No action needed</td>
+</tr>
+<tr>
+<td>5</td>
+<td>LLC miss rate 46.66% — artifact of 26,886 total LLC loads; absolute count 12,546 is negligible</td>
+<td>Test harness artifact</td>
+<td>✅ No action needed</td>
+</tr>
+<tr>
+<td>6</td>
+<td>L1-I misses 381K and TLB profile low-sample — page fault kernel text artifact consistent with other tests in this run</td>
+<td>Test harness artifact</td>
+<td>✅ No action needed</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h2 id="results-risk-check">Results — Risk Check</h2>
+<p><code>check_risk()</code> validates orders before submission — reading <code>SymbolRisk</code>, <code>AccountRisk</code>, <code>SymbolMeta</code>, and <code>Limits</code> fields to enforce position, notional, and rate limit constraints. The test drives 10M iterations with a single order (<code>strategy_to_risk</code>) per iteration, with two consumer threads draining <code>risk_to_builder</code> and <code>risk_to_strategy</code>. Risk state is reset after each call.</p>
+<table>
+<thead>
+<tr>
+<th>Field</th>
+<th>Value</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Wall time</td>
+<td>0.192 s</td>
+</tr>
+<tr>
+<td>User time</td>
+<td>0.189 s</td>
+</tr>
+<tr>
+<td>Sys time</td>
+<td>0.003 s</td>
+</tr>
+<tr>
+<td>CPUs utilized</td>
+<td>0.993</td>
+</tr>
+</tbody>
+</table>
+<p>Single-threaded execution — CPUs at ~1.0. Sys time at 0.003s is negligible. The test completes in 0.192s wall time with 10M iterations — substantially faster than the update test (0.385s at the same N), consistent with the much higher IPC and lower data miss rate on the check path.</p>
+<hr />
+<h3 id="key-metrics_1">Key Metrics</h3>
+<table>
+<thead>
+<tr>
+<th>Metric</th>
+<th>P-Core</th>
+<th>E-Core</th>
+<th>Note</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Instructions</td>
+<td>4.81–4.87B</td>
+<td>— (not counted)</td>
+<td>E-core not active in this run</td>
+</tr>
+<tr>
+<td>Cycles</td>
+<td>879M–883M @ 4.60–4.63 GHz</td>
+<td>—</td>
+<td>P-core near boost</td>
+</tr>
+<tr>
+<td>IPC</td>
+<td>5.47–5.51</td>
+<td>—</td>
+<td>See note below</td>
+</tr>
+<tr>
+<td>Branch miss rate</td>
+<td>0.00–0.01%</td>
+<td>—</td>
+<td>Essentially zero mispredictions</td>
+</tr>
+<tr>
+<td>L1-D miss rate</td>
+<td>0.01%</td>
+<td>—</td>
+<td>Exceptional</td>
+</tr>
+<tr>
+<td>LLC miss rate</td>
+<td>48.16% of 26,350 loads</td>
+<td>—</td>
+<td>See note below</td>
+</tr>
+</tbody>
+</table>
+<p><strong>IPC at 5.47–5.51 on P-core is the highest observed across all risk and builder scenarios in this run.</strong> <code>check_risk()</code> is a read-only validation path — reading <code>SymbolRisk</code>, <code>AccountRisk</code>, and <code>Limits</code> fields with no atomic writes. With L1-D miss rate at 0.01%, all read targets are hot in cache; the branch predictor handles the limit check conditions at near-zero miss rate; and the instruction stream is dense and predictable. The P-core is executing at near its retirement ceiling.</p>
+<p><strong>The 48.16% LLC miss rate is again an artifact of the small LLC load count (26,350 loads).</strong> The absolute miss count (12,690 events) is negligible relative to the 1.27B L1-D load count. The working set is entirely L1-resident — the 0.01% L1-D miss rate confirms this directly.</p>
+<hr />
+<h3 id="hotspot-analysis_1">Hotspot Analysis</h3>
+<h4 id="p-core-cpubranch">P-Core (CPU+Branch)</h4>
+<table>
+<thead>
+<tr>
+<th>Overhead</th>
+<th>Self</th>
+<th>Symbol</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>99.35%</td>
+<td>0.00%</td>
+<td><code>_start</code> / <code>libc</code> init</td>
+</tr>
+<tr>
+<td>95.17%</td>
+<td>5.59%</td>
+<td><code>main</code></td>
+</tr>
+<tr>
+<td>87.54%</td>
+<td>87.41%</td>
+<td><code>RiskEngine::check_risk()</code></td>
+</tr>
+<tr>
+<td>2.83%</td>
+<td>2.83%</td>
+<td><code>RiskEngine::check_venue_halt_and_circuit(Order&amp;, SymbolMeta const&amp;)</code></td>
+</tr>
+</tbody>
+</table>
+<p><strong><code>check_risk()</code> at 87.41% self is the overwhelming dominant consumer</strong> — a single function carrying almost the entire CPU cost of the test. This is expected: the check path is a monolithic validation sequence with most logic inlined, leaving no meaningful delegation to helper functions. The function reads all required fields, evaluates all limit conditions, and returns a result with minimal call overhead.</p>
+<p><code>check_venue_halt_and_circuit()</code> at 2.83% self is a newly visible secondary hotspot — the venue halt and circuit breaker check now has sufficient samples to appear in the top-20. This is a leaf function reading <code>SymbolMeta</code> halt/circuit state; its cost is small but attributable. No concern at 2.83%.</p>
+<h4 id="dcache-profile">DCache Profile</h4>
+<table>
+<thead>
+<tr>
+<th>Overhead</th>
+<th>Self</th>
+<th>Symbol</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>29.70%</td>
+<td>8.12%</td>
+<td><code>RiskEngine::check_risk()</code></td>
+</tr>
+</tbody>
+</table>
+<p><code>check_risk()</code> at 8.12% dcache self is the only meaningful application entry. The dcache profile is heavily contaminated by kernel OS scheduling activity (<code>hrtimer_interrupt</code>, <code>tick_nohz_handler</code>, <code>update_process_times</code> chain accounting for ~25% of overhead) at this short wall time — this is a timer interrupt artifact, not application cache behavior.</p>
+<div class="admonition note">
+<p class="admonition-title">ICache profile — startup and page fault artifact</p>
+<p><code>folly::CacheLocality::readFromProcCpuinfoLines()</code> at 10.73% icache self is startup initialization from the Folly library — not a steady-state cost. <code>check_risk()</code> is visible at 10.70% overhead / 0.34% self, confirming it is present but suppressed by the startup noise. The absolute L1-I miss count (288,009) is elevated by kernel page-fault text pages consistent with the other tests in this run.</p>
+</div>
+<div class="admonition note">
+<p class="admonition-title">TLB profile — timer interrupt dominant</p>
+<p>The TLB record shows <code>main</code> at 100% self (all dTLB misses occur at startup within <code>main</code> before the loop) and <code>asm_sysvec_apic_timer_interrupt</code> at 86.05% self — the kernel timer interrupt dominates TLB samples at this run duration. <code>sysvec_thermal</code> at 6.98% indicates a CPU thermal interrupt fired during the test — a hardware event unrelated to the application. The absolute dTLB miss count (10,305) is very low and not an application concern.</p>
+</div>
+<hr />
+<h3 id="cache-memory_1">Cache &amp; Memory</h3>
+<table>
+<thead>
+<tr>
+<th>Metric</th>
+<th>Value</th>
+<th>Note</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>L1-D miss rate</td>
+<td>0.01%</td>
+<td>Exceptional — all read targets L1-resident</td>
+</tr>
+<tr>
+<td>LLC miss rate</td>
+<td>~0% absolute</td>
+<td>12,690 events — negligible</td>
+</tr>
+<tr>
+<td>L1-I misses</td>
+<td>288,009</td>
+<td>Elevated — kernel page fault text; not an app icache concern</td>
+</tr>
+<tr>
+<td>dTLB misses</td>
+<td>10,305</td>
+<td>Low — startup-dominant</td>
+</tr>
+<tr>
+<td>iTLB misses</td>
+<td>2,782</td>
+<td>Very low</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h3 id="false-sharing-c2c_1">False Sharing (C2C)</h3>
+<table>
+<thead>
+<tr>
+<th>Metric</th>
+<th>Value</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Total shared cache lines</td>
+<td>0</td>
+</tr>
+<tr>
+<td>Local HITM</td>
+<td>0</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Zero HITM — no false sharing in isolation.</strong> Single-threaded check with no concurrent reader on the risk structs. The HITM events seen in pipeline profiling for <code>check_risk()</code> are entirely caused by the concurrent <code>update_risk()</code> thread reading the same struct fields — not by anything inherent to the check path itself.</p>
+<hr />
+<h3 id="flamegraph_1">Flamegraph</h3>
+<p><a href="../../assets/flamegraph_risk_check.svg" target="_blank">Risk Check Flamegraph</a></p>
+<hr />
+<h3 id="findings-action-items_1">Findings &amp; Action Items</h3>
+<table>
+<thead>
+<tr>
+<th>#</th>
+<th>Finding</th>
+<th>Impact</th>
+<th>Status</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>1</td>
+<td>IPC 5.47–5.51 — highest across all risk and builder scenarios; check path executing at near-peak retirement</td>
+<td>Excellent — implementation is highly efficient</td>
+<td>✅ No action needed</td>
+</tr>
+<tr>
+<td>2</td>
+<td>L1-D miss 0.01% — all read targets L1-resident</td>
+<td>Exceptional</td>
+<td>✅ No action needed</td>
+</tr>
+<tr>
+<td>3</td>
+<td>Branch miss 0.00% — limit checks perfectly predicted</td>
+<td>Excellent</td>
+<td>✅ No action needed</td>
+</tr>
+<tr>
+<td>4</td>
+<td>Zero HITM in isolation — previous 371 HITM was two-thread test artifact; no structural false sharing on check path</td>
+<td>Confirmed — check path is contention-free in isolation</td>
+<td>✅ No action needed</td>
+</tr>
+<tr>
+<td>5</td>
+<td><code>check_risk()</code> 87.41% CPU self — monolithic check function, well-inlined, no unexpected delegation</td>
+<td>Expected</td>
+<td>✅ No action needed</td>
+</tr>
+<tr>
+<td>6</td>
+<td><code>check_venue_halt_and_circuit()</code> 2.83% CPU self — leaf function, venue halt and circuit breaker read cost</td>
+<td>Small but attributable; no concern at current rate</td>
+<td>✅ No action needed</td>
+</tr>
+<tr>
+<td>7</td>
+<td><code>check_risk()</code> on E-core in pipeline — IPC ceiling of ~5.5 on P-core vs E-core clock gap</td>
+<td>Latency cost at production order rates</td>
+<td>⚠️ Pre-prod thread affinity redesign</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h2 id="cross-scenario-update-vs-check">Cross-Scenario: Update vs Check</h2>
+<p>The comparison between isolated results reveals the clear performance asymmetry between the write and read paths.</p>
+<table>
+<thead>
+<tr>
+<th>Scenario</th>
+<th>IPC</th>
+<th>L1-D miss</th>
+<th>HITM</th>
+<th>Source</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Update isolated</td>
+<td>2.13</td>
+<td>0.24%</td>
+<td>0</td>
+<td>Clean</td>
+</tr>
+<tr>
+<td>Check isolated</td>
+<td>5.47–5.51</td>
+<td>0.01%</td>
+<td>0</td>
+<td>Clean</td>
+</tr>
+<tr>
+<td>Pipeline E-core (RxTx)</td>
+<td>0.44</td>
+<td>—</td>
+<td>~14K (shared)</td>
+<td>Cross-thread contention</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Check outperforms update by ~2.6× in IPC and 24× in L1-D miss rate in isolation.</strong> The update path performs atomic read-modify-write operations on multiple fields per order event — these are inherently more expensive than the pure reads of the check path, and their cost is correctly reflected in the IPC and miss rate gap even when no cross-thread contention is present.</p>
+<p><strong>The gap between isolated and pipeline performance is entirely explained by cross-thread interaction</strong> — concurrent readers and writers on the same <code>SymbolRisk</code> cache lines, E-core clock limitations, and boost queue contention. The risk engine implementation is efficient on both paths; the pipeline bottleneck is the runtime environment.</p>
+<hr />
+<h2 id="raw-output">Raw Output</h2>
+<h3 id="risk-update-raw">Risk Update RAW</h3>
+<p>"Perf Stat — Base"
+    <div class="highlight"><pre><span></span><code>task-clock:         383,852,505        0.996 CPUs utilized
+context-switches:           8         20.841 /sec
+cpu-migrations:             4         10.421 /sec
+page-faults:            1,079          2.811 K/sec
+
+P-Core (cpu_core):
+  instructions:    3,958,615,939       2.13  insn/cycle
+  cycles:          1,858,692,339       4.842 GHz
+  branches:          514,486,209       1.340 G/sec
+  branch-misses:          32,832       0.01%
+  L1-dcache-loads:  1,116,930,687      2.910 G/sec
+  L1-dcache-misses:    2,645,027       0.24%
+  LLC-loads:              26,886      70.043 K/sec
+  LLC-load-misses:        12,546      46.66%
+
+E-Core (cpu_atom):
+  instructions:    1,168,424,154       0.88  insn/cycle
+  cycles:          1,333,475,138       3.474 GHz
+  branches:          213,989,815     557.479 M/sec
+  branch-misses:       7,359,374       3.44%
+  L1-dcache-loads:   313,300,180     816.199 M/sec
+  LLC-loads:           2,893,228       7.537 M/sec
+  LLC-load-misses:       538,490      18.61%
+
+Wall: 0.385s  User: 0.381s  Sys: 0.004s
+</code></pre></div></p>
+<p>"Perf Stat — ICache"
+    <div class="highlight"><pre><span></span><code>P-Core L1-icache-load-misses:  381,033
+
+Wall: 0.385s  User: 0.378s  Sys: 0.007s
+</code></pre></div></p>
+<p>"Perf Stat — TLB"
+    <div class="highlight"><pre><span></span><code>P-Core dTLB-load-misses:  42,252
+P-Core iTLB-load-misses:   2,464
+
+Wall: 0.387s  User: 0.382s  Sys: 0.005s
+</code></pre></div></p>
+<p>"Perf Record — CPU+Branch (top 20)"
+    <div class="highlight"><pre><span></span><code>99.70%  0.00%  risk_update_perf  _start / __libc_start_main
+99.23%  5.08%  risk_update_perf  main
+89.59% 46.68%  risk_update_perf  RiskEngine::update_risk()
+46.26% 46.26%  risk_update_perf  RiskEngine::update_risk_for_protocol_fix(AccountRisk&amp;, AccountLimit const&amp;, Order&amp;, OrderMetrics)
+ 1.35%  0.25%  [kernel.kallsyms] asm_exc_page_fault
+</code></pre></div></p>
+<p>"Perf Record — DCache (top 20)"
+    <div class="highlight"><pre><span></span><code>98.31%  0.06%  risk_update_perf  main
+96.89% 60.43%  risk_update_perf  RiskEngine::update_risk()
+35.83% 35.03%  risk_update_perf  RiskEngine::update_risk_for_protocol_fix(AccountRisk&amp;, AccountLimit const&amp;, Order&amp;, OrderMetrics)
+ 1.83%  0.00%  [kernel.kallsyms] asm_sysvec_apic_timer_interrupt (timer interrupt artifact)
+</code></pre></div></p>
+<p>"Perf Record — ICache (top 20)"
+    <div class="highlight"><pre><span></span><code>69.39%  0.11%  risk_update_perf  main
+49.50%  0.00%  [kernel.kallsyms] asm_exc_page_fault (kernel page fault dominant)
+41.17%  8.06%  [kernel.kallsyms] __handle_mm_fault
+15.90%  0.18%  risk_update_perf  RiskEngine::update_risk()
+</code></pre></div></p>
+<p>"C2C — False Sharing Summary"
+    <div class="highlight"><pre><span></span><code>Total records:            2,898
+Load Local HITM:              0
+Total Shared Cache Lines:     0
+No false sharing detected.
+</code></pre></div></p>
+<hr />
+<h3 id="risk-check-raw">Risk Check RAW</h3>
+<p>"Perf Stat — Base"
+    <div class="highlight"><pre><span></span><code>task-clock:           191,049,123        0.993 CPUs utilized
+context-switches:             6         31.406 /sec
+cpu-migrations:               3         15.703 /sec
+page-faults:              1,080          5.653 K/sec
+
+P-Core (cpu_core):
+  instructions:    4,812,908,544       5.47  insn/cycle
+  cycles:            879,381,084       4.603 GHz
+  branches:          643,744,576       3.370 G/sec
+  branch-misses:          42,119       0.01%
+  L1-dcache-loads:  1,265,375,042      6.623 G/sec
+  L1-dcache-misses:      136,399       0.01%
+  LLC-loads:              26,350     137.923 K/sec
+  LLC-load-misses:        12,690      48.16%
+
+E-Core (cpu_atom):
+  &lt;not counted&gt; — not active in this run
+
+Wall: 0.192s  User: 0.189s  Sys: 0.003s
+</code></pre></div></p>
+<p>"Perf Stat — CPU+Branch"
+    <div class="highlight"><pre><span></span><code>P-Core:
+  cycles:          882,860,017
+  instructions:  4,865,958,323       5.51  insn/cycle
+  branch-misses:        13,543       0.00%
+
+Wall: 0.191s  User: 0.185s  Sys: 0.006s
+</code></pre></div></p>
+<p>"Perf Stat — ICache"
+    <div class="highlight"><pre><span></span><code>P-Core L1-icache-load-misses:  288,009
+
+Wall: 0.189s  User: 0.183s  Sys: 0.006s
+</code></pre></div></p>
+<p>"Perf Stat — TLB"
+    <div class="highlight"><pre><span></span><code>P-Core dTLB-load-misses:  10,305
+P-Core iTLB-load-misses:   2,782
+
+Wall: 0.192s  User: 0.187s  Sys: 0.005s
+</code></pre></div></p>
+<p>"Perf Record — CPU+Branch (top 20)"
+    <div class="highlight"><pre><span></span><code>99.35%  0.00%  risk_check_perf  _start / __libc_start_main
+95.17%  5.59%  risk_check_perf  main
+87.54% 87.41%  risk_check_perf  RiskEngine::check_risk()
+ 2.83%  2.83%  risk_check_perf  RiskEngine::check_venue_halt_and_circuit(Order&amp;, SymbolMeta const&amp;)
+ 2.81%  0.55%  [kernel.kallsyms] asm_exc_page_fault
+</code></pre></div></p>
+<p>"Perf Record — DCache (top 20)"
+    <div class="highlight"><pre><span></span><code>56.79%  0.00%  risk_check_perf  main
+30.18%  0.00%  [kernel.kallsyms] entry_SYSCALL_64 (OS scheduling activity)
+29.70%  8.12%  risk_check_perf  RiskEngine::check_risk()
+25.24%  0.00%  [kernel.kallsyms] asm_sysvec_apic_timer_interrupt (timer interrupt)
+</code></pre></div></p>
+<p>"Perf Record — ICache (top 20)"
+    <div class="highlight"><pre><span></span><code>67.76%  0.00%  risk_check_perf  main
+52.51%  0.00%  [kernel.kallsyms] asm_exc_page_fault (kernel page fault dominant)
+30.74% 10.21%  [kernel.kallsyms] __handle_mm_fault
+10.73% 10.73%  risk_check_perf   folly::CacheLocality::readFromProcCpuinfoLines(...) — startup artifact
+10.70%  0.34%  risk_check_perf   RiskEngine::check_risk()
+</code></pre></div></p>
+<p>"C2C — False Sharing Summary"
+    <div class="highlight"><pre><span></span><code>Total records:            577
+Load Local HITM:            0
+Total Shared Cache Lines:   0
+No false sharing detected.
+</code></pre></div></p>
+
+
+
+
+
+
+
+
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    
+    
+      
+      
+      <script id="__config" type="application/json">{"annotate": null, "base": "../..", "features": ["navigation.tabs", "navigation.tabs.sticky", "navigation.sections", "navigation.indexes", "navigation.expand", "content.code.annotate"], "search": "../../assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script>
+    
+    
+      <script src="../../assets/javascripts/bundle.79ae519e.min.js"></script>
+      
+    
+  </body>
+</html>

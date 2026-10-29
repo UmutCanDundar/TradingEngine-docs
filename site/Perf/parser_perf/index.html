@@ -1,0 +1,4176 @@
+
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+      
+      
+        <link rel="canonical" href="https://UmutCanDundar.github.io/TradingEngine-Portfolio/Perf/parser_perf/">
+      
+      
+        <link rel="prev" href="../../Benchmark/parser_benchmark/">
+      
+      
+        <link rel="next" href="../../Unit/order_manager_unit/">
+      
+      
+        
+      
+      
+      <link rel="icon" href="../../assets/images/favicon.png">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.7.6">
+    
+    
+      
+        <title>Perf - TradingEngine</title>
+      
+    
+    
+      <link rel="stylesheet" href="../../assets/stylesheets/main.484c7ddc.min.css">
+      
+        
+        <link rel="stylesheet" href="../../assets/stylesheets/palette.ab4e12ef.min.css">
+      
+      
+
+
+    
+    
+      
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,700,700i%7CRoboto+Mono:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
+      
+    
+    
+      <link rel="stylesheet" href="../../stylesheets/extra.css">
+    
+    <script>__md_scope=new URL("../..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+  </head>
+  
+  
+    
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="slate" data-md-color-primary="teal" data-md-color-accent="indigo">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#parser-perf-analysis" class="md-skip">
+          Skip to content
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+  
+
+<header class="md-header md-header--shadow md-header--lifted" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Header">
+    <a href="../.." title="TradingEngine" class="md-header__button md-logo" aria-label="TradingEngine" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            TradingEngine
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              Perf
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+      
+    
+    
+    
+    
+      
+      
+        <label class="md-header__button md-icon" for="__search">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        </label>
+        <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Search" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="Search">
+        
+        <button type="reset" class="md-search__icon md-icon" title="Clear" aria-label="Clear" tabindex="-1">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+        </button>
+      </nav>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" tabindex="0" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Initializing search
+          </div>
+          <ol class="md-search-result__list" role="presentation"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+      
+    
+    
+  </nav>
+  
+    
+      
+<nav class="md-tabs" aria-label="Tabs" data-md-component="tabs">
+  <div class="md-grid">
+    <ul class="md-tabs__list">
+      
+        
+  
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../.." class="md-tabs__link">
+        
+  
+  
+    
+  
+  Overview
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../../architecture/" class="md-tabs__link">
+        
+  
+  
+    
+  
+  Architecture
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../../design/" class="md-tabs__link">
+        
+  
+  
+    
+  
+  Design
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+    
+  
+  
+    
+    
+      <li class="md-tabs__item md-tabs__item--active">
+        <a href="../../tests/" class="md-tabs__link">
+          
+  
+  
+    
+  
+  Tests
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../../optimization/" class="md-tabs__link">
+        
+  
+  
+    
+  
+  Recent Optimization
+
+      </a>
+    </li>
+  
+
+      
+    </ul>
+  </div>
+</nav>
+    
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+  
+
+
+<nav class="md-nav md-nav--primary md-nav--lifted" aria-label="Navigation" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href="../.." title="TradingEngine" class="md-nav__button md-logo" aria-label="TradingEngine" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    TradingEngine
+  </label>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../.." class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Overview
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../architecture/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Architecture
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../design/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Design
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+    
+  
+  
+  
+    
+    
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+      
+        
+        
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4" checked>
+        
+          
+          <label class="md-nav__link" for="__nav_4" id="__nav_4_label" tabindex="">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Tests
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_4_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_4">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Tests
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../tests/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Overview
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+      
+      
+        
+          
+          
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_4_2" >
+        
+          
+          <label class="md-nav__link" for="__nav_4_2" id="__nav_4_2_label" tabindex="">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Pipeline
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_2_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_4_2">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Pipeline
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../Pipeline/pipeline/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Overview
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../Pipeline/benchmark_pipeline/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Benchmark
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../Pipeline/perf_pipeline/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Perf
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+      
+        
+      
+    
+    
+    
+      
+      
+        
+          
+          
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_4_3" >
+        
+          
+          <label class="md-nav__link" for="__nav_4_3" id="__nav_4_3_label" tabindex="">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Network
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_3_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_4_3">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Network
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../Unit/network_unit/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Unit
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+    
+  
+  
+  
+    
+    
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+      
+      
+        
+          
+          
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_4" checked>
+        
+          
+          <label class="md-nav__link" for="__nav_4_4" id="__nav_4_4_label" tabindex="">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Parser
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_4_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_4_4">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Parser
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../Unit/parser_unit/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Unit
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../Benchmark/parser_benchmark/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Benchmark
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+    
+  
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Perf
+  
+
+    
+  </span>
+  
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Perf
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#test-setup" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Test Setup
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#protocol-comparison-back" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Protocol Comparison at a Glance
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#results-parser-dispatch" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Results (Parser Dispatch)
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Results (Parser Dispatch)">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#key-metrics" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Key Metrics
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#hotspot-analysis" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Hotspot Analysis
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#cache-memory" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Cache &amp; Memory
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#false-sharing-c2c" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        False Sharing (C2C)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#flamegraph" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Flamegraph
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#findings-action-items" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Findings &amp; Action Items
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#results-fix" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Results (FIX)
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Results (FIX)">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#key-metrics_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Key Metrics
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#hotspot-analysis_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Hotspot Analysis
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#cache-memory_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Cache &amp; Memory
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#false-sharing-c2c_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        False Sharing (C2C)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#flamegraph_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Flamegraph
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#findings-action-items_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Findings &amp; Action Items
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#results-itch-bist" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Results (ITCH BIST)
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Results (ITCH BIST)">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#key-metrics_2" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Key Metrics
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#hotspot-analysis_2" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Hotspot Analysis
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#cache-memory_2" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Cache &amp; Memory
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#false-sharing-c2c_2" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        False Sharing (C2C)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#flamegraph_2" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Flamegraph
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#findings-action-items_2" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Findings &amp; Action Items
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#results-itch-nasdaq" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Results (ITCH NASDAQ)
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Results (ITCH NASDAQ)">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#key-metrics_3" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Key Metrics
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#hotspot-analysis_3" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Hotspot Analysis
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#cache-memory_3" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Cache &amp; Memory
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#false-sharing-c2c_3" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        False Sharing (C2C)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#flamegraph_3" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Flamegraph
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#findings-action-items_3" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Findings &amp; Action Items
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#results-ouch-bist" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Results (OUCH BIST)
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Results (OUCH BIST)">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#key-metrics_4" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Key Metrics
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#hotspot-analysis_4" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Hotspot Analysis
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#cache-memory_4" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Cache &amp; Memory
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#false-sharing-c2c_4" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        False Sharing (C2C)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#flamegraph_4" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Flamegraph
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#findings-action-items_4" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Findings &amp; Action Items
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#results(ouch-nasdaq)" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Results (OUCH NASDAQ)
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Results (OUCH NASDAQ)">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#key-metrics_5" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Key Metrics
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#flamegraph_5" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Flamegraph
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#bonus-queue-push-overhead" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Bonus — Queue Push Overhead
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Bonus — Queue Push Overhead">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#comparison" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Comparison
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#bonus-without-fix" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Bonus — Without FIX
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Bonus — Without FIX">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#comparison_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Comparison
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#raw-output" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Raw Output
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Raw Output">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#parser-dispatch-raw" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Parser Dispatch RAW
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#fix-raw" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        FIX RAW
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#itch-bist-raw" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        ITCH BIST RAW
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#itch-nasdaq-raw" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        ITCH NASDAQ RAW
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#ouch-bist-raw" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        OUCH BIST RAW
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#ouch-nasdaq-parsefunc-raw" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        OUCH NASDAQ (parseFunc) RAW
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+      
+      
+        
+          
+          
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_4_5" >
+        
+          
+          <label class="md-nav__link" for="__nav_4_5" id="__nav_4_5_label" tabindex="">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Order Manager
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_5_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_4_5">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Order Manager
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../Unit/order_manager_unit/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Unit
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../Benchmark/order_manager_benchmark/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Benchmark
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../order_manager_perf/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Perf
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+      
+      
+        
+          
+          
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_4_6" >
+        
+          
+          <label class="md-nav__link" for="__nav_4_6" id="__nav_4_6_label" tabindex="">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Risk
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_6_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_4_6">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Risk
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../Unit/risk_unit/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Unit
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../Benchmark/risk_benchmark/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Benchmark
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../risk_perf/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Perf
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+      
+      
+        
+          
+          
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_4_7" >
+        
+          
+          <label class="md-nav__link" for="__nav_4_7" id="__nav_4_7_label" tabindex="">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Builder
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_7_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_4_7">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Builder
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../Unit/builder_unit/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Unit
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../Benchmark/builder_benchmark/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Benchmark
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../builder_perf/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Perf
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../optimization/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Recent Optimization
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#test-setup" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Test Setup
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#protocol-comparison-back" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Protocol Comparison at a Glance
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#results-parser-dispatch" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Results (Parser Dispatch)
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Results (Parser Dispatch)">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#key-metrics" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Key Metrics
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#hotspot-analysis" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Hotspot Analysis
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#cache-memory" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Cache &amp; Memory
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#false-sharing-c2c" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        False Sharing (C2C)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#flamegraph" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Flamegraph
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#findings-action-items" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Findings &amp; Action Items
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#results-fix" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Results (FIX)
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Results (FIX)">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#key-metrics_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Key Metrics
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#hotspot-analysis_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Hotspot Analysis
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#cache-memory_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Cache &amp; Memory
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#false-sharing-c2c_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        False Sharing (C2C)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#flamegraph_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Flamegraph
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#findings-action-items_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Findings &amp; Action Items
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#results-itch-bist" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Results (ITCH BIST)
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Results (ITCH BIST)">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#key-metrics_2" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Key Metrics
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#hotspot-analysis_2" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Hotspot Analysis
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#cache-memory_2" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Cache &amp; Memory
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#false-sharing-c2c_2" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        False Sharing (C2C)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#flamegraph_2" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Flamegraph
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#findings-action-items_2" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Findings &amp; Action Items
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#results-itch-nasdaq" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Results (ITCH NASDAQ)
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Results (ITCH NASDAQ)">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#key-metrics_3" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Key Metrics
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#hotspot-analysis_3" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Hotspot Analysis
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#cache-memory_3" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Cache &amp; Memory
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#false-sharing-c2c_3" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        False Sharing (C2C)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#flamegraph_3" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Flamegraph
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#findings-action-items_3" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Findings &amp; Action Items
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#results-ouch-bist" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Results (OUCH BIST)
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Results (OUCH BIST)">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#key-metrics_4" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Key Metrics
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#hotspot-analysis_4" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Hotspot Analysis
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#cache-memory_4" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Cache &amp; Memory
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#false-sharing-c2c_4" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        False Sharing (C2C)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#flamegraph_4" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Flamegraph
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#findings-action-items_4" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Findings &amp; Action Items
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#results(ouch-nasdaq)" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Results (OUCH NASDAQ)
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Results (OUCH NASDAQ)">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#key-metrics_5" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Key Metrics
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#flamegraph_5" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Flamegraph
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#bonus-queue-push-overhead" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Bonus — Queue Push Overhead
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Bonus — Queue Push Overhead">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#comparison" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Comparison
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#bonus-without-fix" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Bonus — Without FIX
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Bonus — Without FIX">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#comparison_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Comparison
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#raw-output" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Raw Output
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Raw Output">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#parser-dispatch-raw" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Parser Dispatch RAW
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#fix-raw" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        FIX RAW
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#itch-bist-raw" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        ITCH BIST RAW
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#itch-nasdaq-raw" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        ITCH NASDAQ RAW
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#ouch-bist-raw" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        OUCH BIST RAW
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#ouch-nasdaq-parsefunc-raw" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        OUCH NASDAQ (parseFunc) RAW
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              
+              <article class="md-content__inner md-typeset">
+                
+                  
+
+
+
+<h1 id="parser-perf-analysis">Parser — Perf Analysis</h1>
+<p>Profiling of the parser under sustained load across all supported protocols. The parser dispatch test runs all protocols concurrently through the full dispatch pipeline. Per-protocol tests isolate each parser individually to expose protocol-specific cache and branch behavior.</p>
+<hr />
+<h2 id="test-setup">Test Setup</h2>
+<p>All perf tests were conducted under <strong>Profile 1 — Performance/Idle</strong>. For the full profile comparison and selection rationale, see <a href="pipeline.md#profile-selection">Pipeline Overview</a>.</p>
+<table>
+<thead>
+<tr>
+<th>Field</th>
+<th>Value</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>CPU</td>
+<td>13th Gen Intel Core i7-13620H (10C/16T)</td>
+</tr>
+<tr>
+<td>P-core max</td>
+<td>4900 MHz</td>
+</tr>
+<tr>
+<td>Kernel</td>
+<td>6.17.0-29-generic x86_64</td>
+</tr>
+<tr>
+<td>Governor</td>
+<td>performance</td>
+</tr>
+<tr>
+<td>NUMA</td>
+<td>Single node, 15714 MB total</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h2 id="protocol-comparison-back">Protocol Comparison at a Glance</h2>
+<p>Before diving into individual results, the cross-protocol comparison reveals the most important structural difference in parser behavior.</p>
+<table>
+<thead>
+<tr>
+<th>Protocol</th>
+<th>P-core IPC</th>
+<th>L1-D miss</th>
+<th>L1-I misses</th>
+<th>Branch miss</th>
+<th>Local HITM</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Dispatch (all)</td>
+<td>0.46</td>
+<td>4.96%</td>
+<td>12.3M</td>
+<td>0.37%</td>
+<td>16,880</td>
+</tr>
+<tr>
+<td>FIX</td>
+<td>1.01</td>
+<td>2.90%</td>
+<td>208K</td>
+<td>0.28%</td>
+<td>4,528</td>
+</tr>
+<tr>
+<td>ITCH BIST</td>
+<td>0.19</td>
+<td>10.32%</td>
+<td>44K</td>
+<td>2.37%</td>
+<td>2,243</td>
+</tr>
+<tr>
+<td>ITCH NASDAQ</td>
+<td>0.20</td>
+<td>10.27%</td>
+<td>54K</td>
+<td>2.56%</td>
+<td>2,860</td>
+</tr>
+<tr>
+<td>OUCH BIST</td>
+<td>0.18</td>
+<td>11.36%</td>
+<td>247K</td>
+<td>1.59%</td>
+<td>9,265</td>
+</tr>
+<tr>
+<td>OUCH NASDAQ*</td>
+<td>2.26</td>
+<td>0.30%</td>
+<td>5K</td>
+<td>0.01%</td>
+<td>0</td>
+</tr>
+</tbody>
+</table>
+<p>*OUCH NASDAQ was profiled as an isolated parse function test (no dispatch pipeline) — see <a href="#results(ouch-nasdaq)">OUCH NASDAQ</a> for context.</p>
+<p><strong>The dominant pattern:</strong> FIX is compute-bound (IPC 1.01) with moderate cache pressure. ITCH and OUCH are severely memory-bound (IPC 0.18–0.20) — their high L1-D miss rates are driven by SPSC queue cache line contention, not struct complexity — as confirmed by the OUCH NASDAQ isolation test (IPC 2.26, L1-D miss 0.30% with no queue). The dispatch overhead and boost queue contention compound this in the combined test.</p>
+<hr />
+<h2 id="results-parser-dispatch">Results (Parser Dispatch)</h2>
+<p>All protocols running concurrently through the full dispatch pipeline. Two worker threads plus main, 3 CPUs utilized.</p>
+<table>
+<thead>
+<tr>
+<th>Field</th>
+<th>Value</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Wall time</td>
+<td>10.70 s</td>
+</tr>
+<tr>
+<td>User time</td>
+<td>31.64 s</td>
+</tr>
+<tr>
+<td>Sys time</td>
+<td>0.13 s</td>
+</tr>
+<tr>
+<td>CPUs utilized</td>
+<td>2.970</td>
+</tr>
+</tbody>
+</table>
+<h3 id="key-metrics">Key Metrics</h3>
+<table>
+<thead>
+<tr>
+<th>Metric</th>
+<th>Value</th>
+<th>Note</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>IPC</td>
+<td>0.46</td>
+<td>P-core memory-bound</td>
+</tr>
+<tr>
+<td>Branch miss rate</td>
+<td>0.37%</td>
+<td>Low</td>
+</tr>
+<tr>
+<td>L1-D miss rate</td>
+<td>4.96%</td>
+<td>Elevated — queue write + struct access</td>
+</tr>
+<tr>
+<td>LLC miss rate</td>
+<td>0.03%</td>
+<td>Low — working set fits in LLC</td>
+</tr>
+</tbody>
+</table>
+<p><strong>P-core at 0.46 is stalling on memory</strong> — queue writes, struct pointer chasing. The bottleneck is not the parsing itself but the inter-thread data movement via boost queue.</p>
+<p><strong>L1-D miss at 4.96%</strong> is the combined effect of boost queue head/tail pointer writes and the high L1-D miss inherent to ITCH/OUCH message structs (10%+ in isolation). FIX's lower miss rate (2.90%) partially offsets this.</p>
+<h3 id="hotspot-analysis">Hotspot Analysis</h3>
+<table>
+<thead>
+<tr>
+<th>Overhead</th>
+<th>Self</th>
+<th>Symbol</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>33.14%</td>
+<td>31.31%</td>
+<td><code>main::{lambda()#1}</code> — feeder thread</td>
+</tr>
+<tr>
+<td>33.12%</td>
+<td>33.10%</td>
+<td><code>main::{lambda()#2}</code> — consumer thread</td>
+</tr>
+<tr>
+<td>33.07%</td>
+<td>9.72%</td>
+<td><code>main</code></td>
+</tr>
+<tr>
+<td>23.34%</td>
+<td>2.78%</td>
+<td><code>Parser_Dispatch::dispatch()</code></td>
+</tr>
+</tbody>
+</table>
+<p>Two near-equal worker threads dominate — feeder pushing packets, consumer dispatching. <code>dispatch()</code> at 2.78% self confirms it is a thin dispatcher, not itself the bottleneck. The 9.72% self on <code>main</code> reflects test driver overhead.</p>
+<h3 id="cache-memory">Cache &amp; Memory</h3>
+<table>
+<thead>
+<tr>
+<th>Metric</th>
+<th>Value</th>
+<th>Note</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>L1-D miss rate</td>
+<td>4.96%</td>
+<td>Mixed — queue writes + ITCH/OUCH struct access</td>
+</tr>
+<tr>
+<td>LLC miss rate</td>
+<td>0.03%</td>
+<td>Very low — working set in LLC</td>
+</tr>
+<tr>
+<td>L1-I misses</td>
+<td>12.3M</td>
+<td>Moderate — dispatch table + multiple parse paths</td>
+</tr>
+<tr>
+<td>dTLB misses</td>
+<td>1,452K</td>
+<td>Elevated — boost queue buffer spans many pages</td>
+</tr>
+<tr>
+<td>iTLB misses</td>
+<td>176K</td>
+<td>Low</td>
+</tr>
+</tbody>
+</table>
+<p><strong>dTLB misses at 1.45M</strong> stand out — the boost spsc queue with 1024 capacity holds large RxPacket pointers and its internal buffer spans multiple pages. Each queue push/pop potentially crosses a page boundary, adding TLB pressure. This disappears in the without-push test (153K dTLB misses) — confirming the queue buffer as the source.</p>
+<h3 id="false-sharing-c2c">False Sharing (C2C)</h3>
+<table>
+<thead>
+<tr>
+<th>Metric</th>
+<th>Value</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Total shared cache lines</td>
+<td>2,020</td>
+</tr>
+<tr>
+<td>Local HITM</td>
+<td>16,880</td>
+</tr>
+<tr>
+<td>Blocked accesses on shared lines</td>
+<td>4,701</td>
+</tr>
+</tbody>
+</table>
+<p><strong>16,880 HITM is the highest of all parser tests</strong> and driven entirely by boost queue internal state — consistent with the pipeline RxTx findings. The without-push test shows 4,072 HITM, confirming ~75% of HITM in the dispatch test is boost-sourced.</p>
+<div class="admonition warning">
+<p class="admonition-title">Optimization Candidate</p>
+<p>boost::lockfree queue head/tail contention is the dominant false sharing source. A custom SPSC queue with explicit cache line separation would reduce HITM by ~75% based on the without-push comparison. Pre-production redesign candidate.</p>
+</div>
+<h3 id="flamegraph">Flamegraph</h3>
+<p><a href="../../assets/flamegraph_parser.svg" target="_blank">Parser Dispatch Flamegraph</a></p>
+<h3 id="findings-action-items">Findings &amp; Action Items</h3>
+<table>
+<thead>
+<tr>
+<th>#</th>
+<th>Finding</th>
+<th>Impact</th>
+<th>Status</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>1</td>
+<td>P-core IPC 0.46 — memory-bound, boost queue dominates</td>
+<td>Expected under queue-push load</td>
+<td>✅ Confirmed</td>
+</tr>
+<tr>
+<td>2</td>
+<td>L1-D miss 4.96% — queue writes + ITCH/OUCH struct access</td>
+<td>Cache pressure on hot path</td>
+<td>⚠️ Custom queue candidate</td>
+</tr>
+<tr>
+<td>3</td>
+<td>dTLB miss 1.45M — boost queue buffer page spans</td>
+<td>TLB pressure on every push/pop</td>
+<td>⚠️ Custom queue candidate</td>
+</tr>
+<tr>
+<td>4</td>
+<td>16,880 HITM — boost queue internal state</td>
+<td>~75% boost-sourced per without-push test</td>
+<td>⚠️ Pre-prod redesign</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h2 id="results-fix">Results (FIX)</h2>
+<table>
+<thead>
+<tr>
+<th>Field</th>
+<th>Value</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Wall time</td>
+<td>2.80 s</td>
+</tr>
+<tr>
+<td>User time</td>
+<td>5.30 s</td>
+</tr>
+<tr>
+<td>Sys time</td>
+<td>0.08 s</td>
+</tr>
+<tr>
+<td>CPUs utilized</td>
+<td>1.920</td>
+</tr>
+</tbody>
+</table>
+<h3 id="key-metrics_1">Key Metrics</h3>
+<table>
+<thead>
+<tr>
+<th>Metric</th>
+<th>Value</th>
+<th>Note</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>IPC</td>
+<td>1.01</td>
+<td>Compute-bound</td>
+</tr>
+<tr>
+<td>Branch miss rate</td>
+<td>0.28%</td>
+<td>Excellent</td>
+</tr>
+<tr>
+<td>L1-D miss rate</td>
+<td>2.90%</td>
+<td>Moderate</td>
+</tr>
+<tr>
+<td>LLC miss rate</td>
+<td>0.00%</td>
+<td>Negligible</td>
+</tr>
+</tbody>
+</table>
+<p><strong>FIX is the most compute-friendly protocol.</strong> IPC at 1.01 (vs 0.18–0.20 for ITCH/OUCH) reflects the difference in message structure — FIX messages are tag-value pairs parsed sequentially with simple field extraction. No large struct pointer chasing, no variant dispatch lookup tables.</p>
+<h3 id="hotspot-analysis_1">Hotspot Analysis</h3>
+<table>
+<thead>
+<tr>
+<th>Overhead</th>
+<th>Self</th>
+<th>Symbol</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>29.39%</td>
+<td>23.54%</td>
+<td><code>Parser_Dispatch::parseFIX()</code></td>
+</tr>
+<tr>
+<td>3.93%</td>
+<td>3.93%</td>
+<td><code>Parser_FIX::find_type()</code></td>
+</tr>
+<tr>
+<td>—</td>
+<td>2.73%</td>
+<td><code>Parser_FIX::nextFixMsg()</code></td>
+</tr>
+</tbody>
+</table>
+<p><code>parseFIX</code> at 23.54% self is the clear hot function. <code>find_type</code> and <code>nextFixMsg</code> are secondary.</p>
+<h3 id="cache-memory_1">Cache &amp; Memory</h3>
+<table>
+<thead>
+<tr>
+<th>Metric</th>
+<th>Value</th>
+<th>Note</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>L1-D miss rate</td>
+<td>2.90%</td>
+<td>Moderate — sequential buffer traversal</td>
+</tr>
+<tr>
+<td>LLC miss rate</td>
+<td>0.00%</td>
+<td>Negligible</td>
+</tr>
+<tr>
+<td>L1-I misses</td>
+<td>208K</td>
+<td>Low — but absl::btree visible in icache profile</td>
+</tr>
+<tr>
+<td>dTLB misses</td>
+<td>30K</td>
+<td>Low</td>
+</tr>
+<tr>
+<td>iTLB misses</td>
+<td>7K</td>
+<td>Very low</td>
+</tr>
+</tbody>
+</table>
+<p><strong>L1-I profile reveals absl::btree at 11.66% overhead.</strong> FIX seqnum validation uses an abseil btree map on putting messages in order. The btree traversal code is large enough to create icache pressure — it appears at 11.66% overhead in the icache record alongside <code>parseFIX</code> at 73.24%. Sequential buffer traversal by <code>nextFixMsg</code> contributes to L1-D miss.</p>
+<div class="admonition warning">
+<p class="admonition-title">Optimization Candidate</p>
+<p><code>absl::btree</code> contributes meaningful icache pressure.</p>
+</div>
+<h3 id="false-sharing-c2c_1">False Sharing (C2C)</h3>
+<table>
+<thead>
+<tr>
+<th>Metric</th>
+<th>Value</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Total shared cache lines</td>
+<td>544</td>
+</tr>
+<tr>
+<td>Local HITM</td>
+<td>4,528</td>
+</tr>
+</tbody>
+</table>
+<p>4,528 HITM — lower than the dispatch test because only FIX queue is active. Pattern consistent with boost spsc queue internal state.</p>
+<h3 id="flamegraph_1">Flamegraph</h3>
+<p><a href="../../assets/flamegraph_parser_fix.svg" target="_blank">FIX Parser Flamegraph</a></p>
+<h3 id="findings-action-items_1">Findings &amp; Action Items</h3>
+<table>
+<thead>
+<tr>
+<th>#</th>
+<th>Finding</th>
+<th>Impact</th>
+<th>Status</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>1</td>
+<td>IPC 1.01 — FIX is compute-bound, best cache behavior of all protocols</td>
+<td>Protocol characteristic</td>
+<td>✅ No action needed</td>
+</tr>
+<tr>
+<td>2</td>
+<td><code>absl::btree</code> — icache pressure at 11.66%</td>
+<td>Avoidable overhead on parse hot path</td>
+<td>⚠️ Identified, scheduled</td>
+</tr>
+<tr>
+<td>3</td>
+<td><code>nextFixMsg</code> sequential buffer traversal — L1-D miss contributor</td>
+<td>Moderate impact</td>
+<td>⚠️ Identified, monitored</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h2 id="results-itch-bist">Results (ITCH BIST)</h2>
+<table>
+<thead>
+<tr>
+<th>Field</th>
+<th>Value</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Wall time</td>
+<td>2.39 s</td>
+</tr>
+<tr>
+<td>User time</td>
+<td>4.55 s</td>
+</tr>
+<tr>
+<td>Sys time</td>
+<td>0.09 s</td>
+</tr>
+<tr>
+<td>CPUs utilized</td>
+<td>1.945</td>
+</tr>
+</tbody>
+</table>
+<h3 id="key-metrics_2">Key Metrics</h3>
+<table>
+<thead>
+<tr>
+<th>Metric</th>
+<th>Value</th>
+<th>Note</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>IPC</td>
+<td>0.19</td>
+<td>Severely memory-bound</td>
+</tr>
+<tr>
+<td>Branch miss rate</td>
+<td>2.37%</td>
+<td>Elevated — indirect call in handler lookup table</td>
+</tr>
+<tr>
+<td>L1-D miss rate</td>
+<td>10.32%</td>
+<td>High — SPSC queue cache line contention</td>
+</tr>
+<tr>
+<td>LLC miss rate</td>
+<td>0.00%</td>
+<td>Working set in LLC</td>
+</tr>
+</tbody>
+</table>
+<p><strong>IPC at 0.19 — the lowest P-core IPC of all parser tests.</strong> The P-core is stalling on SPSC queue cache line contention, not parse logic. The message handler lookup table (<code>makeMessageHandlersLookup</code> lambda at 4.67% self in dcache) adds an indirection layer visible in the hotspot profile.</p>
+<p><strong>Branch miss at 2.37%</strong> is 8× higher than FIX — reflecting the indirect call in the message handler lookup table. Mixed message type stream prevents the branch predictor from learning the call target.</p>
+<h3 id="hotspot-analysis_2">Hotspot Analysis</h3>
+<table>
+<thead>
+<tr>
+<th>Overhead</th>
+<th>Self</th>
+<th>Symbol</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>26.35%</td>
+<td>26.35%</td>
+<td><code>Parser_Dispatch::parseITCH_BIST()</code></td>
+</tr>
+<tr>
+<td>4.67%</td>
+<td>4.67%</td>
+<td><code>makeMessageHandlersLookup</code> lambda</td>
+</tr>
+</tbody>
+</table>
+<p><code>parseITCH_BIST</code> dominates with 26.35% self. The message handler lambda at 4.67% self shows the handler dispatch cost.</p>
+<h3 id="cache-memory_2">Cache &amp; Memory</h3>
+<table>
+<thead>
+<tr>
+<th>Metric</th>
+<th>Value</th>
+<th>Note</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>L1-D miss rate</td>
+<td>10.32%</td>
+<td>High — SPSC queue cache line contention</td>
+</tr>
+<tr>
+<td>LLC miss rate</td>
+<td>0.00%</td>
+<td>Working set fits</td>
+</tr>
+<tr>
+<td>L1-I misses</td>
+<td>44K</td>
+<td>Very low — icache not stressed</td>
+</tr>
+<tr>
+<td>dTLB misses</td>
+<td>1.4K</td>
+<td>Very low</td>
+</tr>
+</tbody>
+</table>
+<p><strong>L1-D miss at 10.32%</strong> is 3.6× FIX. It does not originate from parser logic itself. perf c2c identified 2,243 Local HITM events across 298 shared cache lines, indicating that the producer and consumer are contending on the same SPSC queue cache lines. Each push invalidates the cache line on the producer side, forcing an L1 miss on the next access.</p>
+<h3 id="false-sharing-c2c_2">False Sharing (C2C)</h3>
+<table>
+<thead>
+<tr>
+<th>Metric</th>
+<th>Value</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Local HITM</td>
+<td>2,243</td>
+</tr>
+<tr>
+<td>Total shared cache lines</td>
+<td>298</td>
+</tr>
+</tbody>
+</table>
+<p>Lowest HITM of all queue-based tests — ITCH messages are smaller on average, less queue write pressure per message.</p>
+<h3 id="flamegraph_2">Flamegraph</h3>
+<p><a href="../../assets/flamegraph_parser_itch_bist.svg" target="_blank">ITCH BIST Flamegraph</a></p>
+<h3 id="findings-action-items_2">Findings &amp; Action Items</h3>
+<table>
+<thead>
+<tr>
+<th>#</th>
+<th>Finding</th>
+<th>Impact</th>
+<th>Status</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>1</td>
+<td>IPC 0.19 — severely memory-bound, queue contention dominant</td>
+<td>High L1-D miss rate</td>
+<td>⚠️ Identified, pre-prod review</td>
+</tr>
+<tr>
+<td>2</td>
+<td>Branch miss 2.37% — indirect call in message handler lookup table</td>
+<td>Mixed message type stream prevents branch predictor from learning call target</td>
+<td>⚠️ Identified, monitored</td>
+</tr>
+<tr>
+<td>3</td>
+<td>Handler lookup lambda 4.67% self</td>
+<td>Indirection cost per message</td>
+<td>⚠️ Identified, monitored</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h2 id="results-itch-nasdaq">Results (ITCH NASDAQ)</h2>
+<table>
+<thead>
+<tr>
+<th>Field</th>
+<th>Value</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Wall time</td>
+<td>2.33 s</td>
+</tr>
+<tr>
+<td>User time</td>
+<td>4.44 s</td>
+</tr>
+<tr>
+<td>Sys time</td>
+<td>0.09 s</td>
+</tr>
+<tr>
+<td>CPUs utilized</td>
+<td>1.946</td>
+</tr>
+</tbody>
+</table>
+<h3 id="key-metrics_3">Key Metrics</h3>
+<table>
+<thead>
+<tr>
+<th>Metric</th>
+<th>Value</th>
+<th>Note</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>IPC</td>
+<td>0.20</td>
+<td>Near-identical to ITCH BIST</td>
+</tr>
+<tr>
+<td>Branch miss rate</td>
+<td>2.56%</td>
+<td>Marginally higher than BIST</td>
+</tr>
+<tr>
+<td>L1-D miss rate</td>
+<td>10.27%</td>
+<td>Near-identical to ITCH BIST</td>
+</tr>
+<tr>
+<td>LLC miss rate</td>
+<td>0.00%</td>
+<td>—</td>
+</tr>
+</tbody>
+</table>
+<p><strong>ITCH NASDAQ and ITCH BIST are near-identical in all metrics</strong> — same protocol family, similar message struct layout and handler dispatch pattern. NASDAQ has marginally more branch misses (2.56% vs 2.37%) reflecting a slightly different message type distribution.</p>
+<h3 id="hotspot-analysis_3">Hotspot Analysis</h3>
+<table>
+<thead>
+<tr>
+<th>Overhead</th>
+<th>Self</th>
+<th>Symbol</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>24.55%</td>
+<td>24.55%</td>
+<td><code>Parser_Dispatch::parseITCH_NASDAQ()</code></td>
+</tr>
+<tr>
+<td>7.48%</td>
+<td>7.48%</td>
+<td><code>makeMessageHandlersLookup</code> lambda (dcache)</td>
+</tr>
+</tbody>
+</table>
+<p>Handler lookup at 7.48% dcache self is higher than BIST (4.67%) — NASDAQ has more message types in its handler table.</p>
+<h3 id="cache-memory_3">Cache &amp; Memory</h3>
+<table>
+<thead>
+<tr>
+<th>Metric</th>
+<th>Value</th>
+<th>Note</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>L1-D miss rate</td>
+<td>10.27%</td>
+<td>Near-identical to ITCH BIST</td>
+</tr>
+<tr>
+<td>L1-I misses</td>
+<td>54K</td>
+<td>Slightly higher than BIST (44K) — more message types</td>
+</tr>
+<tr>
+<td>dTLB misses</td>
+<td>1.4K</td>
+<td>Very low</td>
+</tr>
+</tbody>
+</table>
+<h3 id="false-sharing-c2c_3">False Sharing (C2C)</h3>
+<table>
+<thead>
+<tr>
+<th>Metric</th>
+<th>Value</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Local HITM</td>
+<td>2,860</td>
+</tr>
+<tr>
+<td>Total shared cache lines</td>
+<td>370</td>
+</tr>
+</tbody>
+</table>
+<p>Slightly higher than BIST — consistent with larger handler table.</p>
+<h3 id="flamegraph_3">Flamegraph</h3>
+<p><a href="../../assets/flamegraph_parser_itch_nasdaq.svg" target="_blank">ITCH NASDAQ Flamegraph</a></p>
+<h3 id="findings-action-items_3">Findings &amp; Action Items</h3>
+<p>Findings mirror ITCH BIST. No independent optimization candidates beyond those identified for ITCH BIST.</p>
+<hr />
+<h2 id="results-ouch-bist">Results (OUCH BIST)</h2>
+<table>
+<thead>
+<tr>
+<th>Field</th>
+<th>Value</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Wall time</td>
+<td>5.59 s</td>
+</tr>
+<tr>
+<td>User time</td>
+<td>16.29 s</td>
+</tr>
+<tr>
+<td>Sys time</td>
+<td>0.08 s</td>
+</tr>
+<tr>
+<td>CPUs utilized</td>
+<td>2.928</td>
+</tr>
+</tbody>
+</table>
+<h3 id="key-metrics_4">Key Metrics</h3>
+<table>
+<thead>
+<tr>
+<th>Metric</th>
+<th>Value</th>
+<th>Note</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>IPC</td>
+<td>0.18</td>
+<td>Worst P-core IPC of all tests</td>
+</tr>
+<tr>
+<td>Branch miss rate</td>
+<td>1.59%</td>
+<td>High</td>
+</tr>
+<tr>
+<td>L1-D miss rate</td>
+<td>11.36%</td>
+<td>Highest of all tests</td>
+</tr>
+<tr>
+<td>LLC miss rate</td>
+<td>0.00%</td>
+<td>—</td>
+</tr>
+</tbody>
+</table>
+<p><strong>OUCH BIST has the worst cache behavior of all protocols.</strong> IPC 0.18 and L1-D miss at 11.36% and 9,265 Local HITM are the highest per-protocol values — driven by queue contention across the additional thread involved in OUCH packet handling. Wall time is significantly longer (5.59s vs ~2.4s for ITCH), consistent with higher per-message CPU cost.</p>
+<h3 id="hotspot-analysis_4">Hotspot Analysis</h3>
+<table>
+<thead>
+<tr>
+<th>Overhead</th>
+<th>Self</th>
+<th>Symbol</th>
+<th>Profile</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>28.28%</td>
+<td>28.28%</td>
+<td><code>Parser_Dispatch::parseOUCH_BIST()</code></td>
+<td>dcache</td>
+</tr>
+<tr>
+<td>6.32%</td>
+<td>6.32%</td>
+<td><code>Parser_Dispatch::dispatch()</code></td>
+<td>dcache</td>
+</tr>
+<tr>
+<td>13.79%</td>
+<td>13.79%</td>
+<td><code>main::{lambda()#1}</code></td>
+<td>icache</td>
+</tr>
+</tbody>
+</table>
+<p><code>dispatch()</code> at 6.32% dcache self is notably higher than other protocols — OUCH dispatch involves more decision branching per packet.</p>
+<h3 id="cache-memory_4">Cache &amp; Memory</h3>
+<table>
+<thead>
+<tr>
+<th>Metric</th>
+<th>Value</th>
+<th>Note</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>L1-D miss rate</td>
+<td>11.36%</td>
+<td>Highest — queue contention across additional thread</td>
+</tr>
+<tr>
+<td>LLC miss rate</td>
+<td>0.00%</td>
+<td>—</td>
+</tr>
+<tr>
+<td>L1-I misses</td>
+<td>247K</td>
+<td>Elevated — complex dispatch path</td>
+</tr>
+<tr>
+<td>dTLB misses</td>
+<td>36.6K</td>
+<td>Moderate</td>
+</tr>
+<tr>
+<td>iTLB misses</td>
+<td>19.3K</td>
+<td>Moderate</td>
+</tr>
+</tbody>
+</table>
+<h3 id="false-sharing-c2c_4">False Sharing (C2C)</h3>
+<table>
+<thead>
+<tr>
+<th>Metric</th>
+<th>Value</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Local HITM</td>
+<td>9,265</td>
+</tr>
+<tr>
+<td>Total shared cache lines</td>
+<td>852</td>
+</tr>
+</tbody>
+</table>
+<p>Highest HITM of the per-protocol tests — driven by queue contention across the additional thread in OUCH packet handling.</p>
+<h3 id="flamegraph_4">Flamegraph</h3>
+<p><a href="../../assets/flamegraph_parser_ouch_bist.svg" target="_blank">OUCH BIST Flamegraph</a></p>
+<h3 id="findings-action-items_4">Findings &amp; Action Items</h3>
+<table>
+<thead>
+<tr>
+<th>#</th>
+<th>Finding</th>
+<th>Impact</th>
+<th>Status</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>1</td>
+<td>IPC 0.18 + L1-D miss 11.36% — worst cache behavior</td>
+<td>Queue contention across additional thread drives memory stalls</td>
+<td>⚠️ Identified, pre-prod review with custom queue</td>
+</tr>
+<tr>
+<td>2</td>
+<td><code>dispatch()</code> 6.32% dcache self — highest of all protocols</td>
+<td>OUCH dispatch branching cost</td>
+<td>⚠️ Identified, monitored</td>
+</tr>
+<tr>
+<td>3</td>
+<td>9,265 HITM — highest per-protocol HITM</td>
+<td>Queue contention across additional thread</td>
+<td>⚠️ Identified, monitored</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h2 id="results(ouch-nasdaq)">Results (OUCH NASDAQ)</h2>
+<div class="admonition note">
+<p class="admonition-title">Test Scope</p>
+<p>This test profiled the OUCH NASDAQ <strong>parse function in isolation</strong> — no dispatch pipeline, no queue, no concurrent threads as it has the identical dispatch path with OUCH BIST. It measures the pure parse function cost, not the full path. Results are not directly comparable to other protocol tests. -&gt; <a href="#protocol-comparison-back">back to protocol comparison</a></p>
+</div>
+<table>
+<thead>
+<tr>
+<th>Field</th>
+<th>Value</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Wall time</td>
+<td>0.14 s</td>
+</tr>
+<tr>
+<td>User time</td>
+<td>0.14 s</td>
+</tr>
+<tr>
+<td>Sys time</td>
+<td>0.003 s</td>
+</tr>
+<tr>
+<td>CPUs utilized</td>
+<td>0.991</td>
+</tr>
+</tbody>
+</table>
+<h3 id="key-metrics_5">Key Metrics</h3>
+<table>
+<thead>
+<tr>
+<th>Metric</th>
+<th>Value</th>
+<th>Note</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>IPC (P-core)</td>
+<td>2.26</td>
+<td>Compute-bound — dispatch/queue overhead removed</td>
+</tr>
+<tr>
+<td>Branch miss rate</td>
+<td>0.01%</td>
+<td>Excellent</td>
+</tr>
+<tr>
+<td>L1-D miss rate</td>
+<td>0.30%</td>
+<td>Excellent</td>
+</tr>
+<tr>
+<td>LLC miss rate</td>
+<td>52% relative</td>
+<td>Only 116 absolute misses — negligible</td>
+</tr>
+<tr>
+<td>Local HITM</td>
+<td>0</td>
+<td>Zero false sharing — single thread</td>
+</tr>
+</tbody>
+</table>
+<p><strong>IPC 2.26 in isolation vs 0.18 in full OUCH BIST dispatch test</strong> — this is the most revealing number in all parser profiling. The parse function itself is highly efficient and compute-bound. The 12× IPC gap between isolated and dispatched execution is entirely attributable to dispatch overhead, boost queue contention, and cross-thread struct access. The parse implementation is not the problem.</p>
+<h3 id="flamegraph_5">Flamegraph</h3>
+<p><a href="../../assets/flamegraph_parser_ouch_nasdaq.svg" target="_blank">OUCH NASDAQ Flamegraph</a></p>
+<hr />
+<h2 id="bonus-queue-push-overhead">Bonus — Queue Push Overhead</h2>
+<p>Queue push removed from the parser dispatch test. All protocols still parse, but parsed messages are not pushed to the downstream queue. Isolates the pure parser dispatch cost from the queue transfer cost.</p>
+<h3 id="comparison">Comparison</h3>
+<table>
+<thead>
+<tr>
+<th>Metric</th>
+<th>With Queue Push</th>
+<th>Without Queue Push</th>
+<th>Delta</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Wall time</td>
+<td>10.70 s</td>
+<td>5.67 s</td>
+<td><strong>47% faster</strong></td>
+</tr>
+<tr>
+<td>CPUs utilized</td>
+<td>2.970</td>
+<td>1.959</td>
+<td>One fewer effective thread</td>
+</tr>
+<tr>
+<td>P-core IPC</td>
+<td>0.46</td>
+<td>1.12</td>
+<td><strong>2.4× improvement</strong></td>
+</tr>
+<tr>
+<td>Branch miss rate</td>
+<td>0.37%</td>
+<td>0.07%</td>
+<td><strong>5× fewer misses</strong></td>
+</tr>
+<tr>
+<td>L1-D miss rate</td>
+<td>4.96%</td>
+<td>1.88%</td>
+<td><strong>2.6× reduction</strong></td>
+</tr>
+<tr>
+<td>LLC miss rate</td>
+<td>0.03%</td>
+<td>0.19%</td>
+<td>Higher — cold LLC without consumer</td>
+</tr>
+<tr>
+<td>L1-I misses</td>
+<td>12.3M</td>
+<td>4.1M</td>
+<td>3× fewer</td>
+</tr>
+<tr>
+<td>dTLB misses</td>
+<td>1,452K</td>
+<td>154K</td>
+<td><strong>9.4× reduction</strong></td>
+</tr>
+<tr>
+<td>iTLB misses</td>
+<td>176K</td>
+<td>349K</td>
+<td>Higher — see note</td>
+</tr>
+<tr>
+<td>Local HITM</td>
+<td>16,880</td>
+<td>4,072</td>
+<td><strong>4.1× reduction</strong></td>
+</tr>
+</tbody>
+</table>
+<p><strong>Every memory metric improves dramatically when the queue is removed.</strong> The IPC improvement from 0.46 to 1.12 confirms the parse logic itself is not memory-bound — the queue push operation is responsible for the majority of cache and TLB pressure in the dispatch test.</p>
+<p><strong>dTLB reduction from 1.45M to 154K (9.4×)</strong> is the most dramatic delta. The boost spsc queue's large internal buffer (1024-element capacity) causes TLB misses on every push as it spans multiple pages. Without the push, data TLB accesses are limited to the packet buffers themselves.</p>
+<p><strong>Hotspot shift without push:</strong> <code>dispatch()</code> rises to 10.98% self and <code>parseFIX</code> to 8.27% self — previously hidden beneath queue push overhead, now visible. This confirms the queue push was masking parsing cost in the full test.</p>
+<p><strong>LLC miss rate rises slightly (0.03% → 0.19%)</strong> — without a downstream consumer thread keeping parsed data warm in LLC, eviction pressure increases marginally.</p>
+<div class="admonition warning">
+<p class="admonition-title">Optimization Candidate</p>
+<p>The queue push operation dominates parser performance — not parsing itself. A custom SPSC queue with cache-line-aligned head/tail and smaller default capacity would reduce dTLB pressure significantly. Pre-production redesign should evaluate this alongside the <code>boost::lockfree</code> replacement identified in pipeline profiling.</p>
+</div>
+<hr />
+<h2 id="bonus-without-fix">Bonus — Without FIX</h2>
+<p>FIX protocol removed from the dispatch test. Only ITCH BIST, ITCH NASDAQ, OUCH BIST, and OUCH NASDAQ handled. Isolates the FIX contribution to the combined dispatch numbers.</p>
+<h3 id="comparison_1">Comparison</h3>
+<table>
+<thead>
+<tr>
+<th>Metric</th>
+<th>With FIX</th>
+<th>Without FIX</th>
+<th>Delta</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>P-core IPC</td>
+<td>0.46</td>
+<td>0.18</td>
+<td><strong>2.6× worse without FIX</strong></td>
+</tr>
+<tr>
+<td>L1-D miss rate</td>
+<td>4.96%</td>
+<td>9.17%</td>
+<td><strong>1.85× worse without FIX</strong></td>
+</tr>
+<tr>
+<td>Branch miss rate</td>
+<td>0.37%</td>
+<td>1.38%</td>
+<td>3.7× worse</td>
+</tr>
+<tr>
+<td>dTLB misses</td>
+<td>1,452K</td>
+<td>1,170K</td>
+<td>Slightly lower — fewer queue writes</td>
+</tr>
+<tr>
+<td>Local HITM</td>
+<td>16,880</td>
+<td>9,823</td>
+<td>Lower — fewer total queues</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Removing FIX makes the parser significantly worse in IPC and cache behavior</strong> — this is counterintuitive but explained by FIX's superior cache characteristics. FIX messages are compact, sequentially parsed, and cache-friendly (IPC 1.01 in isolation). When FIX is present in the combined test, its cache-friendly access patterns warm up LLC lines and improve overall throughput. Without FIX, only ITCH and OUCH remain — their high L1-D miss rates (10%+) and low IPC (0.18–0.20) dominate the combined result.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>The without-push dcache profile shows <code>NetworkIO::SBTPacketHandler</code> 
+at 17.55% self time — absent in the with-push test. OUCH packet 
+demultiplexing happens inside the network layer via SBT packet handler 
+before queue push, meaning part of OUCH processing cost lives in 
+NetworkIO rather than the parser. Without FIX in the mix, OUCH 
+dominates and this network-side cost becomes visible. The true OUCH 
+parse cost is therefore split across NetworkIO and Parser_Dispatch — 
+isolating just the parse function (as done in the OUCH NASDAQ parseFunc 
+test) gives the cleaner picture.</p>
+</div>
+<hr />
+<h2 id="raw-output">Raw Output</h2>
+<h3 id="parser-dispatch-raw">Parser Dispatch RAW</h3>
+<p>"Perf Stat — Base"
+    <div class="highlight"><pre><span></span><code>P-Core:
+  instructions:   65,045,630,018    0.46 insn/cycle
+  cycles:        141,524,363,525    4.454 GHz
+  branches:       12,566,316,397  395.524 M/sec
+  branch-misses:      46,718,163    0.37%
+  L1-dcache-loads: 14,452,718,355  454.898 M/sec
+  L1-dcache-misses:   716,911,653    4.96%
+  LLC-loads:          700,489,108   22.048 M/sec
+  LLC-load-misses:        211,094    0.03%
+
+E-Core:
+  instructions:   45,943,156,557    1.24 insn/cycle
+  cycles:         37,119,695,992    1.168 GHz
+  branches:        8,735,261,713  274.941 M/sec
+  branch-misses:     202,319,788    2.32%
+  L1-dcache-loads: 11,096,040,541  349.247 M/sec
+  LLC-loads:          51,650,397    1.626 M/sec
+  LLC-load-misses:     9,701,248   18.78%
+
+Wall: 10.698s  User: 31.643s  Sys: 0.129s
+</code></pre></div></p>
+<p>"Perf Stat — ICache + TLB"
+    <div class="highlight"><pre><span></span><code>L1-icache-load-misses (P-core):  12,258,535
+dTLB-load-misses (P-core):        1,452,210
+iTLB-load-misses (P-core):          176,489
+</code></pre></div></p>
+<p>"Perf Record — CPU+Branch (≥1%)"
+    <div class="highlight"><pre><span></span><code>66.31%   0.00%  libc/libstdc++ init (startup)
+33.14%  31.31%  main::{lambda()#1}
+33.12%  33.10%  main::{lambda()#2}
+33.07%   9.72%  main
+23.34%   2.78%  Parser_Dispatch::dispatch()
+</code></pre></div></p>
+<p>"Perf Record — DCache (≥1%)"
+    <div class="highlight"><pre><span></span><code>45.88%   4.35%  main
+42.77%   7.09%  Parser_Dispatch::dispatch()
+38.65%  38.48%  main::{lambda()#2}
+13.77%   4.77%  main::{lambda()#1}
+</code></pre></div></p>
+<p>"C2C — False Sharing Summary"
+    <div class="highlight"><pre><span></span><code>Total records:                 202,010
+Load Local HITM:                16,880
+Total Shared Cache Lines:        2,020
+Load HITs on shared lines:      54,341
+Blocked Access on shared lines:  4,701
+Store HITs on shared lines:     26,342
+</code></pre></div></p>
+<hr />
+<h3 id="fix-raw">FIX RAW</h3>
+<p>"Perf Stat — Base"
+    <div class="highlight"><pre><span></span><code>P-Core:
+  instructions:   25,304,195,735    1.01 insn/cycle
+  cycles:         25,158,207,493    4.676 GHz
+  branches:        5,096,306,044  947.246 M/sec
+  branch-misses:      14,363,096    0.28%
+  L1-dcache-loads:  4,330,238,782  804.858 M/sec
+  L1-dcache-misses:   125,709,788    2.90%
+  LLC-loads:          124,638,956   23.167 M/sec
+  LLC-load-misses:          1,219    0.00%
+
+Wall: 2.802s  User: 5.297s  Sys: 0.084s
+</code></pre></div></p>
+<p>"Perf Stat — ICache + TLB"
+    <div class="highlight"><pre><span></span><code>L1-icache-load-misses (P-core):    207,904
+dTLB-load-misses (P-core):          29,984
+iTLB-load-misses (P-core):           7,330
+</code></pre></div></p>
+<p>"Perf Record — CPU+Branch (≥1%)"
+    <div class="highlight"><pre><span></span><code>29.39%  23.54%  Parser_Dispatch::parseFIX()
+ 3.93%   3.93%  Parser_FIX::find_type()
+</code></pre></div></p>
+<p>"Perf Record — DCache (≥1%)"
+    <div class="highlight"><pre><span></span><code>29.57%  24.77%  Parser_Dispatch::parseFIX()
+ 2.73%   2.73%  Parser_FIX::nextFixMsg()
+</code></pre></div></p>
+<p>"Perf Record — ICache (≥1%)"
+    <div class="highlight"><pre><span></span><code>73.24%  52.20%  Parser_Dispatch::parseFIX()
+11.66%   6.65%  absl::btree::insert_unique()
+ 5.46%   5.46%  Parser_FIX::nextFixMsg()
+</code></pre></div></p>
+<p>"C2C — False Sharing Summary"
+    <div class="highlight"><pre><span></span><code>Total records:          32,703
+Load Local HITM:         4,528
+Total Shared Cache Lines:  544
+</code></pre></div></p>
+<hr />
+<h3 id="itch-bist-raw">ITCH BIST RAW</h3>
+<p>"Perf Stat — Base"
+    <div class="highlight"><pre><span></span><code>P-Core:
+  instructions:    4,208,546,130    0.19 insn/cycle
+  cycles:         21,644,812,579    4.658 GHz
+  branches:          592,149,524  127.427 M/sec
+  branch-misses:      14,035,685    2.37%
+  L1-dcache-loads:  1,567,856,173  337.393 M/sec
+  L1-dcache-misses:   161,794,739   10.32%
+  LLC-loads:          161,033,129   34.653 M/sec
+  LLC-load-misses:          1,105    0.00%
+
+Wall: 2.389s  User: 4.553s  Sys: 0.095s
+</code></pre></div></p>
+<p>"Perf Stat — ICache + TLB"
+    <div class="highlight"><pre><span></span><code>L1-icache-load-misses (P-core):     43,696
+dTLB-load-misses (P-core):           1,402
+iTLB-load-misses (P-core):           6,842
+</code></pre></div></p>
+<p>"Perf Record — DCache (≥1%)"
+    <div class="highlight"><pre><span></span><code>26.35%  26.35%  Parser_Dispatch::parseITCH_BIST()
+ 4.67%   4.67%  makeMessageHandlersLookup lambda
+</code></pre></div></p>
+<p>"C2C — False Sharing Summary"
+    <div class="highlight"><pre><span></span><code>Total records:          27,297
+Load Local HITM:         2,243
+Total Shared Cache Lines:  298
+</code></pre></div></p>
+<hr />
+<h3 id="itch-nasdaq-raw">ITCH NASDAQ RAW</h3>
+<p>"Perf Stat — Base"
+    <div class="highlight"><pre><span></span><code>P-Core:
+  instructions:    4,166,001,149    0.20 insn/cycle
+  cycles:         21,031,490,793    4.642 GHz
+  branches:          576,694,857  127.284 M/sec
+  branch-misses:      14,788,657    2.56%
+  L1-dcache-loads:  1,513,360,798  334.019 M/sec
+  L1-dcache-misses:   155,437,696   10.27%
+  LLC-loads:          154,275,549   34.051 M/sec
+  LLC-load-misses:          3,996    0.00%
+
+Wall: 2.329s  User: 4.443s  Sys: 0.089s
+</code></pre></div></p>
+<p>"Perf Stat — ICache + TLB"
+    <div class="highlight"><pre><span></span><code>L1-icache-load-misses (P-core):     53,545
+dTLB-load-misses (P-core):           1,387
+iTLB-load-misses (P-core):           6,315
+</code></pre></div></p>
+<p>"Perf Record — DCache (≥1%)"
+    <div class="highlight"><pre><span></span><code>20.17%  20.17%  Parser_Dispatch::parseITCH_NASDAQ()
+ 7.48%   7.48%  makeMessageHandlersLookup lambda
+</code></pre></div></p>
+<p>"C2C — False Sharing Summary"
+    <div class="highlight"><pre><span></span><code>Total records:          27,098
+Load Local HITM:         2,860
+Total Shared Cache Lines:  370
+</code></pre></div></p>
+<hr />
+<h3 id="ouch-bist-raw">OUCH BIST RAW</h3>
+<p>"Perf Stat — Base"
+    <div class="highlight"><pre><span></span><code>P-Core:
+  instructions:   13,568,953,879    0.18 insn/cycle
+  cycles:         74,000,551,735    4.519 GHz
+  branches:        2,303,330,450  140.660 M/sec
+  branch-misses:      36,687,703    1.59%
+  L1-dcache-loads:  4,556,807,468  278.275 M/sec
+  L1-dcache-misses:   517,428,455   11.36%
+  LLC-loads:          509,172,076   31.094 M/sec
+  LLC-load-misses:          2,058    0.00%
+
+Wall: 5.593s  User: 16.294s  Sys: 0.083s
+</code></pre></div></p>
+<p>"Perf Stat — ICache + TLB"
+    <div class="highlight"><pre><span></span><code>L1-icache-load-misses (P-core):    247,146
+dTLB-load-misses (P-core):          36,621
+iTLB-load-misses (P-core):          19,313
+</code></pre></div></p>
+<p>"Perf Record — DCache (≥1%)"
+    <div class="highlight"><pre><span></span><code>32.75%  32.75%  main::{lambda()#2}
+28.28%  28.28%  Parser_Dispatch::parseOUCH_BIST()
+</code></pre></div></p>
+<p>"C2C — False Sharing Summary"
+    <div class="highlight"><pre><span></span><code>Total records:          96,436
+Load Local HITM:         9,265
+Total Shared Cache Lines:  852
+</code></pre></div></p>
+<hr />
+<h3 id="ouch-nasdaq-parsefunc-raw">OUCH NASDAQ (parseFunc) RAW</h3>
+<p>"Perf Stat — Base"
+    <div class="highlight"><pre><span></span><code>P-Core:
+  instructions:    1,476,634,495    2.26 insn/cycle
+  cycles:            653,079,976    4.763 GHz
+  branches:          191,601,433    1.397 G/sec
+  branch-misses:          15,890    0.01%
+  L1-dcache-loads:   604,500,167    4.409 G/sec
+  L1-dcache-misses:    1,797,222    0.30%
+  LLC-loads:               2,524   18.409 K/sec
+  LLC-load-misses:         1,324   52.46%
+
+Wall: 0.138s  User: 0.135s  Sys: 0.003s
+</code></pre></div></p>
+<p>"C2C — False Sharing Summary"
+    <div class="highlight"><pre><span></span><code>Load Local HITM:         0
+Total Shared Cache Lines: 0
+No false sharing detected — single thread, no queue.
+</code></pre></div></p>
+
+
+
+
+
+
+
+
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    
+    
+      
+      
+      <script id="__config" type="application/json">{"annotate": null, "base": "../..", "features": ["navigation.tabs", "navigation.tabs.sticky", "navigation.sections", "navigation.indexes", "navigation.expand", "content.code.annotate"], "search": "../../assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script>
+    
+    
+      <script src="../../assets/javascripts/bundle.79ae519e.min.js"></script>
+      
+    
+  </body>
+</html>

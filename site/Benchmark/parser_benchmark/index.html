@@ -1,0 +1,2885 @@
+
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+      
+      
+        <link rel="canonical" href="https://UmutCanDundar.github.io/TradingEngine-Portfolio/Benchmark/parser_benchmark/">
+      
+      
+        <link rel="prev" href="../../Unit/parser_unit/">
+      
+      
+        <link rel="next" href="../../Perf/parser_perf/">
+      
+      
+        
+      
+      
+      <link rel="icon" href="../../assets/images/favicon.png">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.7.6">
+    
+    
+      
+        <title>Benchmark - TradingEngine</title>
+      
+    
+    
+      <link rel="stylesheet" href="../../assets/stylesheets/main.484c7ddc.min.css">
+      
+        
+        <link rel="stylesheet" href="../../assets/stylesheets/palette.ab4e12ef.min.css">
+      
+      
+
+
+    
+    
+      
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,700,700i%7CRoboto+Mono:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
+      
+    
+    
+      <link rel="stylesheet" href="../../stylesheets/extra.css">
+    
+    <script>__md_scope=new URL("../..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+  </head>
+  
+  
+    
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="slate" data-md-color-primary="teal" data-md-color-accent="indigo">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#parser-benchmark" class="md-skip">
+          Skip to content
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+  
+
+<header class="md-header md-header--shadow md-header--lifted" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Header">
+    <a href="../.." title="TradingEngine" class="md-header__button md-logo" aria-label="TradingEngine" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            TradingEngine
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              Benchmark
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+      
+    
+    
+    
+    
+      
+      
+        <label class="md-header__button md-icon" for="__search">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        </label>
+        <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Search" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="Search">
+        
+        <button type="reset" class="md-search__icon md-icon" title="Clear" aria-label="Clear" tabindex="-1">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+        </button>
+      </nav>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" tabindex="0" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Initializing search
+          </div>
+          <ol class="md-search-result__list" role="presentation"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+      
+    
+    
+  </nav>
+  
+    
+      
+<nav class="md-tabs" aria-label="Tabs" data-md-component="tabs">
+  <div class="md-grid">
+    <ul class="md-tabs__list">
+      
+        
+  
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../.." class="md-tabs__link">
+        
+  
+  
+    
+  
+  Overview
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../../architecture/" class="md-tabs__link">
+        
+  
+  
+    
+  
+  Architecture
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../../design/" class="md-tabs__link">
+        
+  
+  
+    
+  
+  Design
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+    
+  
+  
+    
+    
+      <li class="md-tabs__item md-tabs__item--active">
+        <a href="../../tests/" class="md-tabs__link">
+          
+  
+  
+    
+  
+  Tests
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../../optimization/" class="md-tabs__link">
+        
+  
+  
+    
+  
+  Recent Optimization
+
+      </a>
+    </li>
+  
+
+      
+    </ul>
+  </div>
+</nav>
+    
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+  
+
+
+<nav class="md-nav md-nav--primary md-nav--lifted" aria-label="Navigation" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href="../.." title="TradingEngine" class="md-nav__button md-logo" aria-label="TradingEngine" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    TradingEngine
+  </label>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../.." class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Overview
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../architecture/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Architecture
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../design/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Design
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+    
+  
+  
+  
+    
+    
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+      
+        
+        
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4" checked>
+        
+          
+          <label class="md-nav__link" for="__nav_4" id="__nav_4_label" tabindex="">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Tests
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_4_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_4">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Tests
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../tests/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Overview
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+      
+      
+        
+          
+          
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_4_2" >
+        
+          
+          <label class="md-nav__link" for="__nav_4_2" id="__nav_4_2_label" tabindex="">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Pipeline
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_2_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_4_2">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Pipeline
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../Pipeline/pipeline/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Overview
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../Pipeline/benchmark_pipeline/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Benchmark
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../Pipeline/perf_pipeline/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Perf
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+      
+        
+      
+    
+    
+    
+      
+      
+        
+          
+          
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_4_3" >
+        
+          
+          <label class="md-nav__link" for="__nav_4_3" id="__nav_4_3_label" tabindex="">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Network
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_3_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_4_3">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Network
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../Unit/network_unit/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Unit
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+    
+  
+  
+  
+    
+    
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+      
+      
+        
+          
+          
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_4" checked>
+        
+          
+          <label class="md-nav__link" for="__nav_4_4" id="__nav_4_4_label" tabindex="">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Parser
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_4_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_4_4">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Parser
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../Unit/parser_unit/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Unit
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+    
+  
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Benchmark
+  
+
+    
+  </span>
+  
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Benchmark
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#parser-benchmark" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Parser Benchmark
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#parser-dispatch-mixed-traffic" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Parser Dispatch — Mixed Traffic
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#fix-parser" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        FIX Parser
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="FIX Parser">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#parserfix-full-pipeline" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        ParserFIX — Full Pipeline
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#nextfixmsg-function" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        nextFixMsg() Function
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#parse-function" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        parse() Function
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#fix-summary-cost-breakdown" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        FIX Summary — Cost Breakdown
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#itch-bist-parser" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        ITCH BIST Parser
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="ITCH BIST Parser">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#parseritch-bist-full-pipeline" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        ParserITCH BIST — Full Pipeline
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#parse-function_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        parse() Function
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#itch-bist-summary-cost-breakdown" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        ITCH BIST Summary — Cost Breakdown
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#itch-nasdaq-parser" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        ITCH NASDAQ Parser
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="ITCH NASDAQ Parser">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#parseritch-nasdaq-full-pipeline" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        ParserITCH NASDAQ — Full Pipeline
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#parse-function_2" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        parse() Function
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#itch-nasdaq-summary-cost-breakdown" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        ITCH NASDAQ Summary — Cost Breakdown
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#parseritch-nasdaq-batch-queue-push" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        ParserITCH NASDAQ — Batch Queue Push
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#ouch-bist-parser" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        OUCH BIST Parser
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="OUCH BIST Parser">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#parserouch-bist-full-pipeline" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        ParserOUCH BIST — Full Pipeline
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#packet-handler-function" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Packet Handler Function
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#parse-function_3" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        parse() Function
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#ouch-bist-summary-cost-breakdown" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        OUCH BIST Summary — Cost Breakdown
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#parserouch-bist-full-pipeline-without-spsc-queue-push" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        ParserOUCH BIST — Full Pipeline (without SPSC queue push)
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#ouch-nasdaq-parser" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        OUCH NASDAQ Parser
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="OUCH NASDAQ Parser">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#parse-function_4" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        parse() Function
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../Perf/parser_perf/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Perf
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+      
+      
+        
+          
+          
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_4_5" >
+        
+          
+          <label class="md-nav__link" for="__nav_4_5" id="__nav_4_5_label" tabindex="">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Order Manager
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_5_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_4_5">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Order Manager
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../Unit/order_manager_unit/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Unit
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../order_manager_benchmark/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Benchmark
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../Perf/order_manager_perf/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Perf
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+      
+      
+        
+          
+          
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_4_6" >
+        
+          
+          <label class="md-nav__link" for="__nav_4_6" id="__nav_4_6_label" tabindex="">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Risk
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_6_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_4_6">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Risk
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../Unit/risk_unit/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Unit
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../risk_benchmark/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Benchmark
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../Perf/risk_perf/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Perf
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+      
+      
+        
+          
+          
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_4_7" >
+        
+          
+          <label class="md-nav__link" for="__nav_4_7" id="__nav_4_7_label" tabindex="">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Builder
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_7_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_4_7">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Builder
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../Unit/builder_unit/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Unit
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../builder_benchmark/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Benchmark
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../Perf/builder_perf/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Perf
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../optimization/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Recent Optimization
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#parser-benchmark" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Parser Benchmark
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#parser-dispatch-mixed-traffic" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Parser Dispatch — Mixed Traffic
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#fix-parser" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        FIX Parser
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="FIX Parser">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#parserfix-full-pipeline" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        ParserFIX — Full Pipeline
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#nextfixmsg-function" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        nextFixMsg() Function
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#parse-function" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        parse() Function
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#fix-summary-cost-breakdown" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        FIX Summary — Cost Breakdown
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#itch-bist-parser" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        ITCH BIST Parser
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="ITCH BIST Parser">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#parseritch-bist-full-pipeline" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        ParserITCH BIST — Full Pipeline
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#parse-function_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        parse() Function
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#itch-bist-summary-cost-breakdown" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        ITCH BIST Summary — Cost Breakdown
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#itch-nasdaq-parser" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        ITCH NASDAQ Parser
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="ITCH NASDAQ Parser">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#parseritch-nasdaq-full-pipeline" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        ParserITCH NASDAQ — Full Pipeline
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#parse-function_2" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        parse() Function
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#itch-nasdaq-summary-cost-breakdown" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        ITCH NASDAQ Summary — Cost Breakdown
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#parseritch-nasdaq-batch-queue-push" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        ParserITCH NASDAQ — Batch Queue Push
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#ouch-bist-parser" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        OUCH BIST Parser
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="OUCH BIST Parser">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#parserouch-bist-full-pipeline" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        ParserOUCH BIST — Full Pipeline
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#packet-handler-function" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Packet Handler Function
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#parse-function_3" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        parse() Function
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#ouch-bist-summary-cost-breakdown" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        OUCH BIST Summary — Cost Breakdown
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#parserouch-bist-full-pipeline-without-spsc-queue-push" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        ParserOUCH BIST — Full Pipeline (without SPSC queue push)
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#ouch-nasdaq-parser" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        OUCH NASDAQ Parser
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="OUCH NASDAQ Parser">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#parse-function_4" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        parse() Function
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              
+              <article class="md-content__inner md-typeset">
+                
+                  
+
+
+
+  <h1>Benchmark</h1>
+
+<h2 id="parser-benchmark">Parser Benchmark</h2>
+<h2 id="parser-dispatch-mixed-traffic">Parser Dispatch — Mixed Traffic</h2>
+<p>The dispatch benchmark reflects realistic production traffic — 
+raw network packets from all protocols and venues are interleaved 
+and processed through a single parser dispatch thread. The dataset 
+contains both single-packet and partial (multi-packet) messages 
+across FIX, OUCH BIST, OUCH NASDAQ, ITCH BIST, and ITCH NASDAQ.</p>
+<table>
+<thead>
+<tr>
+<th>Scenario</th>
+<th>Median (ns)</th>
+<th>p50 cycles</th>
+<th>p99 cycles</th>
+<th>p999 cycles</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Mixed Traffic</td>
+<td>1585 (0.41%)</td>
+<td>4413 (0.39%)</td>
+<td>5426 (0.64%)</td>
+<td>11204 (1.74%)</td>
+</tr>
+</tbody>
+</table>
+<blockquote>
+<p>13 packets per iteration (variable per protocol × 5 protocols).
+Average cost per packet: 339 cycles (4413 / 13).</p>
+</blockquote>
+<p>To isolate the contribution of the SPSC queue push, the same benchmark was re-run with queue push disabled:</p>
+<table>
+<thead>
+<tr>
+<th>Scenario</th>
+<th>Median (ns)</th>
+<th>p50 cycles</th>
+<th>p99 cycles</th>
+<th>p999 cycles</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Mixed Traffic (no queue push)</td>
+<td>901 (1.07%)</td>
+<td>2510 (1.17%)</td>
+<td>2862 (2.01%)</td>
+<td>5740 (0.61%)</td>
+</tr>
+</tbody>
+</table>
+<p>Removing the queue push drops median latency from 1585 ns to 901 ns — a ~43% reduction — confirming that the SPSC queue push is the dominant cost in the dispatch path. This strengthens the case for replacing the current boost lockfree queue with a custom queue implementation tailored to this pipeline's access pattern.</p>
+<hr />
+<h2 id="fix-parser">FIX Parser</h2>
+<p>The FIX parser layer consists of three measurable stages:</p>
+<ul>
+<li><strong>ParserFIX</strong> — top-level class; receives raw packets, calls 
+<code>nextFixMsg()</code> to extract messages, dispatches parsed structs 
+to the Order Manager queue.</li>
+<li><strong>nextFixMsg()</strong> — extracts a single FIX message boundary 
+from a raw byte buffer; handles partial and multi-message packets.</li>
+<li><strong>parse()</strong> — constructs the message struct from a complete 
+FIX message boundary.</li>
+</ul>
+<h3 id="parserfix-full-pipeline">ParserFIX — Full Pipeline</h3>
+<table>
+<thead>
+<tr>
+<th>Scenario</th>
+<th>Median (ns)</th>
+<th>p50 cycles</th>
+<th>p99 cycles</th>
+<th>p999 cycles</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Best (single msg)</td>
+<td>178 (0.16%)</td>
+<td>408 (0.40%)</td>
+<td>444 (0.98%)</td>
+<td>519 (12.84%)</td>
+</tr>
+<tr>
+<td>Normal (full msg, single pkt)</td>
+<td>344 (1.04%)</td>
+<td>924 (6.42%)</td>
+<td>1169 (4.08%)</td>
+<td>1464 (9.22%)</td>
+</tr>
+<tr>
+<td>Worst — seq in-order</td>
+<td>409 (2.04%)</td>
+<td>1075 (1.99%)</td>
+<td>1377 (3.74%)</td>
+<td>1718 (16.23%)</td>
+</tr>
+<tr>
+<td>Worst — seq out-of-order</td>
+<td>388 (4.42%)</td>
+<td>953 (4.41%)</td>
+<td>1253 (4.76%)</td>
+<td>1438 (10.71%)</td>
+</tr>
+</tbody>
+</table>
+<h3 id="nextfixmsg-function">nextFixMsg() Function</h3>
+<table>
+<thead>
+<tr>
+<th>Scenario</th>
+<th>Median (ns)</th>
+<th>p50 cycles</th>
+<th>p99 cycles</th>
+<th>p999 cycles</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Best</td>
+<td>43.5 (0.08%)</td>
+<td>60 (0.00%)</td>
+<td>64 (1.59%)</td>
+<td>84 (1.89%)</td>
+</tr>
+<tr>
+<td>Normal</td>
+<td>63.1 (0.10%)</td>
+<td>118 (0.00%)</td>
+<td>124 (0.00%)</td>
+<td>210 (1.25%)</td>
+</tr>
+<tr>
+<td>Worst — seq in-order</td>
+<td>78.4 (0.11%)</td>
+<td>160 (0.53%)</td>
+<td>166 (0.58%)</td>
+<td>266 (1.01%)</td>
+</tr>
+</tbody>
+</table>
+<h3 id="parse-function">parse() Function</h3>
+<table>
+<thead>
+<tr>
+<th>Message Type</th>
+<th>Median (ns)</th>
+<th>p50 cycles</th>
+<th>p99 cycles</th>
+<th>p999 cycles</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>NewOrder</td>
+<td>69.0 (0.06%)</td>
+<td>138 (0.00%)</td>
+<td>168 (0.38%)</td>
+<td>256 (1.85%)</td>
+</tr>
+<tr>
+<td>ExecReport</td>
+<td>63.6 (0.13%)</td>
+<td>122 (0.00%)</td>
+<td>140 (0.74%)</td>
+<td>202 (1.77%)</td>
+</tr>
+</tbody>
+</table>
+<h3 id="fix-summary-cost-breakdown">FIX Summary — Cost Breakdown</h3>
+<p>Using <strong>Normal</strong> and <strong>Worst (seq in-order)</strong> scenarios.
+<code>parse()</code> cost is taken as the average of NewOrder and ExecReport.</p>
+<table>
+<thead>
+<tr>
+<th>Stage</th>
+<th>Normal cycles</th>
+<th>Worst cycles</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>nextFixMsg()</td>
+<td>118</td>
+<td>160</td>
+</tr>
+<tr>
+<td>parse() avg</td>
+<td>130</td>
+<td>130</td>
+</tr>
+<tr>
+<td>nextFixMsg + parse</td>
+<td>248</td>
+<td>290</td>
+</tr>
+<tr>
+<td>ParserFIX full pipeline</td>
+<td>924</td>
+<td>1075</td>
+</tr>
+<tr>
+<td>Dispatch overhead</td>
+<td>676</td>
+<td>785</td>
+</tr>
+<tr>
+<td>nextFixMsg % of total</td>
+<td>12.8%</td>
+<td>14.9%</td>
+</tr>
+<tr>
+<td>parse % of total</td>
+<td>14.1%</td>
+<td>12.1%</td>
+</tr>
+<tr>
+<td>Dispatch overhead %</td>
+<td>73.1%</td>
+<td>73.0%</td>
+</tr>
+</tbody>
+</table>
+<blockquote>
+<p>Dispatch overhead includes queue push to Order Manager, 
+protocol routing, and buffer management.</p>
+</blockquote>
+<p><strong>Notes:</strong> Dispatch overhead accounts for ~73% of total pipeline 
+cost in both scenarios — parse() and nextFixMsg() together 
+represent under 30%. Queue push cost is therefore the primary 
+optimization target for FIX parser latency reduction.</p>
+<p>The seq out-of-order scenario costs slightly less than seq 
+in-order despite higher complexity; with partial packets spread 
+across non-contiguous boundaries, fewer messages complete per 
+iteration, reducing queue push frequency.</p>
+<p>p999 CV is elevated across all FIX scenarios — with only 10 
+repetitions, a single outlier disproportionately inflates tail 
+percentiles. Production-grade tail measurement requires a minimum 
+of 100 repetitions for stable p999 values. p50 CV stays below 
+2%, confirming hot path stability.</p>
+<hr />
+<h2 id="itch-bist-parser">ITCH BIST Parser</h2>
+<p>The ITCH BIST parser receives binary UDP packets. Each packet 
+contains one or more complete fixed-length messages — partial 
+messages do not occur over UDP. Message extraction is handled 
+within the dispatch layer and is not measured separately; its 
+cost is included in the full pipeline numbers.</p>
+<h3 id="parseritch-bist-full-pipeline">ParserITCH BIST — Full Pipeline</h3>
+<table>
+<thead>
+<tr>
+<th>Scenario</th>
+<th>Median (ns)</th>
+<th>p50 cycles</th>
+<th>p99 cycles</th>
+<th>p999 cycles</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Best (single msg)</td>
+<td>154 (0.42%)</td>
+<td>312 (1.14%)</td>
+<td>422 (0.72%)</td>
+<td>534 (1.74%)</td>
+</tr>
+<tr>
+<td>Worst (multi-msg, single pkt)</td>
+<td>306 (0.23%)</td>
+<td>752 (0.41%)</td>
+<td>1044 (0.83%)</td>
+<td>1254 (9.57%)</td>
+</tr>
+</tbody>
+</table>
+<h3 id="parse-function_1">parse() Function</h3>
+<table>
+<thead>
+<tr>
+<th>Message Type</th>
+<th>Median (ns)</th>
+<th>p50 cycles</th>
+<th>p99 cycles</th>
+<th>p999 cycles</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>OrderBookDir</td>
+<td>44.6 (0.08%)</td>
+<td>58 (0.00%)</td>
+<td>76 (0.83%)</td>
+<td>112 (0.87%)</td>
+</tr>
+<tr>
+<td>AddOrder</td>
+<td>37.4 (0.11%)</td>
+<td>40 (0.00%)</td>
+<td>50 (0.00%)</td>
+<td>68 (1.23%)</td>
+</tr>
+<tr>
+<td>Exec</td>
+<td>37.9 (0.05%)</td>
+<td>42 (0.00%)</td>
+<td>54 (0.00%)</td>
+<td>70 (0.90%)</td>
+</tr>
+</tbody>
+</table>
+<h3 id="itch-bist-summary-cost-breakdown">ITCH BIST Summary — Cost Breakdown</h3>
+<table>
+<thead>
+<tr>
+<th>Stage</th>
+<th>Best cycles</th>
+<th>Worst cycles</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>parse() — AddOrder</td>
+<td>40</td>
+<td>40</td>
+</tr>
+<tr>
+<td>ParserITCH full pipeline</td>
+<td>312</td>
+<td>752</td>
+</tr>
+<tr>
+<td>Dispatch overhead</td>
+<td>272</td>
+<td>712</td>
+</tr>
+<tr>
+<td>parse % of total</td>
+<td>12.8%</td>
+<td>5.3%</td>
+</tr>
+<tr>
+<td>Dispatch overhead %</td>
+<td>87.2%</td>
+<td>94.7%</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Notes:</strong> parse() is among the lightest across all protocols — 
+fixed-length binary fields with no delimiter scanning. This is 
+expected: a targeted struct copy with no lookup overhead.
+Dispatch overhead grows from 87% in the best case to 95% in 
+the worst, as multi-message packets require repeated routing 
+and queue push operations while parse cost per message stays 
+constant.</p>
+<p>p999 CV elevation follows the same pattern as other components — 
+with 10 repetitions a single outlier inflates tail percentiles. 
+Production tail measurement requires minimum 100 repetitions. 
+p50 CV stays below 2%.</p>
+<hr />
+<h2 id="itch-nasdaq-parser">ITCH NASDAQ Parser</h2>
+<p>The ITCH NASDAQ parser follows the same structure as ITCH BIST. 
+Binary UDP packets contain one or more complete fixed-length 
+messages. Message extraction is handled within the dispatch 
+layer and its cost is included in the full pipeline numbers.</p>
+<h3 id="parseritch-nasdaq-full-pipeline">ParserITCH NASDAQ — Full Pipeline</h3>
+<table>
+<thead>
+<tr>
+<th>Scenario</th>
+<th>Median (ns)</th>
+<th>p50 cycles</th>
+<th>p99 cycles</th>
+<th>p999 cycles</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Best (single msg)</td>
+<td>150 (0.87%)</td>
+<td>312 (1.53%)</td>
+<td>371 (3.85%)</td>
+<td>421 (8.38%)</td>
+</tr>
+<tr>
+<td>Worst (multi-msg, single pkt)</td>
+<td>307 (0.63%)</td>
+<td>758 (0.59%)</td>
+<td>967 (1.53%)</td>
+<td>1119 (13.92%)</td>
+</tr>
+</tbody>
+</table>
+<h3 id="parse-function_2">parse() Function</h3>
+<table>
+<thead>
+<tr>
+<th>Message Type</th>
+<th>Median (ns)</th>
+<th>p50 cycles</th>
+<th>p99 cycles</th>
+<th>p999 cycles</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>StockDir</td>
+<td>37.5 (0.09%)</td>
+<td>44 (0.00%)</td>
+<td>56 (0.00%)</td>
+<td>72 (0.00%)</td>
+</tr>
+<tr>
+<td>AddOrder</td>
+<td>35.1 (0.07%)</td>
+<td>36 (0.00%)</td>
+<td>42 (2.41%)</td>
+<td>62 (1.69%)</td>
+</tr>
+<tr>
+<td>Exec</td>
+<td>36.4 (0.06%)</td>
+<td>40 (0.00%)</td>
+<td>48 (0.00%)</td>
+<td>60 (0.00%)</td>
+</tr>
+</tbody>
+</table>
+<h3 id="itch-nasdaq-summary-cost-breakdown">ITCH NASDAQ Summary — Cost Breakdown</h3>
+<table>
+<thead>
+<tr>
+<th>Stage</th>
+<th>Best cycles</th>
+<th>Worst cycles</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>parse() — AddOrder</td>
+<td>36</td>
+<td>36</td>
+</tr>
+<tr>
+<td>ParserITCH full pipeline</td>
+<td>312</td>
+<td>758</td>
+</tr>
+<tr>
+<td>Dispatch overhead</td>
+<td>276</td>
+<td>722</td>
+</tr>
+<tr>
+<td>parse % of total</td>
+<td>11.5%</td>
+<td>4.8%</td>
+</tr>
+<tr>
+<td>Dispatch overhead %</td>
+<td>88.5%</td>
+<td>95.2%</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Notes:</strong> Results are near-identical to ITCH BIST — same 
+dispatch structure, same UDP delivery model, marginally 
+lighter parse() cost per message. The cost breakdown 
+pattern is consistent: parse() is a small fraction of 
+total pipeline cost in both scenarios.</p>
+<p>To investigate whether batching queue pushes could reduce contention, an additional variant was benchmarked: all messages in a packet are parsed first, then pushed to the queue in a single batch operation rather than one push per message.</p>
+<h3 id="parseritch-nasdaq-batch-queue-push">ParserITCH NASDAQ — Batch Queue Push</h3>
+<table>
+<thead>
+<tr>
+<th>Scenario</th>
+<th>Median (ns)</th>
+<th>p50 cycles</th>
+<th>p99 cycles</th>
+<th>p999 cycles</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Best (single msg)</td>
+<td>154 (1.84%)</td>
+<td>318 (3.09%)</td>
+<td>349 (3.54%)</td>
+<td>426 (12.56%)</td>
+</tr>
+<tr>
+<td>Worst (multi-msg, single pkt)</td>
+<td>226 (0.17%)</td>
+<td>526 (0.00%)</td>
+<td>722 (0.46%)</td>
+<td>843 (5.22%)</td>
+</tr>
+</tbody>
+</table>
+<p>The worst-case scenario drops from 307 ns to 226 ns (~26% reduction), confirming that batching reduces queue contention when multiple messages arrive in a single packet. The best-case result is unchanged, as a single-message packet already issues only one push.</p>
+<p>Despite the improvement, batch push is not used in the current production path. Accumulating messages before the push introduces a handoff delay between pipeline units — downstream components receive nothing until the full packet is processed, which may create bottlenecks under real stress conditions that microbenchmarks do not capture. The current approach of parse-and-push per message is retained for now; this will be re-evaluated with further real-load stress testing prior to production deployment.</p>
+<hr />
+<h2 id="ouch-bist-parser">OUCH BIST Parser</h2>
+<p>The OUCH BIST parser receives binary TCP packets. Like FIX, 
+partial messages can occur due to TCP fragmentation. Message 
+boundary extraction is handled by a dedicated packet handler 
+function before dispatch to parse.</p>
+<h3 id="parserouch-bist-full-pipeline">ParserOUCH BIST — Full Pipeline</h3>
+<table>
+<thead>
+<tr>
+<th>Scenario</th>
+<th>Median (ns)</th>
+<th>p50 cycles</th>
+<th>p99 cycles</th>
+<th>p999 cycles</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Best (single msg, single pkt)</td>
+<td>451 (1.32%)</td>
+<td>1109 (1.45%)</td>
+<td>1344 (0.86%)</td>
+<td>1653 (15.79%)</td>
+</tr>
+<tr>
+<td>Normal (multi-msg, single pkt)</td>
+<td>3104 (0.57%)</td>
+<td>8508 (0.42%)</td>
+<td>9819 (1.48%)</td>
+<td>15617 (10.81%)</td>
+</tr>
+<tr>
+<td>Worst — seq in-order</td>
+<td>838 (1.06%)</td>
+<td>2206 (0.23%)</td>
+<td>2683 (1.72%)</td>
+<td>4333 (3.99%)</td>
+</tr>
+</tbody>
+</table>
+<h3 id="packet-handler-function">Packet Handler Function</h3>
+<table>
+<thead>
+<tr>
+<th>Scenario</th>
+<th>Median (ns)</th>
+<th>p50 cycles</th>
+<th>p99 cycles</th>
+<th>p999 cycles</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Best</td>
+<td>41.2 (0.09%)</td>
+<td>32 (0.00%)</td>
+<td>66 (0.00%)</td>
+<td>70 (1.91%)</td>
+</tr>
+<tr>
+<td>Normal</td>
+<td>46.2 (0.10%)</td>
+<td>44 (1.90%)</td>
+<td>78 (0.00%)</td>
+<td>82 (0.77%)</td>
+</tr>
+<tr>
+<td>Worst</td>
+<td>56.3 (0.18%)</td>
+<td>72 (0.88%)</td>
+<td>112 (0.00%)</td>
+<td>145 (2.22%)</td>
+</tr>
+</tbody>
+</table>
+<h3 id="parse-function_3">parse() Function</h3>
+<table>
+<thead>
+<tr>
+<th>Message Type</th>
+<th>Median (ns)</th>
+<th>p50 cycles</th>
+<th>p99 cycles</th>
+<th>p999 cycles</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Accepted</td>
+<td>29.7 (0.05%)</td>
+<td>24 (0.00%)</td>
+<td>26 (2.45%)</td>
+<td>28 (3.38%)</td>
+</tr>
+<tr>
+<td>Cancelled</td>
+<td>29.7 (0.08%)</td>
+<td>24 (0.00%)</td>
+<td>26 (3.80%)</td>
+<td>28 (5.78%)</td>
+</tr>
+<tr>
+<td>Executed</td>
+<td>29.7 (0.09%)</td>
+<td>24 (0.00%)</td>
+<td>26 (4.10%)</td>
+<td>28 (6.70%)</td>
+</tr>
+</tbody>
+</table>
+<h3 id="ouch-bist-summary-cost-breakdown">OUCH BIST Summary — Cost Breakdown</h3>
+<table>
+<thead>
+<tr>
+<th>Stage</th>
+<th>Normal cycles</th>
+<th>Worst cycles</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Packet handler</td>
+<td>44</td>
+<td>72</td>
+</tr>
+<tr>
+<td>parse() — Accepted</td>
+<td>24</td>
+<td>24</td>
+</tr>
+<tr>
+<td>Handler + parse</td>
+<td>68</td>
+<td>96</td>
+</tr>
+<tr>
+<td>ParserOUCH full pipeline</td>
+<td>8508</td>
+<td>2206</td>
+</tr>
+<tr>
+<td>Dispatch overhead</td>
+<td>8440</td>
+<td>2110</td>
+</tr>
+<tr>
+<td>Handler % of total</td>
+<td>0.5%</td>
+<td>3.3%</td>
+</tr>
+<tr>
+<td>parse % of total</td>
+<td>0.3%</td>
+<td>1.1%</td>
+</tr>
+<tr>
+<td>Dispatch overhead %</td>
+<td>99.2%</td>
+<td>95.6%</td>
+</tr>
+</tbody>
+</table>
+<p>The normal scenario costs ~4x more than the worst — an apparent inversion driven by queue push frequency. Normal delivers 3 complete messages in a single packet, each pushed to the queue individually: 3 sequential pushes per iteration. Worst delivers the same 3 messages across 3 partial packets, so pushes are spread across boundaries. To confirm this, the benchmark was re-run with queue push disabled:</p>
+<h3 id="parserouch-bist-full-pipeline-without-spsc-queue-push">ParserOUCH BIST — Full Pipeline (without SPSC queue push)</h3>
+<table>
+<thead>
+<tr>
+<th>Scenario</th>
+<th>Median (ns)</th>
+<th>p50 cycles</th>
+<th>p99 cycles</th>
+<th>p999 cycles</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Best (single msg, single pkt)</td>
+<td>297 (1.19%)</td>
+<td>740 (0.52%)</td>
+<td>887 (1.63%)</td>
+<td>1104 (17.88%)</td>
+</tr>
+<tr>
+<td>Normal (multi-msg, single pkt)</td>
+<td>481 (1.73%)</td>
+<td>1256 (0.12%)</td>
+<td>1565 (2.74%)</td>
+<td>2319 (20.91%)</td>
+</tr>
+<tr>
+<td>Worst — seq in-order</td>
+<td>468 (0.28%)</td>
+<td>1218 (0.21%)</td>
+<td>1529 (1.52%)</td>
+<td>2104 (24.86%)</td>
+</tr>
+</tbody>
+</table>
+<p>Without the queue push, normal and worst converge to the same range (~480 ns / ~1220–1260 cycles), confirming that the inversion in the full pipeline numbers is entirely attributable to queue push cost. parse() and packet handler together remain under 5% of total cost in both scenarios. This result strengthens the case for replacing the current boost lockfree queue with a custom queue implementation — the queue push alone accounts for the majority of observable latency difference between scenarios.</p>
+<hr />
+<h2 id="ouch-nasdaq-parser">OUCH NASDAQ Parser</h2>
+<p>OUCH NASDAQ shares the same dispatch and packet handler 
+implementation as OUCH BIST. Only the parse() function 
+differs per venue and is measured separately. Dispatch 
+and packet handler costs can be referenced from OUCH BIST results.</p>
+<h3 id="parse-function_4">parse() Function</h3>
+<table>
+<thead>
+<tr>
+<th>Message Type</th>
+<th>Median (ns)</th>
+<th>p50 cycles</th>
+<th>p99 cycles</th>
+<th>p999 cycles</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>StockDir</td>
+<td>37.7 (0.12%)</td>
+<td>42 (0.00%)</td>
+<td>52 (0.00%)</td>
+<td>72 (0.00%)</td>
+</tr>
+<tr>
+<td>AddOrder</td>
+<td>36.0 (0.05%)</td>
+<td>38 (0.00%)</td>
+<td>44 (1.43%)</td>
+<td>54 (1.55%)</td>
+</tr>
+<tr>
+<td>Exec</td>
+<td>38.2 (0.06%)</td>
+<td>44 (0.00%)</td>
+<td>56 (1.71%)</td>
+<td>98 (0.00%)</td>
+</tr>
+</tbody>
+</table>
+
+
+
+
+
+
+
+
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    
+    
+      
+      
+      <script id="__config" type="application/json">{"annotate": null, "base": "../..", "features": ["navigation.tabs", "navigation.tabs.sticky", "navigation.sections", "navigation.indexes", "navigation.expand", "content.code.annotate"], "search": "../../assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script>
+    
+    
+      <script src="../../assets/javascripts/bundle.79ae519e.min.js"></script>
+      
+    
+  </body>
+</html>

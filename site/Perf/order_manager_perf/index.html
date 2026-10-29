@@ -1,0 +1,5398 @@
+
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+      
+      
+        <link rel="canonical" href="https://UmutCanDundar.github.io/TradingEngine-Portfolio/Perf/order_manager_perf/">
+      
+      
+        <link rel="prev" href="../../Benchmark/order_manager_benchmark/">
+      
+      
+        <link rel="next" href="../../Unit/risk_unit/">
+      
+      
+        
+      
+      
+      <link rel="icon" href="../../assets/images/favicon.png">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.7.6">
+    
+    
+      
+        <title>Perf - TradingEngine</title>
+      
+    
+    
+      <link rel="stylesheet" href="../../assets/stylesheets/main.484c7ddc.min.css">
+      
+        
+        <link rel="stylesheet" href="../../assets/stylesheets/palette.ab4e12ef.min.css">
+      
+      
+
+
+    
+    
+      
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,700,700i%7CRoboto+Mono:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
+      
+    
+    
+      <link rel="stylesheet" href="../../stylesheets/extra.css">
+    
+    <script>__md_scope=new URL("../..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+  </head>
+  
+  
+    
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="slate" data-md-color-primary="teal" data-md-color-accent="indigo">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#ordermanager-perf-analysis" class="md-skip">
+          Skip to content
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+  
+
+<header class="md-header md-header--shadow md-header--lifted" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Header">
+    <a href="../.." title="TradingEngine" class="md-header__button md-logo" aria-label="TradingEngine" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            TradingEngine
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              Perf
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+      
+    
+    
+    
+    
+      
+      
+        <label class="md-header__button md-icon" for="__search">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        </label>
+        <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Search" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="Search">
+        
+        <button type="reset" class="md-search__icon md-icon" title="Clear" aria-label="Clear" tabindex="-1">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+        </button>
+      </nav>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" tabindex="0" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Initializing search
+          </div>
+          <ol class="md-search-result__list" role="presentation"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+      
+    
+    
+  </nav>
+  
+    
+      
+<nav class="md-tabs" aria-label="Tabs" data-md-component="tabs">
+  <div class="md-grid">
+    <ul class="md-tabs__list">
+      
+        
+  
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../.." class="md-tabs__link">
+        
+  
+  
+    
+  
+  Overview
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../../architecture/" class="md-tabs__link">
+        
+  
+  
+    
+  
+  Architecture
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../../design/" class="md-tabs__link">
+        
+  
+  
+    
+  
+  Design
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+    
+  
+  
+    
+    
+      <li class="md-tabs__item md-tabs__item--active">
+        <a href="../../tests/" class="md-tabs__link">
+          
+  
+  
+    
+  
+  Tests
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../../optimization/" class="md-tabs__link">
+        
+  
+  
+    
+  
+  Recent Optimization
+
+      </a>
+    </li>
+  
+
+      
+    </ul>
+  </div>
+</nav>
+    
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+  
+
+
+<nav class="md-nav md-nav--primary md-nav--lifted" aria-label="Navigation" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href="../.." title="TradingEngine" class="md-nav__button md-logo" aria-label="TradingEngine" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    TradingEngine
+  </label>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../.." class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Overview
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../architecture/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Architecture
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../design/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Design
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+    
+  
+  
+  
+    
+    
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+      
+        
+        
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4" checked>
+        
+          
+          <label class="md-nav__link" for="__nav_4" id="__nav_4_label" tabindex="">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Tests
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_4_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_4">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Tests
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../tests/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Overview
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+      
+      
+        
+          
+          
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_4_2" >
+        
+          
+          <label class="md-nav__link" for="__nav_4_2" id="__nav_4_2_label" tabindex="">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Pipeline
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_2_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_4_2">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Pipeline
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../Pipeline/pipeline/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Overview
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../Pipeline/benchmark_pipeline/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Benchmark
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../Pipeline/perf_pipeline/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Perf
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+      
+        
+      
+    
+    
+    
+      
+      
+        
+          
+          
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_4_3" >
+        
+          
+          <label class="md-nav__link" for="__nav_4_3" id="__nav_4_3_label" tabindex="">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Network
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_3_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_4_3">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Network
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../Unit/network_unit/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Unit
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+      
+      
+        
+          
+          
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_4_4" >
+        
+          
+          <label class="md-nav__link" for="__nav_4_4" id="__nav_4_4_label" tabindex="">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Parser
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_4_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_4_4">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Parser
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../Unit/parser_unit/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Unit
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../Benchmark/parser_benchmark/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Benchmark
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../parser_perf/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Perf
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+    
+  
+  
+  
+    
+    
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+      
+      
+        
+          
+          
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_5" checked>
+        
+          
+          <label class="md-nav__link" for="__nav_4_5" id="__nav_4_5_label" tabindex="">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Order Manager
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_5_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_4_5">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Order Manager
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../Unit/order_manager_unit/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Unit
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../Benchmark/order_manager_benchmark/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Benchmark
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+    
+  
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Perf
+  
+
+    
+  </span>
+  
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Perf
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#test-setup" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Test Setup
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#at-a-glance" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        At a Glance
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#results-ordermanager" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Results (OrderManager)
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Results (OrderManager)">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#key-metrics" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Key Metrics
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#hotspot-analysis" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Hotspot Analysis
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Hotspot Analysis">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#p-core-cpubranch" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        P-Core (CPU+Branch)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#icache-profile" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        ICache Profile
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#dcache-profile" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        DCache Profile
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#cache-memory" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Cache &amp; Memory
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#false-sharing-c2c" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        False Sharing (C2C)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#flamegraph" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Flamegraph
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#findings" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Findings &amp; Action Items
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#results-ordermanager-fix" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Results (OrderManager FIX)
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Results (OrderManager FIX)">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#key-metrics_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Key Metrics
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#hotspot-analysis_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Hotspot Analysis
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Hotspot Analysis">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#p-core-cpubranch_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        P-Core (CPU+Branch)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#dcache-profile_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        DCache Profile
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#icache-profile_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        ICache Profile
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#cache-memory_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Cache &amp; Memory
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#false-sharing-c2c_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        False Sharing (C2C)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#flamegraph_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Flamegraph
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#findings-action-items" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Findings &amp; Action Items
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#results-ordermanager-itch-bist" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Results (OrderManager ITCH BIST)
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Results (OrderManager ITCH BIST)">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#key-metrics_2" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Key Metrics
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#hotspot-analysis_2" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Hotspot Analysis
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Hotspot Analysis">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#p-core-cpubranch_2" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        P-Core (CPU+Branch)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#tlb-profile" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        TLB Profile
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#cache-memory_2" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Cache &amp; Memory
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#false-sharing-c2c_2" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        False Sharing (C2C)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#flamegraph_2" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Flamegraph
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#findings-action-items_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Findings &amp; Action Items
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#results-ordermanager-itch-nasdaq" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Results (OrderManager ITCH NASDAQ)
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Results (OrderManager ITCH NASDAQ)">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#key-metrics_3" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Key Metrics
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#hotspot-analysis_3" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Hotspot Analysis
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Hotspot Analysis">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#p-core-cpubranch_3" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        P-Core (CPU+Branch)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#tlb-profile_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        TLB Profile
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#cache-memory_3" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Cache &amp; Memory
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#false-sharing-c2c_3" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        False Sharing (C2C)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#flamegraph_3" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Flamegraph
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#findings-action-items_2" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Findings &amp; Action Items
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#results-ordermanager-ouch-bist" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Results (OrderManager OUCH BIST)
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Results (OrderManager OUCH BIST)">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#key-metrics_4" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Key Metrics
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#hotspot-analysis_4" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Hotspot Analysis
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Hotspot Analysis">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#p-core-cpubranch_4" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        P-Core (CPU+Branch)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#icache-profile_2" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        ICache Profile
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#cache-memory_4" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Cache &amp; Memory
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#false-sharing-c2c_4" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        False Sharing (C2C)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#flamegraph_4" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Flamegraph
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#findings-action-items_3" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Findings &amp; Action Items
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#results-ordermanager-ouch-nasdaq" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Results (OrderManager OUCH NASDAQ)
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Results (OrderManager OUCH NASDAQ)">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#key-metrics_5" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Key Metrics
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#hotspot-analysis_5" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Hotspot Analysis
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Hotspot Analysis">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#p-core-cpubranch_5" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        P-Core (CPU+Branch)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#dcache-profile_2" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        DCache Profile
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#tlb-profile_2" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        TLB Profile
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#cache-memory_5" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Cache &amp; Memory
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#false-sharing-c2c_5" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        False Sharing (C2C)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#flamegraph_5" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Flamegraph
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#findings-action-items_4" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Findings &amp; Action Items
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#raw-output" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Raw Output
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Raw Output">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#ordermanager-raw" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        OrderManager RAW
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#ordermanager-fix-raw" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        OrderManager FIX RAW
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#ordermanager-itch-bist-raw" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        OrderManager ITCH BIST RAW
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#ordermanager-itch-nasdaq-raw" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        OrderManager ITCH NASDAQ RAW
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#ordermanager-ouch-bist-raw" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        OrderManager OUCH BIST RAW
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#ordermanager-ouch-nasdaq-raw" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        OrderManager OUCH NASDAQ RAW
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+      
+      
+        
+          
+          
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_4_6" >
+        
+          
+          <label class="md-nav__link" for="__nav_4_6" id="__nav_4_6_label" tabindex="">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Risk
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_6_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_4_6">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Risk
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../Unit/risk_unit/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Unit
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../Benchmark/risk_benchmark/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Benchmark
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../risk_perf/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Perf
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+      
+      
+        
+          
+          
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_4_7" >
+        
+          
+          <label class="md-nav__link" for="__nav_4_7" id="__nav_4_7_label" tabindex="">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Builder
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_7_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_4_7">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Builder
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../Unit/builder_unit/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Unit
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../Benchmark/builder_benchmark/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Benchmark
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../builder_perf/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Perf
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../optimization/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Recent Optimization
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#test-setup" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Test Setup
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#at-a-glance" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        At a Glance
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#results-ordermanager" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Results (OrderManager)
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Results (OrderManager)">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#key-metrics" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Key Metrics
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#hotspot-analysis" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Hotspot Analysis
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Hotspot Analysis">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#p-core-cpubranch" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        P-Core (CPU+Branch)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#icache-profile" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        ICache Profile
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#dcache-profile" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        DCache Profile
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#cache-memory" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Cache &amp; Memory
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#false-sharing-c2c" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        False Sharing (C2C)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#flamegraph" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Flamegraph
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#findings" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Findings &amp; Action Items
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#results-ordermanager-fix" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Results (OrderManager FIX)
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Results (OrderManager FIX)">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#key-metrics_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Key Metrics
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#hotspot-analysis_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Hotspot Analysis
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Hotspot Analysis">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#p-core-cpubranch_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        P-Core (CPU+Branch)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#dcache-profile_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        DCache Profile
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#icache-profile_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        ICache Profile
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#cache-memory_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Cache &amp; Memory
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#false-sharing-c2c_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        False Sharing (C2C)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#flamegraph_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Flamegraph
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#findings-action-items" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Findings &amp; Action Items
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#results-ordermanager-itch-bist" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Results (OrderManager ITCH BIST)
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Results (OrderManager ITCH BIST)">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#key-metrics_2" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Key Metrics
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#hotspot-analysis_2" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Hotspot Analysis
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Hotspot Analysis">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#p-core-cpubranch_2" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        P-Core (CPU+Branch)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#tlb-profile" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        TLB Profile
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#cache-memory_2" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Cache &amp; Memory
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#false-sharing-c2c_2" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        False Sharing (C2C)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#flamegraph_2" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Flamegraph
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#findings-action-items_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Findings &amp; Action Items
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#results-ordermanager-itch-nasdaq" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Results (OrderManager ITCH NASDAQ)
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Results (OrderManager ITCH NASDAQ)">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#key-metrics_3" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Key Metrics
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#hotspot-analysis_3" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Hotspot Analysis
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Hotspot Analysis">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#p-core-cpubranch_3" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        P-Core (CPU+Branch)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#tlb-profile_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        TLB Profile
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#cache-memory_3" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Cache &amp; Memory
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#false-sharing-c2c_3" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        False Sharing (C2C)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#flamegraph_3" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Flamegraph
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#findings-action-items_2" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Findings &amp; Action Items
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#results-ordermanager-ouch-bist" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Results (OrderManager OUCH BIST)
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Results (OrderManager OUCH BIST)">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#key-metrics_4" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Key Metrics
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#hotspot-analysis_4" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Hotspot Analysis
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Hotspot Analysis">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#p-core-cpubranch_4" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        P-Core (CPU+Branch)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#icache-profile_2" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        ICache Profile
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#cache-memory_4" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Cache &amp; Memory
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#false-sharing-c2c_4" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        False Sharing (C2C)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#flamegraph_4" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Flamegraph
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#findings-action-items_3" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Findings &amp; Action Items
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#results-ordermanager-ouch-nasdaq" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Results (OrderManager OUCH NASDAQ)
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Results (OrderManager OUCH NASDAQ)">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#key-metrics_5" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Key Metrics
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#hotspot-analysis_5" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Hotspot Analysis
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Hotspot Analysis">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#p-core-cpubranch_5" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        P-Core (CPU+Branch)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#dcache-profile_2" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        DCache Profile
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#tlb-profile_2" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        TLB Profile
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#cache-memory_5" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Cache &amp; Memory
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#false-sharing-c2c_5" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        False Sharing (C2C)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#flamegraph_5" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Flamegraph
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#findings-action-items_4" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Findings &amp; Action Items
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#raw-output" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Raw Output
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Raw Output">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#ordermanager-raw" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        OrderManager RAW
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#ordermanager-fix-raw" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        OrderManager FIX RAW
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#ordermanager-itch-bist-raw" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        OrderManager ITCH BIST RAW
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#ordermanager-itch-nasdaq-raw" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        OrderManager ITCH NASDAQ RAW
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#ordermanager-ouch-bist-raw" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        OrderManager OUCH BIST RAW
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#ordermanager-ouch-nasdaq-raw" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        OrderManager OUCH NASDAQ RAW
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              
+              <article class="md-content__inner md-typeset">
+                
+                  
+
+
+
+<h1 id="ordermanager-perf-analysis">OrderManager — Perf Analysis</h1>
+<p>End-to-end profiling of the OrderManager unit across six test scenarios: <strong>OrderManager</strong> (mixed protocol/venue traffic through the full store path), <strong>OrderManager FIX</strong> (BIST FIX message lifecycle in isolation), <strong>OrderManager ITCH BIST</strong> (BIST ITCH market data processing in isolation), <strong>OrderManager ITCH NASDAQ</strong> (NASDAQ ITCH market data processing in isolation), <strong>OrderManager OUCH BIST</strong> (BIST OUCH execution reports in isolation), and <strong>OrderManager OUCH NASDAQ</strong> (NASDAQ OUCH execution reports in isolation).</p>
+<p>The Dispatch test is the primary production-representative scenario — it exercises the full <code>store()</code> dispatch path across all protocol and venue branches with a 17-message mixed dataset covering FIX, ITCH, and OUCH traffic for both BIST and NASDAQ. The isolated protocol tests each exercise a narrow 3–4 message sequence and are used to attribute per-path costs without cross-protocol interference.</p>
+<p>The OrderManager is a deliberately broad orchestration component. It manages order lifecycle across multiple venues, maintains order pools, hash-based lookup maps, pending order tracking, MarketBook updates, and fan-out to downstream risk, strategy, and database queues — all within a strictly single-threaded store loop. The class comment explicitly notes that cache-line level micro-optimisation was intentionally deferred pending profiling; the results below constitute that first profiling baseline.</p>
+<hr />
+<h2 id="test-setup">Test Setup</h2>
+<p>All perf tests were conducted under <strong>Profile 1 — Performance/Idle</strong>. For the full profile comparison and selection rationale, see <a href="pipeline.md#profile-selection">Pipeline Overview</a>.</p>
+<table>
+<thead>
+<tr>
+<th>Field</th>
+<th>Value</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>CPU</td>
+<td>13th Gen Intel Core i7-13620H (10C/16T)</td>
+</tr>
+<tr>
+<td>P-core max</td>
+<td>4900 MHz</td>
+</tr>
+<tr>
+<td>E-core max</td>
+<td>3600 MHz</td>
+</tr>
+<tr>
+<td>Kernel</td>
+<td>6.17.0-29-generic x86_64</td>
+</tr>
+<tr>
+<td>Governor</td>
+<td>performance</td>
+</tr>
+<tr>
+<td>NUMA</td>
+<td>Single node, 15714 MB total</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h2 id="at-a-glance">At a Glance</h2>
+<table>
+<thead>
+<tr>
+<th>Metric</th>
+<th>Dispatch</th>
+<th>FIX</th>
+<th>ITCH BIST</th>
+<th>ITCH NASDAQ</th>
+<th>OUCH BIST</th>
+<th>OUCH NASDAQ</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Wall time</td>
+<td>13.63 s</td>
+<td>0.59 s</td>
+<td>0.68 s</td>
+<td>0.57 s</td>
+<td>2.70 s</td>
+<td>3.44 s</td>
+</tr>
+<tr>
+<td>CPUs utilized</td>
+<td>3.996</td>
+<td>3.894</td>
+<td>0.983</td>
+<td>0.979</td>
+<td>3.936</td>
+<td>3.949</td>
+</tr>
+<tr>
+<td>P-core IPC</td>
+<td>0.35</td>
+<td>1.19</td>
+<td>2.63</td>
+<td>3.78</td>
+<td>0.42</td>
+<td>0.35</td>
+</tr>
+<tr>
+<td>Branch miss rate</td>
+<td>1.00%</td>
+<td>0.00%</td>
+<td>0.00%</td>
+<td>0.00%</td>
+<td>0.94%</td>
+<td>1.07%</td>
+</tr>
+<tr>
+<td>L1-D miss rate</td>
+<td>3.48%</td>
+<td>0.02%</td>
+<td>0.01%</td>
+<td>0.01%</td>
+<td>3.03%</td>
+<td>4.08%</td>
+</tr>
+<tr>
+<td>LLC miss rate</td>
+<td>~0%</td>
+<td>~0%</td>
+<td>~0%</td>
+<td>~0%</td>
+<td>~0%</td>
+<td>~0%</td>
+</tr>
+<tr>
+<td>Local HITM</td>
+<td>45,310</td>
+<td>1</td>
+<td>0</td>
+<td>0</td>
+<td>8,400</td>
+<td>11,270</td>
+</tr>
+</tbody>
+</table>
+<p><strong>The pattern is immediately clear:</strong> ITCH paths are compute-efficient and contention-free (IPC 2.6–3.8, L1-D miss ~0%, zero HITM), while OUCH and Dispatch paths show spin-wait-dominated IPC (~0.35–0.42), elevated L1-D miss rates (3–4%), and significant HITM. The HITM is structurally driven by the concurrent consumer threads spinning on the downstream queues while the store thread writes to shared data — not by any false sharing in the application structs themselves.</p>
+<p>LLC miss rate is near zero across all scenarios, confirming the OrderManager working set (order pool, hash maps, pending queues) fits within LLC.</p>
+<hr />
+<h2 id="results-ordermanager">Results (OrderManager)</h2>
+<p>Mixed protocol/venue traffic through <code>OrderManager::store()</code>. This is the primary production-representative scenario. The 17-message dataset covers: instrument directory (BIST + NASDAQ), FIX new/partial/cancel (BIST), BIST ITCH add/exec/cancel, NASDAQ ITCH add/exec/delete, BIST OUCH accepted/executed/cancelled, NASDAQ OUCH accepted/executed/cancelled. Three consumer threads drain <code>store_to_risk</code>, <code>store_to_strategy</code>, and <code>store_to_db</code>.</p>
+<table>
+<thead>
+<tr>
+<th>Field</th>
+<th>Value</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Wall time</td>
+<td>13.63 s</td>
+</tr>
+<tr>
+<td>User time</td>
+<td>54.46 s</td>
+</tr>
+<tr>
+<td>Sys time</td>
+<td>0.02 s</td>
+</tr>
+<tr>
+<td>CPUs utilized</td>
+<td>3.996</td>
+</tr>
+</tbody>
+</table>
+<p>Four threads active: the store thread (main, CPU 6) and three consumer spin-loops. User time at 54.46s across ~4 CPUs and 13.63s wall time is consistent with all four threads fully loaded for the run duration. Sys time at 0.02s is negligible — the store loop is pure userspace with no kernel syscalls on the hot path.</p>
+<hr />
+<h3 id="key-metrics">Key Metrics</h3>
+<table>
+<thead>
+<tr>
+<th>Metric</th>
+<th>P-Core</th>
+<th>E-Core</th>
+<th>Note</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Instructions</td>
+<td>79.8B</td>
+<td>59.2B</td>
+<td>E-core carries significant consumer spin-loop work</td>
+</tr>
+<tr>
+<td>Cycles</td>
+<td>226.9B @ 4.17 GHz</td>
+<td>48.2B @ 0.89 GHz</td>
+<td>P-core near boost; E-core far below max — spin-wait</td>
+</tr>
+<tr>
+<td>IPC</td>
+<td>0.35</td>
+<td>1.23</td>
+<td>See note below</td>
+</tr>
+<tr>
+<td>Branch miss rate</td>
+<td>1.00%</td>
+<td>1.77%</td>
+<td>Elevated — variant dispatch branches</td>
+</tr>
+<tr>
+<td>L1-D miss rate</td>
+<td>3.48%</td>
+<td>—</td>
+<td>Elevated — wide working set, cross-thread contention</td>
+</tr>
+<tr>
+<td>LLC miss rate</td>
+<td>0.00%</td>
+<td>15.27% of 58M</td>
+<td>P-core: full LLC-resident; E-core: startup + spin overhead</td>
+</tr>
+</tbody>
+</table>
+<p><strong>IPC at 0.35 on P-core is memory-bound and spin-wait dominated.</strong> The store thread interleaves hash map lookups, order pool writes, variant dispatch, and five downstream queue pushes per message — all against a large, cross-thread-contested working set. The E-core IPC at 1.23 is higher than P-core despite doing less application work: the consumer spin loops (which land on E-cores as the OS migrates threads) consist of tight <code>_mm_pause()</code> + branch sequences that retire cheaply, inflating E-core IPC relative to the heavier store-path work on the P-core.</p>
+<p><strong>Branch miss rate at 1.00%</strong> is elevated relative to the isolated ITCH tests (0.00%) and reflects the <code>std::visit</code> / variant dispatch across the 17-message type mix. Each <code>store()</code> call dispatches through nested <code>std::visit</code> chains covering up to 14 BIST ITCH + 11 NASDAQ ITCH + 5 BIST OUCH + 11 NASDAQ OUCH + FIX message alternatives. The misprediction rate is not an application defect — it is inherent to the branch-per-variant-arm dispatch pattern across diverse message sequences.</p>
+<p><strong>L1-D miss rate at 3.48%</strong> reflects the combined pressure of the large order pool and hash map working set plus cross-thread cache line invalidation from the three consumer threads reading the same <code>Order*</code> pointers written by the store thread to the downstream queues. The LLC miss rate at 0.00% confirms the full working set is LLC-resident — the misses are L1-evictions caused by contention, not true capacity pressure.</p>
+<hr />
+<h3 id="hotspot-analysis">Hotspot Analysis</h3>
+<p>The store thread runs on the P-core. The three consumer lambdas (spin loops) each accumulate ~25% CPU self time in the CPU+Branch profile — they are the dominant inclusive consumers because <code>_mm_pause()</code> keeps them resident. The actionable signal is in the application frames below them.</p>
+<h4 id="p-core-cpubranch">P-Core (CPU+Branch)</h4>
+<table>
+<thead>
+<tr>
+<th>Overhead</th>
+<th>Self</th>
+<th>Symbol</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>~75%</td>
+<td>~0%</td>
+<td><code>libc</code> / <code>libstdc++</code> thread infrastructure</td>
+</tr>
+<tr>
+<td>~25%</td>
+<td>24.98%</td>
+<td><code>std::thread</code> lambda#4 (consumer spin)</td>
+</tr>
+<tr>
+<td>~25%</td>
+<td>24.98%</td>
+<td><code>std::thread</code> lambda#3 (consumer spin)</td>
+</tr>
+<tr>
+<td>~25%</td>
+<td>24.96%</td>
+<td><code>std::thread</code> lambda#2 (consumer spin)</td>
+</tr>
+<tr>
+<td>24.90%</td>
+<td>0.11%</td>
+<td><code>main</code></td>
+</tr>
+<tr>
+<td>21.36%</td>
+<td>2.95%</td>
+<td><code>OrderManager::store()</code></td>
+</tr>
+<tr>
+<td>6.93%</td>
+<td>6.93%</td>
+<td><code>boost::lockfree::ringbuffer_base::push</code> (SPSC queue push)</td>
+</tr>
+<tr>
+<td>2.46%</td>
+<td>0.23%</td>
+<td><code>std::__do_visit</code> — NASDAQ OUCH variant dispatch</td>
+</tr>
+<tr>
+<td>2.19%</td>
+<td>2.19%</td>
+<td><code>boost::lockfree::ringbuffer_base&lt;Order*&gt;::push</code></td>
+</tr>
+<tr>
+<td>1.68%</td>
+<td>0.91%</td>
+<td><code>std::__do_visit</code> — NASDAQ ITCH variant dispatch</td>
+</tr>
+<tr>
+<td>1.17%</td>
+<td>1.17%</td>
+<td><code>absl::flat_hash_map::find</code> (order lookup)</td>
+</tr>
+<tr>
+<td>1.10%</td>
+<td>0.06%</td>
+<td><code>OrderManager::add_awaitingAck_order</code></td>
+</tr>
+</tbody>
+</table>
+<p><code>OrderManager::store()</code> at 2.95% self is the dispatch loop itself — reading from <code>parser_to_store_</code>, visiting the variant, and delegating to the appropriate <code>update_order</code> overload. The <code>boost::lockfree::ringbuffer_base::push</code> entries at 6.93% and 2.19% self represent the SPSC queue writes to <code>parser_to_store_</code> (the large message queue pushing the 17-message variant) and <code>store_to_risk</code>/<code>store_to_strategy</code>/<code>store_to_db</code> respectively. These are structurally necessary and not reducible.</p>
+<p>The consumer lambda self-time at ~25% each is a test harness artifact — the spin loops are present to drain queues without blocking the store thread, but they consume CPU samples that inflate inclusive overhead throughout the call tree.</p>
+<h4 id="icache-profile">ICache Profile</h4>
+<table>
+<thead>
+<tr>
+<th>Overhead</th>
+<th>Self</th>
+<th>Symbol</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>83.72%</td>
+<td>2.81%</td>
+<td><code>OrderManager::store()</code></td>
+</tr>
+<tr>
+<td>16.99%</td>
+<td>11.02%</td>
+<td><code>folly::ConcurrentHashMap::eraseImpl</code></td>
+</tr>
+<tr>
+<td>14.66%</td>
+<td>1.21%</td>
+<td><code>OrderManager::update_order(FIXMessage*)</code></td>
+</tr>
+<tr>
+<td>13.91%</td>
+<td>4.75%</td>
+<td><code>std::__do_visit</code> — NASDAQ ITCH</td>
+</tr>
+<tr>
+<td>13.18%</td>
+<td>13.13%</td>
+<td><code>HashTables::wyhash_small</code></td>
+</tr>
+<tr>
+<td>10.40%</td>
+<td>1.20%</td>
+<td><code>std::__do_visit</code> — NASDAQ OUCH</td>
+</tr>
+<tr>
+<td>8.74%</td>
+<td>7.56%</td>
+<td><code>std::__gen_vtable_impl</code> — BIST ITCH dispatch</td>
+</tr>
+<tr>
+<td>7.64%</td>
+<td>0.49%</td>
+<td><code>OrderManager::add_awaitingAck_order</code></td>
+</tr>
+<tr>
+<td>7.39%</td>
+<td>7.34%</td>
+<td><code>absl::flat_hash_map::find</code></td>
+</tr>
+<tr>
+<td>6.74%</td>
+<td>1.01%</td>
+<td><code>folly::ConcurrentHashMap::emplace</code></td>
+</tr>
+<tr>
+<td>5.29%</td>
+<td>2.21%</td>
+<td><code>OrderManager::add_market_order</code></td>
+</tr>
+<tr>
+<td>5.13%</td>
+<td>5.11%</td>
+<td><code>pthread_mutex_lock</code></td>
+</tr>
+</tbody>
+</table>
+<p><strong><code>HashTables::wyhash_small</code> at 13.13% icache self is the largest single instruction footprint in application code.</strong> This is the hash function called on FIX execution report ID hashing. It appears on the hot path for every FIX exec report processed through update_order(FIXMessage*).</p>
+<p><strong><code>folly::ConcurrentHashMap::eraseImpl</code> at 11.02% icache self</strong> is the most notable cost attributable to the <code>awaitingAck_orders_</code> map. On every OUCH accepted/executed and FIX execution report, <code>awaitingAck_orders_.erase(client_order_id)</code> is called to remove the matched pending order. The <code>eraseImpl</code> footprint reflects folly's hazard-pointer-based reclamation machinery — each erase triggers a hazard pointer acquisition, bucket traversal, node unlink, and deferred reclamation enqueue. This is a structural cost of using a concurrent hash map on a path that is single-threaded in practice (the store loop never races with a writer on <code>awaitingAck_orders_</code> except through <code>add_awaitingAck_order</code>, which is also called from the same store thread in the test). <strong>The use of <code>folly::ConcurrentHashMap</code> for <code>awaitingAck_orders_</code> is the primary icache overhead item on the OUCH and FIX paths.</strong></p>
+<p><strong><code>absl::flat_hash_map::find</code> at 7.34% icache self</strong> is the order lookup cost on the market and our-order maps. With <code>market_orders_</code> and <code>our_orders_</code> both using <code>absl::flat_hash_map&lt;OrderKey, Order*&gt;</code>, each ITCH and OUCH message that requires an existing order lookup calls this function. The flat hash map has excellent cache characteristics (open addressing, linear probing), so this is expected and not a concern.</p>
+<p><strong><code>pthread_mutex_lock</code> at 5.11% icache self</strong> is folly's internal mutex used by <code>ConcurrentHashMap</code> during bucket modification. This confirms that <code>ConcurrentHashMap</code>'s internal locking contributes meaningfully to the icache footprint even on the single-threaded store path — hazard pointer operations and mutex acquisition are invoked on every insert/erase regardless of actual concurrent access.</p>
+<h4 id="dcache-profile">DCache Profile</h4>
+<table>
+<thead>
+<tr>
+<th>Overhead</th>
+<th>Self</th>
+<th>Symbol</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>20.78%</td>
+<td>20.73%</td>
+<td><code>std::thread</code> lambda#4 (consumer spin)</td>
+</tr>
+<tr>
+<td>15.74%</td>
+<td>15.69%</td>
+<td><code>std::thread</code> lambda#3 (consumer spin)</td>
+</tr>
+<tr>
+<td>15.08%</td>
+<td>14.99%</td>
+<td><code>std::thread</code> lambda#2 (consumer spin)</td>
+</tr>
+<tr>
+<td>42.89%</td>
+<td>1.14%</td>
+<td><code>OrderManager::store()</code></td>
+</tr>
+<tr>
+<td>13.84%</td>
+<td>13.74%</td>
+<td><code>boost::lockfree::ringbuffer_base::push</code> (SPSC, message queue)</td>
+</tr>
+<tr>
+<td>8.02%</td>
+<td>4.21%</td>
+<td><code>folly::ConcurrentHashMap::eraseImpl</code></td>
+</tr>
+<tr>
+<td>6.56%</td>
+<td>6.54%</td>
+<td><code>boost::lockfree::ringbuffer_base&lt;Order*&gt;::push</code></td>
+</tr>
+<tr>
+<td>3.73%</td>
+<td>3.62%</td>
+<td>BIST OUCH cancelled handler lambda</td>
+</tr>
+</tbody>
+</table>
+<p>The consumer spin loops account for ~51% of combined dcache self — they repeatedly read the SPSC queue tail pointer written by the store thread, generating a steady stream of L1-D load misses as the cache line is invalidated by the producer write on the other core. This is the cross-thread contention pattern that drives both the 3.48% L1-D miss rate and the 45,310 HITM.</p>
+<p><code>boost::lockfree::ringbuffer_base::push</code> at 13.74% dcache self is the large message variant queue push — writing the 17-type variant struct into the SPSC ring buffer generates L1-D misses proportional to the variant size. The <code>Order*</code> push at 6.54% is the downstream queue writes to risk/strategy/db.</p>
+<p><code>folly::ConcurrentHashMap::eraseImpl</code> at 4.21% dcache self confirms the hazard pointer reclamation path also generates data cache pressure — the hazard pointer table and deferred reclamation queue are accessed on every erase.</p>
+<hr />
+<h3 id="cache-memory">Cache &amp; Memory</h3>
+<table>
+<thead>
+<tr>
+<th>Metric</th>
+<th>Value</th>
+<th>Assessment</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>L1-D miss rate (P-core)</td>
+<td>3.48%</td>
+<td>Elevated — cross-thread invalidation + wide working set</td>
+</tr>
+<tr>
+<td>LLC miss rate (P-core)</td>
+<td>0.00%</td>
+<td>Excellent — full working set LLC-resident</td>
+</tr>
+<tr>
+<td>L1-I misses (P-core)</td>
+<td>372,284,365</td>
+<td>Elevated — variant dispatch + folly hazptr instruction footprint</td>
+</tr>
+<tr>
+<td>dTLB misses (P-core)</td>
+<td>1,495,210</td>
+<td>Moderate — large pool and map address space footprint</td>
+</tr>
+<tr>
+<td>iTLB misses (P-core)</td>
+<td>132,210</td>
+<td>Low</td>
+</tr>
+</tbody>
+</table>
+<p>The L1-I miss count at 372M is the highest across all OrderManager scenarios and reflects the diverse instruction footprint of the full dispatch path: six <code>update_order</code> overloads, five filler classes, two hash map implementations, and the folly hazard pointer machinery all contribute unique instruction pages. The LLC miss rate at 0.00% is the key confirmation that despite high L1 pressure, no working set eviction is occurring — the design's large on-stack allocation strategy (avoiding heap fragmentation) is effective at keeping all data LLC-resident.</p>
+<hr />
+<h3 id="false-sharing-c2c">False Sharing (C2C)</h3>
+<table>
+<thead>
+<tr>
+<th>Metric</th>
+<th>Value</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Total shared cache lines</td>
+<td>19</td>
+</tr>
+<tr>
+<td>Load HITs on shared lines</td>
+<td>112,642</td>
+</tr>
+<tr>
+<td>Local HITM</td>
+<td>45,310</td>
+</tr>
+<tr>
+<td>LLC hits on shared lines</td>
+<td>81,851</td>
+</tr>
+<tr>
+<td>Locked accesses on shared lines</td>
+<td>1</td>
+</tr>
+<tr>
+<td>Blocked accesses on shared lines</td>
+<td>1,653</td>
+</tr>
+<tr>
+<td>Store HITs on shared lines</td>
+<td>83,941</td>
+</tr>
+</tbody>
+</table>
+<p><strong>45,310 Local HITM across 19 shared cache lines is the dominant cross-thread contention signal.</strong> The 19 shared lines correspond to the SPSC queue ring buffer slots and metadata (head/tail pointers) written by the store thread and read by each of the three consumer spin loops. With three consumers each spinning on separate queues (<code>store_to_risk</code>, <code>store_to_strategy</code>, <code>store_to_db</code>), each queue write by the store thread causes an ownership transfer (HITM) as the relevant consumer reads the updated slot. This is structurally equivalent to the pipeline SPSC HITM and is a test harness artifact — in production, the consumer threads are doing meaningful work rather than busy-spinning.</p>
+<p>No application struct false sharing is detected. The single locked access is a folly <code>ConcurrentHashMap</code> mutex acquisition, not a structural contention point.</p>
+<hr />
+<h3 id="flamegraph">Flamegraph</h3>
+<p><a href="../../assets/flamegraph_order_manager.svg" target="_blank">OrderManager Flamegraph</a></p>
+<hr />
+<h3 id="findings">Findings &amp; Action Items</h3>
+<table>
+<thead>
+<tr>
+<th>#</th>
+<th>Finding</th>
+<th>Impact</th>
+<th>Status</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>1</td>
+<td>IPC 0.35 — spin-wait consumer threads dominate; store-path IPC not directly measurable from this profile</td>
+<td>Test harness artifact</td>
+<td>✅ No action needed</td>
+</tr>
+<tr>
+<td>2</td>
+<td><code>folly::ConcurrentHashMap::eraseImpl</code> 11.02% icache self + 4.21% dcache self — hazard pointer machinery on every OUCH/FIX ack erase</td>
+<td>Primary icache overhead on OUCH/FIX paths</td>
+<td>⚠️ Replace folly::concurrenthashmap with custom map <br><strong>(handled - see</strong> <a href="../../optimization/#opt-1--ordermanager-follyconcurrenthashmap--concurrentfixedflatmap-2026-06-03">Opt-1 in Recent Optimizations Page</a><strong>)</strong></td>
+</tr>
+<tr>
+<td>3</td>
+<td>HashTables::wyhash_small 13.13% icache self — hash function called on FIX execution report ID hashing</td>
+<td>Optimization candidate — hash function is swappable</td>
+<td>⚠️ Identified, monitored</td>
+</tr>
+<tr>
+<td>4</td>
+<td><code>absl::flat_hash_map::find</code> 7.34% icache self — order lookup on every message</td>
+<td>Expected; flat_hash_map is the correct choice here</td>
+<td>✅ No action needed</td>
+</tr>
+<tr>
+<td>5</td>
+<td><code>pthread_mutex_lock</code> 5.11% icache self — folly internal mutex on store path</td>
+<td>Directly caused by finding 2; resolved by replacing <code>awaitingAck_orders_</code></td>
+<td>⚠️ Resolved by finding 2</td>
+</tr>
+<tr>
+<td>6</td>
+<td>45,310 HITM on 19 shared lines — SPSC queue hand-off between store and 3 consumer spin loops</td>
+<td>Test harness artifact; production consumers do meaningful work</td>
+<td>✅ No action needed</td>
+</tr>
+<tr>
+<td>7</td>
+<td>L1-D miss 3.48% — cross-thread invalidation from consumer spin-reads on shared SPSC lines</td>
+<td>Test harness artifact; same root as finding 6</td>
+<td>✅ No action needed</td>
+</tr>
+<tr>
+<td>8</td>
+<td>LLC miss 0.00% — full working set LLC-resident despite ~12.6 MB on-stack pool</td>
+<td>Confirms pool allocation strategy is effective</td>
+<td>✅ No action needed</td>
+</tr>
+<tr>
+<td>9</td>
+<td>Branch miss 1.00% — variant dispatch across 17 message types</td>
+<td>Expected for mixed-traffic dispatch; inherent to <code>std::visit</code> pattern</td>
+<td>✅ No action needed</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h2 id="results-ordermanager-fix">Results (OrderManager FIX)</h2>
+<p>BIST FIX message lifecycle in isolation — <code>fix_new</code>, <code>fix_partial</code>, <code>fix_cancel</code> pushed through <code>parser_to_store_</code> per iteration, 5M iterations. One awaiting-ack order is added before each batch via <code>add_awaitingAck_order</code>. Three consumer threads drain downstream queues. FIX is the only path exercised — no ITCH or OUCH messages.</p>
+<table>
+<thead>
+<tr>
+<th>Field</th>
+<th>Value</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Wall time</td>
+<td>0.59 s</td>
+</tr>
+<tr>
+<td>User time</td>
+<td>2.29 s</td>
+</tr>
+<tr>
+<td>Sys time</td>
+<td>0.01 s</td>
+</tr>
+<tr>
+<td>CPUs utilized</td>
+<td>3.894</td>
+</tr>
+</tbody>
+</table>
+<p>Four threads active: store thread and three consumers. The FIX path is the shortest of all OrderManager scenarios in wall time, consistent with its compact message set (3 messages vs 17 in Dispatch).</p>
+<hr />
+<h3 id="key-metrics_1">Key Metrics</h3>
+<table>
+<thead>
+<tr>
+<th>Metric</th>
+<th>P-Core</th>
+<th>E-Core</th>
+<th>Note</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Instructions</td>
+<td>11.1B</td>
+<td>710M</td>
+<td>E-core: startup + minor spin activity</td>
+</tr>
+<tr>
+<td>Cycles</td>
+<td>9.34B @ 4.08 GHz</td>
+<td>628M @ 0.27 GHz</td>
+<td>P-core near boost; E-core essentially idle</td>
+</tr>
+<tr>
+<td>IPC</td>
+<td>1.19</td>
+<td>1.13</td>
+<td>P-core: FIX build path is instruction-rich</td>
+</tr>
+<tr>
+<td>Branch miss rate</td>
+<td>0.00%</td>
+<td>3.00%</td>
+<td>P-core: excellent — FIX branch pattern well-predicted</td>
+</tr>
+<tr>
+<td>L1-D miss rate</td>
+<td>0.02%</td>
+<td>—</td>
+<td>Excellent — FIX working set narrow and hot in L1</td>
+</tr>
+<tr>
+<td>LLC miss rate</td>
+<td>6.14% of 34,628 loads</td>
+<td>—</td>
+<td>Startup artifact — absolute count (2,127) negligible</td>
+</tr>
+</tbody>
+</table>
+<p><strong>IPC at 1.19 on P-core confirms the FIX path is compute-bound with a clean working set.</strong> The 0.02% L1-D miss rate and near-zero branch misses indicate the FIX order lifecycle (awaiting-ack lookup → <code>add_our_order</code> → <code>fill_fix_exec_report</code> → three queue pushes) is executing against a fully L1-resident data set with predictable control flow.</p>
+<hr />
+<h3 id="hotspot-analysis_1">Hotspot Analysis</h3>
+<h4 id="p-core-cpubranch_1">P-Core (CPU+Branch)</h4>
+<p>The CPU+Branch record shows three consumer spin lambdas at ~25% self each — identical structure to Dispatch. The store-path frames below them:</p>
+<table>
+<thead>
+<tr>
+<th>Overhead</th>
+<th>Self</th>
+<th>Symbol</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>24.86%</td>
+<td>0.08%</td>
+<td><code>main</code></td>
+</tr>
+<tr>
+<td>—</td>
+<td>—</td>
+<td>(consumer lambdas ~25% each)</td>
+</tr>
+</tbody>
+</table>
+<p>The CPU+Branch profile at this wall time is dominated by the spin loops with no application sub-function breakdown below 1% — all FIX store work is subsumed into the lambda overhead. The DCache and ICache records provide the actionable breakdown.</p>
+<h4 id="dcache-profile_1">DCache Profile</h4>
+<table>
+<thead>
+<tr>
+<th>Overhead</th>
+<th>Self</th>
+<th>Symbol</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>94.17%</td>
+<td>1.86%</td>
+<td><code>main</code></td>
+</tr>
+<tr>
+<td>73.80%</td>
+<td>40.85%</td>
+<td><code>main::{lambda()#6}</code> — FIX store iteration loop</td>
+</tr>
+<tr>
+<td>43.35%</td>
+<td>33.58%</td>
+<td><code>OrderManager::store()</code></td>
+</tr>
+<tr>
+<td>9.78%</td>
+<td>7.81%</td>
+<td><code>OrderManager::update_order(FIXMessage*)</code></td>
+</tr>
+</tbody>
+</table>
+<p><strong><code>main::{lambda()#6}</code> at 40.85% dcache self is the FIX iteration lambda</strong> — the per-iteration loop that pushes the 3 FIX messages and calls <code>store()</code>. Its high self-time relative to <code>store()</code> reflects the <code>parser_to_store_</code> queue push cost (writing the FIX message variant into the ring buffer) being attributed to the caller rather than the callee.</p>
+<p><code>OrderManager::store()</code> at 33.58% dcache self is the dispatch and <code>update_order(FIXMessage*)</code> call chain. <code>update_order</code> at 7.81% self carries the FIX exec report processing, symbol lookup (<code>sympack_symid_.find</code>), <code>add_our_order</code>, and <code>awaitingAck_orders_.erase</code> cost.</p>
+<h4 id="icache-profile_1">ICache Profile</h4>
+<table>
+<thead>
+<tr>
+<th>Overhead</th>
+<th>Self</th>
+<th>Symbol</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>72.73%</td>
+<td>5.39%</td>
+<td><code>main</code></td>
+</tr>
+<tr>
+<td>66.30%</td>
+<td>7.11%</td>
+<td><code>main::{lambda()#6}</code></td>
+</tr>
+<tr>
+<td>30.60%</td>
+<td>4.29%</td>
+<td><code>OrderManager::add_awaitingAck_order</code></td>
+</tr>
+<tr>
+<td>28.76%</td>
+<td>6.26%</td>
+<td><code>OrderManager::store()</code></td>
+</tr>
+<tr>
+<td>19.67%</td>
+<td>8.99%</td>
+<td><code>folly::ConcurrentHashMap::emplace</code></td>
+</tr>
+<tr>
+<td>17.92%</td>
+<td>6.03%</td>
+<td><code>OrderManager::update_order(FIXMessage*)</code></td>
+</tr>
+<tr>
+<td>11.38%</td>
+<td>8.97%</td>
+<td><code>operator new</code></td>
+</tr>
+</tbody>
+</table>
+<p><strong><code>folly::ConcurrentHashMap::emplace</code> at 8.99% icache self</strong> is the <code>add_awaitingAck_order</code> path — on every iteration, the test calls <code>add_awaitingAck_order</code> which does <code>awaitingAck_orders_.emplace(order-&gt;client_order_id, &amp;order)</code>. This is the folly insert path including hazard pointer setup, bucket lock, and node allocation. <code>operator new</code> at 8.97% icache self is the node allocation within folly's insert — every <code>emplace</code> into <code>ConcurrentHashMap</code> allocates a heap node, confirmed by the <code>operator new</code> footprint. In the FIX isolated test this is particularly visible because the <code>emplace</code> / <code>erase</code> cycle runs on every iteration with only 3 FIX messages, making the ack map operations a large fraction of total work.</p>
+<p><strong>The combination of <code>folly::ConcurrentHashMap::emplace</code> (8.99%) + <code>add_awaitingAck_order</code> (4.29%) + <code>operator new</code> (8.97%) = ~22% icache self collectively attributable to <code>awaitingAck_orders_</code> map operations.</strong> This directly confirms finding 2 from Dispatch: replacing <code>folly::ConcurrentHashMap</code> with `custom map on this single-threaded path would eliminate all three contributors.</p>
+<hr />
+<h3 id="cache-memory_1">Cache &amp; Memory</h3>
+<table>
+<thead>
+<tr>
+<th>Metric</th>
+<th>Value</th>
+<th>Assessment</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>L1-D miss rate</td>
+<td>0.02%</td>
+<td>Excellent</td>
+</tr>
+<tr>
+<td>LLC miss rate</td>
+<td>~0% absolute</td>
+<td>Startup artifact</td>
+</tr>
+<tr>
+<td>L1-I misses</td>
+<td>63,828</td>
+<td>Very low — narrow FIX instruction footprint</td>
+</tr>
+<tr>
+<td>dTLB misses</td>
+<td>1,124</td>
+<td>Excellent</td>
+</tr>
+<tr>
+<td>iTLB misses</td>
+<td>3,626</td>
+<td>Very low</td>
+</tr>
+</tbody>
+</table>
+<p>All cache and TLB metrics are excellent. The FIX path in isolation has the smallest instruction and data footprint of all OrderManager scenarios — it only exercises the FIX exec report handler, <code>awaitingAck_orders_</code>, <code>our_orders_</code>, and three queue pushes.</p>
+<hr />
+<h3 id="false-sharing-c2c_1">False Sharing (C2C)</h3>
+<table>
+<thead>
+<tr>
+<th>Metric</th>
+<th>Value</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Total shared cache lines</td>
+<td>1</td>
+</tr>
+<tr>
+<td>Local HITM</td>
+<td>1</td>
+</tr>
+</tbody>
+</table>
+<p>Effectively zero false sharing. The single HITM event is a noise-level artifact. The FIX path generates no meaningful cross-thread contention — the consumer threads drain queues that are populated sparsely at this message rate.</p>
+<hr />
+<h3 id="flamegraph_1">Flamegraph</h3>
+<p><a href="../../assets/flamegraph_order_manager_fix.svg" target="_blank">OrderManager FIX Flamegraph</a></p>
+<hr />
+<h3 id="findings-action-items">Findings &amp; Action Items</h3>
+<p>The FIX isolated test confirms and quantifies the <code>awaitingAck_orders_</code> finding from Dispatch:</p>
+<ul>
+<li>IPC 1.19 — FIX path is compute-bound and clean in isolation. The Dispatch IPC of 0.35 is entirely driven by the multi-thread spin-wait pattern, not FIX processing cost.</li>
+<li><code>folly::ConcurrentHashMap::emplace</code> + <code>operator new</code> ~18% combined icache self — node allocation on every ack map insert is the dominant overhead item. See Dispatch finding 2.</li>
+<li>L1-D miss 0.02% — FIX working set (Order struct, FIX message fields, three queue entries) fits entirely in L1. No data pressure.</li>
+</ul>
+<hr />
+<h2 id="results-ordermanager-itch-bist">Results (OrderManager ITCH BIST)</h2>
+<p>BIST ITCH market data processing in isolation — <code>bist_add</code>, <code>bist_exec</code>, <code>bist_cancel</code> pushed per iteration through <code>parser_to_store_</code>, 5M iterations. No OUCH or FIX messages. Three consumer threads drain downstream queues but accumulate negligible samples — CPUs at ~1.0 confirms the store thread is the sole meaningful worker.</p>
+<table>
+<thead>
+<tr>
+<th>Field</th>
+<th>Value</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Wall time</td>
+<td>0.68 s</td>
+</tr>
+<tr>
+<td>User time</td>
+<td>0.67 s</td>
+</tr>
+<tr>
+<td>Sys time</td>
+<td>0.01 s</td>
+</tr>
+<tr>
+<td>CPUs utilized</td>
+<td>0.983</td>
+</tr>
+</tbody>
+</table>
+<p>Single-threaded in practice. User ≈ Wall confirms the store thread is the only active CPU consumer. The consumer threads drain empty queues with near-zero cost.</p>
+<hr />
+<h3 id="key-metrics_2">Key Metrics</h3>
+<table>
+<thead>
+<tr>
+<th>Metric</th>
+<th>P-Core</th>
+<th>E-Core</th>
+<th>Note</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Instructions</td>
+<td>8.63B</td>
+<td>— (not counted)</td>
+<td>E-core idle</td>
+</tr>
+<tr>
+<td>Cycles</td>
+<td>3.28B @ 4.84 GHz</td>
+<td>—</td>
+<td>P-core near boost</td>
+</tr>
+<tr>
+<td>IPC</td>
+<td>2.63</td>
+<td>—</td>
+<td>See note below</td>
+</tr>
+<tr>
+<td>Branch miss rate</td>
+<td>0.00%</td>
+<td>—</td>
+<td>Excellent</td>
+</tr>
+<tr>
+<td>L1-D miss rate</td>
+<td>0.01%</td>
+<td>—</td>
+<td>Exceptional</td>
+</tr>
+<tr>
+<td>LLC miss rate</td>
+<td>40.73% of 40,466 loads</td>
+<td>—</td>
+<td>Startup artifact</td>
+</tr>
+</tbody>
+</table>
+<p><strong>IPC at 2.63 confirms the BIST ITCH path is compute-bound with a hot working set.</strong> The ITCH processing path is a tight loop: <code>store()</code> pops one message, visits the BIST ITCH variant, calls the appropriate filler, updates MarketBook, and pushes to three downstream queues. With L1-D miss at 0.01% and branch miss at 0.00%, the CPU executes the ITCH message sequence with near-optimal efficiency. This is the clean baseline for what BIST ITCH processing looks like without cross-protocol interference.</p>
+<hr />
+<h3 id="hotspot-analysis_2">Hotspot Analysis</h3>
+<h4 id="p-core-cpubranch_2">P-Core (CPU+Branch)</h4>
+<table>
+<thead>
+<tr>
+<th>Overhead</th>
+<th>Self</th>
+<th>Symbol</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>98.66%</td>
+<td>1.58%</td>
+<td><code>main</code></td>
+</tr>
+<tr>
+<td>94.44%</td>
+<td>18.20%</td>
+<td><code>OrderManager::store()</code></td>
+</tr>
+<tr>
+<td>35.28%</td>
+<td>4.79%</td>
+<td><code>std::__gen_vtable_impl</code> — BIST ITCH dispatch (seq 7)</td>
+</tr>
+<tr>
+<td>31.41%</td>
+<td>31.37%</td>
+<td><code>absl::flat_hash_map::find</code></td>
+</tr>
+<tr>
+<td>22.03%</td>
+<td>3.79%</td>
+<td><code>std::__gen_vtable_impl</code> — BIST ITCH dispatch (seq 10)</td>
+</tr>
+<tr>
+<td>18.70%</td>
+<td>4.03%</td>
+<td><code>std::__gen_vtable_impl</code> — BIST ITCH dispatch (seq 8)</td>
+</tr>
+<tr>
+<td>12.74%</td>
+<td>12.74%</td>
+<td><code>FillerITCH_BIST::fill_itch_add</code></td>
+</tr>
+<tr>
+<td>8.25%</td>
+<td>5.01%</td>
+<td><code>MarketBook::delete_order</code></td>
+</tr>
+<tr>
+<td>7.72%</td>
+<td>4.67%</td>
+<td><code>MarketBook::add_order</code></td>
+</tr>
+<tr>
+<td>4.30%</td>
+<td>4.30%</td>
+<td><code>MarketBook::exec_order</code></td>
+</tr>
+<tr>
+<td>3.05%</td>
+<td>1.79%</td>
+<td><code>absl::btree::insert_unique</code></td>
+</tr>
+<tr>
+<td>1.50%</td>
+<td>1.50%</td>
+<td><code>absl::btree::erase</code></td>
+</tr>
+</tbody>
+</table>
+<p><strong><code>absl::flat_hash_map::find</code> at 31.37% self is the single largest CPU cost in the ITCH BIST path.</strong> Every ITCH exec, cancel, and delete message requires an order lookup — <code>get_order_from_market_map(OrderKey{order_id, order_book_id, venue, side})</code>. With 3 messages per iteration (add, exec, cancel), the exec and cancel both call <code>find</code>, and the add path calls <code>add_market_order</code> which also touches the map. The flat_hash_map is the correct data structure for this pattern (O(1) average, cache-friendly open addressing), and 31% self at IPC 2.63 indicates the hash map is executing efficiently — this is expected cost, not a defect.</p>
+<p><strong><code>OrderManager::store()</code> at 18.20% self</strong> carries the <code>parser_to_store_</code> pop, variant type dispatch preamble, and the outer <code>std::visit</code> call overhead. The <code>__gen_vtable_impl</code> entries (4.79% + 3.79% + 4.03% = 12.61% combined self) are the vtable dispatch cost for the three BIST ITCH message alternatives encountered in the test sequence (AddOrder, OrderExecuted, OrderDelete correspond to variant indices 7, 10, 8 in the BIST ITCH variant).</p>
+<p><strong><code>FillerITCH_BIST::fill_itch_add</code> at 12.74% self</strong> — the struct-fill for new ITCH add orders is the most expensive filler call in the BIST path. The add message carries the most fields (order_id, price, quantity, side, symbol, venue) and triggers both <code>add_market_order</code> and <code>MarketBook::add_order</code>. <code>MarketBook::delete_order</code> (5.01%), <code>add_order</code> (4.67%), and <code>exec_order</code> (4.30%) together represent the book maintenance cost.</p>
+<h4 id="tlb-profile">TLB Profile</h4>
+<p>The TLB record shows <code>FillerITCH_BIST::fill_itch_add</code> at 31.34% self and <code>absl::btree::erase</code> at 17.31% self as the top TLB consumers. The filler generates TLB pressure by writing to Order struct fields across a pool spanning a large virtual address range. The btree erase (from <code>MarketBook::delete_order</code> via the price-level btree) traverses a tree whose nodes span disjoint allocations, generating iTLB pressure on each node access. dTLB at 25,696 absolute is low — acceptable for this working set size.</p>
+<hr />
+<h3 id="cache-memory_2">Cache &amp; Memory</h3>
+<table>
+<thead>
+<tr>
+<th>Metric</th>
+<th>Value</th>
+<th>Assessment</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>L1-D miss rate</td>
+<td>0.01%</td>
+<td>Exceptional</td>
+</tr>
+<tr>
+<td>LLC miss rate</td>
+<td>~0% absolute</td>
+<td>Startup artifact</td>
+</tr>
+<tr>
+<td>L1-I misses</td>
+<td>252,264</td>
+<td>Low</td>
+</tr>
+<tr>
+<td>dTLB misses</td>
+<td>25,696</td>
+<td>Low</td>
+</tr>
+<tr>
+<td>iTLB misses</td>
+<td>2,209</td>
+<td>Very low</td>
+</tr>
+</tbody>
+</table>
+<p><strong>L1-D miss at 0.01% is exceptional</strong> and confirms the BIST ITCH path executes against a fully L1-resident working set. The 3-message sequence (add → exec → cancel for the same order book) repeatedly accesses the same Order slot, map buckets, and MarketBook price-level entry — these stay hot across iterations.</p>
+<hr />
+<h3 id="false-sharing-c2c_2">False Sharing (C2C)</h3>
+<table>
+<thead>
+<tr>
+<th>Metric</th>
+<th>Value</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Total shared cache lines</td>
+<td>0</td>
+</tr>
+<tr>
+<td>Local HITM</td>
+<td>0</td>
+</tr>
+</tbody>
+</table>
+<p>Zero false sharing. The ITCH path does not use <code>awaitingAck_orders_</code> (no OUCH/FIX messages), so <code>folly::ConcurrentHashMap</code> is never accessed. The consumer threads drain an effectively empty queue. No contention possible.</p>
+<hr />
+<h3 id="flamegraph_2">Flamegraph</h3>
+<p><a href="../../assets/flamegraph_order_manager_itch_bist.svg" target="_blank">OrderManager ITCH BIST Flamegraph</a></p>
+<hr />
+<h3 id="findings-action-items_1">Findings &amp; Action Items</h3>
+<table>
+<thead>
+<tr>
+<th>#</th>
+<th>Finding</th>
+<th>Impact</th>
+<th>Status</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>1</td>
+<td>IPC 2.63 — ITCH BIST path is compute-bound and well-optimised in isolation</td>
+<td>Expected characteristic</td>
+<td>✅ No action needed</td>
+</tr>
+<tr>
+<td>2</td>
+<td><code>absl::flat_hash_map::find</code> 31.37% CPU self — order lookup dominant cost</td>
+<td>Expected; correct data structure for this pattern</td>
+<td>✅ No action needed</td>
+</tr>
+<tr>
+<td>3</td>
+<td><code>__gen_vtable_impl</code> dispatch 12.61% combined CPU self — BIST variant dispatch overhead</td>
+<td>Expected for <code>std::visit</code> pattern; reducible only via manual dispatch redesign</td>
+<td>✅ No action needed</td>
+</tr>
+<tr>
+<td>4</td>
+<td><code>FillerITCH_BIST::fill_itch_add</code> 12.74% CPU self — add message carries most fields</td>
+<td>Expected; add path is inherently heaviest per ITCH message</td>
+<td>✅ No action needed</td>
+</tr>
+<tr>
+<td>5</td>
+<td>Zero HITM — no <code>awaitingAck_orders_</code> access, no cross-thread contention</td>
+<td>Confirms ITCH path is contention-free in isolation</td>
+<td>✅ No action needed</td>
+</tr>
+<tr>
+<td>6</td>
+<td>L1-D miss 0.01% — full working set L1-resident</td>
+<td>Excellent</td>
+<td>✅ No action needed</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h2 id="results-ordermanager-itch-nasdaq">Results (OrderManager ITCH NASDAQ)</h2>
+<p>NASDAQ ITCH market data processing in isolation — <code>nasdaq_add</code>, <code>nasdaq_exec</code>, <code>nasdaq_delete</code> pushed per iteration, 5M iterations. Structurally equivalent to ITCH BIST but with the NASDAQ variant chain and the additional <code>nq_itch_refnum_ordkey_</code> map for order reference number → OrderKey translation.</p>
+<table>
+<thead>
+<tr>
+<th>Field</th>
+<th>Value</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Wall time</td>
+<td>0.57 s</td>
+</tr>
+<tr>
+<td>User time</td>
+<td>0.55 s</td>
+</tr>
+<tr>
+<td>Sys time</td>
+<td>0.01 s</td>
+</tr>
+<tr>
+<td>CPUs utilized</td>
+<td>0.979</td>
+</tr>
+</tbody>
+</table>
+<p>Single-threaded in practice, slightly faster than ITCH BIST (0.57s vs 0.68s wall). The higher IPC (3.78 vs 2.63) suggests the NASDAQ ITCH sequence has a more compact execution profile — discussed below.</p>
+<hr />
+<h3 id="key-metrics_3">Key Metrics</h3>
+<table>
+<thead>
+<tr>
+<th>Metric</th>
+<th>P-Core</th>
+<th>E-Core</th>
+<th>Note</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Instructions</td>
+<td>10.16B</td>
+<td>1.97B</td>
+<td>E-core: startup</td>
+</tr>
+<tr>
+<td>Cycles</td>
+<td>2.69B @ 4.84 GHz</td>
+<td>1.80B @ 3.24 GHz</td>
+<td>P-core near boost</td>
+</tr>
+<tr>
+<td>IPC</td>
+<td>3.78</td>
+<td>1.09</td>
+<td>Highest IPC across all OrderManager scenarios</td>
+</tr>
+<tr>
+<td>Branch miss rate</td>
+<td>0.00%</td>
+<td>2.00%</td>
+<td>P-core: excellent</td>
+</tr>
+<tr>
+<td>L1-D miss rate</td>
+<td>0.01%</td>
+<td>—</td>
+<td>Exceptional</td>
+</tr>
+<tr>
+<td>LLC miss rate</td>
+<td>11.51% of 68,853 loads</td>
+<td>—</td>
+<td>Startup artifact</td>
+</tr>
+</tbody>
+</table>
+<p><strong>IPC at 3.78 is the highest across all OrderManager scenarios.</strong> The NASDAQ ITCH path processes <code>add → exec → delete</code> with a single-venue, single-instrument-type sequence that produces a highly predictable branch pattern. The <code>nq_itch_refnum_ordkey_</code> map lookup (used for exec and delete to translate <code>order_ref</code> to <code>OrderKey</code>) adds an additional hash map access vs BIST, but the overall IPC is higher — this is consistent with the NASDAQ message format being slightly more compact and the <code>std::__do_visit</code> dispatch for NASDAQ ITCH covering a smaller variant index range in this test than the BIST <code>__gen_vtable_impl</code> dispatch.</p>
+<hr />
+<h3 id="hotspot-analysis_3">Hotspot Analysis</h3>
+<h4 id="p-core-cpubranch_3">P-Core (CPU+Branch)</h4>
+<table>
+<thead>
+<tr>
+<th>Overhead</th>
+<th>Self</th>
+<th>Symbol</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>98.74%</td>
+<td>1.72%</td>
+<td><code>main</code></td>
+</tr>
+<tr>
+<td>96.25%</td>
+<td>18.04%</td>
+<td><code>OrderManager::store()</code></td>
+</tr>
+<tr>
+<td>68.17%</td>
+<td>11.72%</td>
+<td><code>std::__do_visit</code> — NASDAQ ITCH variant dispatch</td>
+</tr>
+<tr>
+<td>24.18%</td>
+<td>24.18%</td>
+<td><code>absl::flat_hash_map::find</code></td>
+</tr>
+<tr>
+<td>12.78%</td>
+<td>10.72%</td>
+<td><code>OrderManager::add_market_order</code></td>
+</tr>
+<tr>
+<td>8.27%</td>
+<td>4.76%</td>
+<td><code>MarketBook::delete_order</code></td>
+</tr>
+<tr>
+<td>5.01%</td>
+<td>1.50%</td>
+<td><code>MarketBook::add_order</code></td>
+</tr>
+<tr>
+<td>4.84%</td>
+<td>4.84%</td>
+<td><code>MarketBook::exec_order</code></td>
+</tr>
+<tr>
+<td>3.64%</td>
+<td>2.15%</td>
+<td><code>absl::btree::insert_unique</code></td>
+</tr>
+<tr>
+<td>3.60%</td>
+<td>3.60%</td>
+<td><code>boost::lockfree::ringbuffer_base&lt;Order*&gt;::push</code></td>
+</tr>
+<tr>
+<td>2.78%</td>
+<td>2.78%</td>
+<td><code>FillerITCH_NASDAQ::fill_itch_add</code></td>
+</tr>
+</tbody>
+</table>
+<p><strong><code>absl::flat_hash_map::find</code> at 24.18% self</strong> is again the dominant lookup cost — same pattern as BIST but slightly lower self-time fraction (24% vs 31%), consistent with the higher IPC diluting the relative sample count.</p>
+<p><strong><code>OrderManager::add_market_order</code> at 10.72% self</strong> is more visible here than in BIST — the NASDAQ path allocates a new market order on every <code>add</code> message and also writes the <code>nq_itch_refnum_ordkey_</code> emplace. This double-write (pool slot + reference map) explains why <code>add_market_order</code> is proportionally larger in the NASDAQ profile.</p>
+<p><strong><code>std::__do_visit</code> at 11.72% self</strong> is the NASDAQ ITCH variant dispatch — higher than the BIST per-frame entries but in a single frame rather than three <code>__gen_vtable_impl</code> entries. The structural dispatch cost is comparable.</p>
+<p><code>FillerITCH_NASDAQ::fill_itch_add</code> at 2.78% self is much lower than the BIST counterpart (12.74%). This is consistent with the NASDAQ add message format being more compact and the filler having fewer field writes.</p>
+<h4 id="tlb-profile_1">TLB Profile</h4>
+<p><code>OrderManager::store()</code> at 59.15% and <code>std::__do_visit</code> NASDAQ ITCH at 30.53% are the top TLB consumers. <code>OrderManager::add_market_order</code> at 22.25% self confirms the pool allocation write (<code>order_pool_[market_next_slot]</code>) is the primary source of dTLB pressure — each new order occupies a different pool slot across the large array, generating TLB misses as the pool index advances. dTLB at 9,832 absolute is very low — lower than BIST's 25,696, consistent with the pool allocation pattern for the 3-message NASDAQ sequence touching fewer distinct pool regions.</p>
+<hr />
+<h3 id="cache-memory_3">Cache &amp; Memory</h3>
+<table>
+<thead>
+<tr>
+<th>Metric</th>
+<th>Value</th>
+<th>vs ITCH BIST</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>L1-D miss rate</td>
+<td>0.01%</td>
+<td>Identical</td>
+</tr>
+<tr>
+<td>L1-I misses</td>
+<td>242,215</td>
+<td>Slightly lower than BIST (252,264)</td>
+</tr>
+<tr>
+<td>dTLB misses</td>
+<td>9,832</td>
+<td>Lower than BIST (25,696)</td>
+</tr>
+<tr>
+<td>iTLB misses</td>
+<td>1,407</td>
+<td>Lower than BIST (2,209)</td>
+</tr>
+</tbody>
+</table>
+<p>All metrics confirm parity with ITCH BIST within sampling variance. The NASDAQ path is marginally more efficient in TLB terms, consistent with its simpler filler and shorter instruction sequence per message.</p>
+<hr />
+<h3 id="false-sharing-c2c_3">False Sharing (C2C)</h3>
+<table>
+<thead>
+<tr>
+<th>Metric</th>
+<th>Value</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Total shared cache lines</td>
+<td>0</td>
+</tr>
+<tr>
+<td>Local HITM</td>
+<td>0</td>
+</tr>
+</tbody>
+</table>
+<p>Zero false sharing. Same rationale as ITCH BIST — no <code>awaitingAck_orders_</code> access, consumer threads drain empty queues.</p>
+<hr />
+<h3 id="flamegraph_3">Flamegraph</h3>
+<p><a href="../../assets/flamegraph_order_manager_itch_nasdaq.svg" target="_blank">OrderManager ITCH NASDAQ Flamegraph</a></p>
+<hr />
+<h3 id="findings-action-items_2">Findings &amp; Action Items</h3>
+<table>
+<thead>
+<tr>
+<th>#</th>
+<th>Finding</th>
+<th>Impact</th>
+<th>Status</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>1</td>
+<td>IPC 3.78 — highest across all OrderManager scenarios; NASDAQ ITCH path is highly efficient</td>
+<td>Expected characteristic</td>
+<td>✅ No action needed</td>
+</tr>
+<tr>
+<td>2</td>
+<td><code>absl::flat_hash_map::find</code> 24.18% CPU self — order lookup dominant, lower fraction than BIST due to higher IPC</td>
+<td>Expected</td>
+<td>✅ No action needed</td>
+</tr>
+<tr>
+<td>3</td>
+<td><code>add_market_order</code> 10.72% CPU self — NASDAQ add path writes both pool slot and reference number map</td>
+<td>Expected for NASDAQ's two-map order tracking</td>
+<td>✅ No action needed</td>
+</tr>
+<tr>
+<td>4</td>
+<td>Zero HITM, L1-D miss 0.01% — parity with ITCH BIST confirmed</td>
+<td>Expected</td>
+<td>✅ No action needed</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h2 id="results-ordermanager-ouch-bist">Results (OrderManager OUCH BIST)</h2>
+<p>BIST OUCH execution report processing in isolation — <code>bist_acc</code>, <code>bist_execO</code>, <code>bist_canO</code> pushed per iteration, 5M iterations. One awaiting-ack order added per iteration via <code>add_awaitingAck_order</code>. Three consumer threads active. The OUCH path is the first scenario where <code>awaitingAck_orders_</code> (folly <code>ConcurrentHashMap</code>) is fully exercised on every iteration — insert on ack-add, lookup on accept, erase on cancel/exec.</p>
+<table>
+<thead>
+<tr>
+<th>Field</th>
+<th>Value</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Wall time</td>
+<td>2.70 s</td>
+</tr>
+<tr>
+<td>User time</td>
+<td>10.61 s</td>
+</tr>
+<tr>
+<td>Sys time</td>
+<td>0.01 s</td>
+</tr>
+<tr>
+<td>CPUs utilized</td>
+<td>3.936</td>
+</tr>
+</tbody>
+</table>
+<p>Four threads active — same structure as Dispatch. Wall time at 2.70s for 5M iterations (vs 0.68s for ITCH BIST at the same N) immediately signals that the OUCH path is ~4× slower per iteration than the ITCH path.</p>
+<hr />
+<h3 id="key-metrics_4">Key Metrics</h3>
+<table>
+<thead>
+<tr>
+<th>Metric</th>
+<th>P-Core</th>
+<th>E-Core</th>
+<th>Note</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Instructions</td>
+<td>18.72B</td>
+<td>9.64B</td>
+<td>E-core: significant spin consumer activity</td>
+</tr>
+<tr>
+<td>Cycles</td>
+<td>44.06B @ 4.15 GHz</td>
+<td>9.28B @ 0.87 GHz</td>
+<td>P-core near boost; E-core spin-wait clock</td>
+</tr>
+<tr>
+<td>IPC</td>
+<td>0.42</td>
+<td>1.04</td>
+<td>P-core memory/contention-bound</td>
+</tr>
+<tr>
+<td>Branch miss rate</td>
+<td>0.94%</td>
+<td>3.18%</td>
+<td>P-core elevated — OUCH variant dispatch</td>
+</tr>
+<tr>
+<td>L1-D miss rate</td>
+<td>3.03%</td>
+<td>—</td>
+<td>Elevated — folly hazptr + SPSC contention</td>
+</tr>
+<tr>
+<td>LLC miss rate</td>
+<td>0.01%</td>
+<td>15.22%</td>
+<td>P-core: LLC-resident; E-core startup noise</td>
+</tr>
+</tbody>
+</table>
+<p><strong>IPC at 0.42 on P-core is structurally similar to Dispatch (0.35) and OUCH NASDAQ (0.35)</strong> — the spin consumer threads and folly <code>ConcurrentHashMap</code> overhead together depress the observed IPC regardless of the actual store-path work. The OUCH processing itself is heavier than ITCH (map insert + hazptr emplace + map lookup + hazptr erase on every accepted message) which compounds the IPC depression.</p>
+<p><strong>L1-D miss rate at 3.03%</strong> reflects both cross-thread SPSC invalidation and the folly hazard pointer table accesses (hazard pointer slots are shared across threads, generating additional cache line bouncing on every <code>ConcurrentHashMap</code> operation).</p>
+<p><strong>L1-I misses at 3.99M</strong> is dramatically elevated relative to ITCH BIST (252K). This 16× increase is attributable almost entirely to the folly hazard pointer machinery — <code>hazptr_domain::push_list</code>, <code>hazptr_inline_executor_add</code>, <code>hazptr_obj_cohort::reclaim_list</code> — which brings in multiple instruction pages on every <code>ConcurrentHashMap</code> insert and erase.</p>
+<hr />
+<h3 id="hotspot-analysis_4">Hotspot Analysis</h3>
+<h4 id="p-core-cpubranch_4">P-Core (CPU+Branch)</h4>
+<table>
+<thead>
+<tr>
+<th>Overhead</th>
+<th>Self</th>
+<th>Symbol</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>~75%</td>
+<td>~25% each</td>
+<td>Three consumer spin lambdas</td>
+</tr>
+<tr>
+<td>15.18%</td>
+<td>2.57%</td>
+<td><code>OrderManager::store()</code></td>
+</tr>
+<tr>
+<td>6.27%</td>
+<td>6.19%</td>
+<td>BIST OUCH cancelled message handler lambda</td>
+</tr>
+<tr>
+<td>4.77%</td>
+<td>4.77%</td>
+<td><code>boost::lockfree::ringbuffer_base::push</code> (SPSC)</td>
+</tr>
+<tr>
+<td>3.18%</td>
+<td>0.83%</td>
+<td><code>folly::ConcurrentHashMap::eraseImpl</code></td>
+</tr>
+<tr>
+<td>2.30%</td>
+<td>2.30%</td>
+<td><code>boost::lockfree::ringbuffer_base&lt;Order*&gt;::push</code></td>
+</tr>
+<tr>
+<td>2.17%</td>
+<td>0.07%</td>
+<td><code>OrderManager::add_awaitingAck_order</code></td>
+</tr>
+<tr>
+<td>2.04%</td>
+<td>0.19%</td>
+<td><code>folly::ConcurrentHashMap::emplace</code></td>
+</tr>
+<tr>
+<td>1.77%</td>
+<td>1.77%</td>
+<td><code>pthread_mutex_lock</code></td>
+</tr>
+</tbody>
+</table>
+<p><strong>The BIST OUCH cancelled message handler at 6.19% CPU self is the largest application leaf in this profile.</strong> The cancelled handler (<code>OUCHOrderCancelledMessage</code>) is the most complex OUCH response: it calls <code>get_order_from_our_map</code> (hash map lookup by OrderKey), <code>fill_ouch_cancelled</code>, and pushes to three downstream queues plus the db queue. Its prominence as a leaf — no further callee cost attributed to it — confirms the cancel processing instructions are dense and in-lined.</p>
+<p><code>folly::ConcurrentHashMap::eraseImpl</code> at 0.83% CPU self and <code>emplace</code> at 0.19% appear modest in the CPU+Branch profile but are the dominant icache contributors (see below) — the hazard pointer overhead is instruction-count heavy but not instruction-retire heavy, causing it to show up more strongly in icache than CPU profiles.</p>
+<p><code>pthread_mutex_lock</code> at 1.77% self confirms folly's internal bucket mutex is being acquired on the store thread on every OUCH accepted/cancel processing. This is structurally unavoidable with <code>ConcurrentHashMap</code> regardless of actual concurrent access.</p>
+<h4 id="icache-profile_2">ICache Profile</h4>
+<table>
+<thead>
+<tr>
+<th>Overhead</th>
+<th>Self</th>
+<th>Symbol</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>46.13%</td>
+<td>1.80%</td>
+<td><code>OrderManager::store()</code></td>
+</tr>
+<tr>
+<td>37.92%</td>
+<td>1.01%</td>
+<td><code>asm_sysvec_apic_timer_interrupt</code> (kernel timer)</td>
+</tr>
+<tr>
+<td>32.49%</td>
+<td>3.54%</td>
+<td><code>folly::ConcurrentHashMap::eraseImpl</code></td>
+</tr>
+<tr>
+<td>22.32%</td>
+<td>1.00%</td>
+<td><code>folly::hazptr_domain::push_list</code></td>
+</tr>
+<tr>
+<td>20.06%</td>
+<td>0.16%</td>
+<td><code>folly::detail::hazptr_inline_executor_add</code></td>
+</tr>
+</tbody>
+</table>
+<p><strong><code>folly::ConcurrentHashMap::eraseImpl</code> at 3.54% icache self combined with <code>hazptr_domain::push_list</code> (1.00%) and <code>hazptr_inline_executor_add</code> (0.16%)</strong> — together 4.70% of icache self — confirm that the folly hazard pointer reclamation machinery is the dominant instruction footprint cost on the OUCH path. Each <code>eraseImpl</code> call traverses the bucket list, unlinks the node, and enqueues it for deferred reclamation through the hazard pointer domain. The kernel timer interrupt at 1.01% icache self reflects the elevated timer interrupt rate at 2.70s wall time — not an application concern.</p>
+<hr />
+<h3 id="cache-memory_4">Cache &amp; Memory</h3>
+<table>
+<thead>
+<tr>
+<th>Metric</th>
+<th>Value</th>
+<th>Assessment</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>L1-D miss rate</td>
+<td>3.03%</td>
+<td>Elevated — SPSC contention + folly hazptr table access</td>
+</tr>
+<tr>
+<td>LLC miss rate</td>
+<td>0.01%</td>
+<td>Excellent — LLC-resident</td>
+</tr>
+<tr>
+<td>L1-I misses</td>
+<td>3,987,816</td>
+<td>Elevated — folly hazptr machinery dominant</td>
+</tr>
+<tr>
+<td>dTLB misses</td>
+<td>102,950</td>
+<td>Moderate — <code>ConcurrentHashMap</code> node allocation</td>
+</tr>
+<tr>
+<td>iTLB misses</td>
+<td>144,293</td>
+<td>Elevated — folly hazptr instruction pages</td>
+</tr>
+</tbody>
+</table>
+<p><strong>L1-I misses at 3.99M</strong> vs ITCH BIST's 252K is a 16× increase driven by the folly hazard pointer infrastructure. iTLB at 144K vs ITCH BIST's 2.2K (66×) confirms that the folly hazptr and reclamation code pages span multiple iTLB entries that are not cached between calls. The <code>operator new</code> / <code>cfree</code> calls within <code>ConcurrentHashMap</code> also contribute to dTLB pressure (102K vs ITCH BIST's 25K) through heap allocator metadata accesses.</p>
+<hr />
+<h3 id="false-sharing-c2c_4">False Sharing (C2C)</h3>
+<table>
+<thead>
+<tr>
+<th>Metric</th>
+<th>Value</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Total shared cache lines</td>
+<td>11</td>
+</tr>
+<tr>
+<td>Load HITs on shared lines</td>
+<td>22,948</td>
+</tr>
+<tr>
+<td>Local HITM</td>
+<td>8,400</td>
+</tr>
+<tr>
+<td>Blocked accesses on shared lines</td>
+<td>275</td>
+</tr>
+<tr>
+<td>Store HITs on shared lines</td>
+<td>17,462</td>
+</tr>
+</tbody>
+</table>
+<p><strong>8,400 Local HITM across 11 shared cache lines.</strong> The 11 lines include the SPSC queue ring buffers (same as Dispatch) and additional lines within the <code>ConcurrentHashMap</code> internal structure — the hazard pointer table slots and the bucket lock words are written by the store thread during insert/erase and read by the folly background reclamation path (which may run on a different core). Unlike the Dispatch HITM which is purely SPSC hand-off, the OUCH HITM has a structural contribution from folly's internal state, making it partially non-test-harness in character.</p>
+<hr />
+<h3 id="flamegraph_4">Flamegraph</h3>
+<p><a href="../../assets/flamegraph_order_manager_ouch_bist.svg" target="_blank">OrderManager OUCH BIST Flamegraph</a></p>
+<hr />
+<h3 id="findings-action-items_3">Findings &amp; Action Items</h3>
+<table>
+<thead>
+<tr>
+<th>#</th>
+<th>Finding</th>
+<th>Impact</th>
+<th>Status</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>1</td>
+<td>IPC 0.42 — spin consumer threads + folly overhead depress IPC; OUCH path ~4× slower per iteration than ITCH</td>
+<td><code>folly::ConcurrentHashMap</code> is the primary cause</td>
+<td>⚠️ See finding 2</td>
+</tr>
+<tr>
+<td>2</td>
+<td><code>folly::ConcurrentHashMap</code> emplace + eraseImpl + hazptr + mutex on every OUCH accepted/cancel — 4.70% icache self, L1-I 3.99M (16× ITCH baseline)</td>
+<td>Per-iteration heap allocation + hazard pointer reclamation on a single-threaded path</td>
+<td>⚠️ Replace folly::concurrenthashmap with custom map <br><strong>(handled - see Opt-1 in Recent Optimizations Page)</strong></td>
+</tr>
+<tr>
+<td>3</td>
+<td>BIST OUCH cancelled handler 6.19% CPU self — largest application leaf</td>
+<td>Expected; cancelled is the most field-rich OUCH response</td>
+<td>✅ No action needed</td>
+</tr>
+<tr>
+<td>4</td>
+<td>8,400 HITM across 11 lines — SPSC queues + folly ConcurrentHashMap internal state</td>
+<td>Partially structural (folly internal), partially test harness</td>
+<td>⚠️ Partially resolved by finding 2</td>
+</tr>
+<tr>
+<td>5</td>
+<td>dTLB 102,950 / iTLB 144,293 — folly hazptr instruction pages + node heap allocation</td>
+<td>Directly caused by finding 2</td>
+<td>⚠️ Resolved by finding 2</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h2 id="results-ordermanager-ouch-nasdaq">Results (OrderManager OUCH NASDAQ)</h2>
+<p>NASDAQ OUCH execution report processing in isolation — <code>nasdaq_acc</code>, <code>nasdaq_execO</code>, <code>nasdaq_canO</code> pushed per iteration, 5M iterations. Structurally equivalent to OUCH BIST but with the NASDAQ OUCH variant chain and the additional <code>nq_ouch_refnum_ordkey_</code> map. The NASDAQ OUCH path is the most complex per-message: it requires <code>awaitingAck_orders_</code> lookup, <code>add_our_order</code> (pool slot + <code>our_orders_</code> insert + <code>orderhistory</code> push), <code>nq_ouch_refnum_ordkey_</code> insert/erase, and <code>sympack_symid_</code> lookup on replaced/non-accepted messages.</p>
+<table>
+<thead>
+<tr>
+<th>Field</th>
+<th>Value</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Wall time</td>
+<td>3.44 s</td>
+</tr>
+<tr>
+<td>User time</td>
+<td>13.59 s</td>
+</tr>
+<tr>
+<td>Sys time</td>
+<td>0.01 s</td>
+</tr>
+<tr>
+<td>CPUs utilized</td>
+<td>3.949</td>
+</tr>
+</tbody>
+</table>
+<p>Four threads active. Wall time at 3.44s vs OUCH BIST's 2.70s — NASDAQ OUCH is ~27% slower per iteration, attributable to the additional <code>nq_ouch_refnum_ordkey_</code> and <code>sympack_symid_</code> map operations on the exec/cancel paths.</p>
+<hr />
+<h3 id="key-metrics_5">Key Metrics</h3>
+<table>
+<thead>
+<tr>
+<th>Metric</th>
+<th>P-Core</th>
+<th>E-Core</th>
+<th>Note</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Instructions</td>
+<td>19.65B</td>
+<td>11.53B</td>
+<td>E-core: consumer spin activity</td>
+</tr>
+<tr>
+<td>Cycles</td>
+<td>56.53B @ 4.16 GHz</td>
+<td>10.70B @ 0.79 GHz</td>
+<td>P-core near boost; E-core spin-wait</td>
+</tr>
+<tr>
+<td>IPC</td>
+<td>0.35</td>
+<td>1.08</td>
+<td>Lowest P-core IPC across all scenarios</td>
+</tr>
+<tr>
+<td>Branch miss rate</td>
+<td>1.07%</td>
+<td>1.96%</td>
+<td>Elevated — NASDAQ OUCH variant has more alternatives</td>
+</tr>
+<tr>
+<td>L1-D miss rate</td>
+<td>4.08%</td>
+<td>—</td>
+<td>Highest across all OrderManager scenarios</td>
+</tr>
+<tr>
+<td>LLC miss rate</td>
+<td>0.00%</td>
+<td>13.72%</td>
+<td>P-core: LLC-resident</td>
+</tr>
+</tbody>
+</table>
+<p><strong>IPC at 0.35 matches the Dispatch figure</strong> — the NASDAQ OUCH path is effectively as contention-bound as the full mixed-traffic run. <strong>L1-D miss rate at 4.08% is the highest across all scenarios</strong>, reflecting the additional map accesses (5 maps potentially touched per iteration: <code>awaitingAck_orders_</code>, <code>our_orders_</code>, <code>our_orders_wtokenkey_</code>, <code>nq_ouch_refnum_ordkey_</code>, <code>sympack_symid_</code>) combined with SPSC contention. All of these are contiguous with the folly hazptr access pattern on every <code>ConcurrentHashMap</code> operation.</p>
+<p><strong>L1-I misses at 4.23M</strong> slightly exceeds OUCH BIST (3.99M), consistent with the NASDAQ OUCH variant having more alternative message types (11 vs 5 in BIST OUCH) and the additional map access instruction sequences.</p>
+<hr />
+<h3 id="hotspot-analysis_5">Hotspot Analysis</h3>
+<h4 id="p-core-cpubranch_5">P-Core (CPU+Branch)</h4>
+<p>The CPU+Branch perf record at this wall time is dominated by <code>ld-linux</code> dynamic linker frames — the NASDAQ OUCH binary has a larger dynamic linking footprint and the profiler accumulates insufficient application-level samples to produce a clean breakdown above 1% for store-path functions. This is a sampling artifact at the ~35% P-core IPC level where the store thread spends more cycles stalled than retiring, making it harder for the sampler to catch it in application code.</p>
+<h4 id="dcache-profile_2">DCache Profile</h4>
+<table>
+<thead>
+<tr>
+<th>Overhead</th>
+<th>Self</th>
+<th>Symbol</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>44.86%</td>
+<td>1.69%</td>
+<td><code>OrderManager::store()</code></td>
+</tr>
+<tr>
+<td>20.76%</td>
+<td>20.70%</td>
+<td><code>std::thread</code> lambda#4 (consumer spin)</td>
+</tr>
+<tr>
+<td>17.66%</td>
+<td>1.51%</td>
+<td><code>std::__do_visit</code> — NASDAQ OUCH variant dispatch</td>
+</tr>
+<tr>
+<td>16.86%</td>
+<td>16.79%</td>
+<td><code>std::thread</code> lambda#2 (consumer spin)</td>
+</tr>
+<tr>
+<td>16.54%</td>
+<td>16.49%</td>
+<td><code>std::thread</code> lambda#3 (consumer spin)</td>
+</tr>
+<tr>
+<td>15.53%</td>
+<td>15.42%</td>
+<td><code>boost::lockfree::ringbuffer_base::push</code> (SPSC)</td>
+</tr>
+<tr>
+<td>14.26%</td>
+<td>9.00%</td>
+<td><code>folly::ConcurrentHashMap::eraseImpl</code></td>
+</tr>
+<tr>
+<td>8.98%</td>
+<td>8.95%</td>
+<td><code>boost::lockfree::ringbuffer_base&lt;Order*&gt;::push</code></td>
+</tr>
+</tbody>
+</table>
+<p><strong><code>folly::ConcurrentHashMap::eraseImpl</code> at 9.00% dcache self</strong> is substantially higher here than in OUCH BIST (4.21% in Dispatch, not separately visible in OUCH BIST dcache). The NASDAQ OUCH cancel path calls <code>awaitingAck_orders_.erase</code> and additionally touches <code>nq_ouch_refnum_ordkey_</code> — the combined map erase cost is higher per iteration. The three consumer lambdas at ~53% combined dcache self confirm the SPSC contention pattern is identical to OUCH BIST.</p>
+<h4 id="tlb-profile_2">TLB Profile</h4>
+<table>
+<thead>
+<tr>
+<th>Overhead</th>
+<th>Self</th>
+<th>Symbol</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>65.76%</td>
+<td>30.53%</td>
+<td><code>std::__do_visit</code> — NASDAQ OUCH variant dispatch</td>
+</tr>
+<tr>
+<td>22.98%</td>
+<td>2.03%</td>
+<td><code>folly::ConcurrentHashMap::eraseImpl</code></td>
+</tr>
+<tr>
+<td>21.24%</td>
+<td>21.13%</td>
+<td><code>boost::lockfree::ringbuffer_base::push</code> (SPSC)</td>
+</tr>
+<tr>
+<td>12.24%</td>
+<td>0.18%</td>
+<td><code>std::_Deque_base</code> — folly hazptr deque init</td>
+</tr>
+<tr>
+<td>10.51%</td>
+<td>10.51%</td>
+<td><code>OrderManager::add_our_order</code></td>
+</tr>
+<tr>
+<td>7.72%</td>
+<td>7.72%</td>
+<td><code>pthread_mutex_lock</code></td>
+</tr>
+</tbody>
+</table>
+<p><strong><code>std::__do_visit</code> NASDAQ OUCH at 30.53% TLB self</strong> is striking — the NASDAQ OUCH variant dispatch (<code>std::variant&lt;OUCHSystemEvent*, OUCHOrderAccepted*, ..., OUCHAccountQueryResponse*&gt;</code> with 11 alternatives) generates significant iTLB pressure because the vtable for 11 alternatives spans more instruction pages than the 5-alternative BIST OUCH variant. This is the primary source of iTLB misses (32,321) vs OUCH BIST (144,293 — note BIST is higher in absolute terms due to the hazptr reclamation page pressure being more dominant there).</p>
+<p><strong><code>pthread_mutex_lock</code> at 7.72% TLB self</strong> confirms the folly internal mutex is generating TLB pressure through its internal state accesses — consistent with OUCH BIST findings.</p>
+<p><strong><code>OrderManager::add_our_order</code> at 10.51% TLB self</strong> — the accepted OUCH message calls <code>add_our_order</code> which writes to the order pool slot, <code>our_orders_</code> map, and <code>orderhistory</code> — spanning three distinct memory regions and generating dTLB misses as pool and map addresses diverge across iterations.</p>
+<hr />
+<h3 id="cache-memory_5">Cache &amp; Memory</h3>
+<table>
+<thead>
+<tr>
+<th>Metric</th>
+<th>Value</th>
+<th>vs OUCH BIST</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>L1-D miss rate</td>
+<td>4.08%</td>
+<td>Higher (3.03%) — more map accesses per iteration</td>
+</tr>
+<tr>
+<td>LLC miss rate</td>
+<td>0.00%</td>
+<td>Identical</td>
+</tr>
+<tr>
+<td>L1-I misses</td>
+<td>4,226,950</td>
+<td>Slightly higher (3,987,816)</td>
+</tr>
+<tr>
+<td>dTLB misses</td>
+<td>244,587</td>
+<td>Much higher (102,950) — additional NASDAQ maps</td>
+</tr>
+<tr>
+<td>iTLB misses</td>
+<td>32,321</td>
+<td>Lower (144,293) — BIST hazptr pages dominate BIST iTLB</td>
+</tr>
+</tbody>
+</table>
+<p>The dTLB difference (244K vs 103K) is the most notable delta between the two OUCH scenarios. NASDAQ OUCH touches <code>nq_ouch_refnum_ordkey_</code> (additional <code>absl::flat_hash_map</code>) and <code>sympack_symid_</code> on non-accepted messages, adding two more map regions to the dTLB working set. The L1-D miss rate increase from 3.03% to 4.08% is consistent with this wider data footprint.</p>
+<hr />
+<h3 id="false-sharing-c2c_5">False Sharing (C2C)</h3>
+<table>
+<thead>
+<tr>
+<th>Metric</th>
+<th>Value</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Total shared cache lines</td>
+<td>13</td>
+</tr>
+<tr>
+<td>Local HITM</td>
+<td>11,270</td>
+</tr>
+<tr>
+<td>Blocked accesses on shared lines</td>
+<td>389</td>
+</tr>
+<tr>
+<td>Store HITs on shared lines</td>
+<td>21,383</td>
+</tr>
+</tbody>
+</table>
+<p><strong>11,270 HITM across 13 shared cache lines</strong> — higher than OUCH BIST (8,400 / 11 lines). The additional 2 shared lines likely correspond to <code>nq_ouch_refnum_ordkey_</code> bucket metadata and an additional <code>our_orders_</code> map control line that the NASDAQ OUCH accepted path writes and the consumer threads transitively read through the order pointer chain. The structural pattern is the same as OUCH BIST — SPSC queues + folly internal state + the NASDAQ OUCH path's additional map writes increase both the shared line count and HITM intensity.</p>
+<hr />
+<h3 id="flamegraph_5">Flamegraph</h3>
+<p><a href="../../assets/flamegraph_order_manager_ouch_nasdaq.svg" target="_blank">OrderManager OUCH NASDAQ Flamegraph</a></p>
+<hr />
+<h3 id="findings-action-items_4">Findings &amp; Action Items</h3>
+<table>
+<thead>
+<tr>
+<th>#</th>
+<th>Finding</th>
+<th>Impact</th>
+<th>Status</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>1</td>
+<td>IPC 0.35, L1-D miss 4.08% — lowest IPC and highest L1-D miss across all scenarios</td>
+<td><code>folly::ConcurrentHashMap</code> + wide map footprint</td>
+<td>⚠️ See finding 2</td>
+</tr>
+<tr>
+<td>2</td>
+<td><code>folly::ConcurrentHashMap::eraseImpl</code> 9.00% dcache self — highest erase cost across all OUCH scenarios; NASDAQ OUCH calls erase more per iteration than BIST OUCH</td>
+<td>Direct consequence of using concurrent map on single-threaded path</td>
+<td>⚠️ Replace folly::concurrenthashmap with custom map <br><strong>(handled - see Opt-1 in Recent Optimizations Page)</strong></td>
+</tr>
+<tr>
+<td>3</td>
+<td>dTLB 244,587 — 2.4× OUCH BIST (102K); additional <code>nq_ouch_refnum_ordkey_</code> and <code>sympack_symid_</code> map regions widen TLB footprint</td>
+<td>Expected for NASDAQ's two additional maps; not reducible without redesign</td>
+<td>✅ No action needed</td>
+</tr>
+<tr>
+<td>4</td>
+<td><code>std::__do_visit</code> NASDAQ OUCH 30.53% TLB self — 11-alternative variant generates more iTLB pressure than 5-alternative BIST OUCH</td>
+<td>Inherent to the NASDAQ OUCH message type count</td>
+<td>✅ No action needed</td>
+</tr>
+<tr>
+<td>5</td>
+<td><code>pthread_mutex_lock</code> 7.72% TLB self — folly internal mutex on single-threaded path</td>
+<td>Resolved by finding 2</td>
+<td>⚠️ Resolved by finding 2</td>
+</tr>
+<tr>
+<td>6</td>
+<td>11,270 HITM across 13 shared lines — SPSC + folly internal state + additional NASDAQ OUCH map writes</td>
+<td>Partially resolved by finding 2 (folly lines eliminated)</td>
+<td>⚠️ Partially resolved by finding 2</td>
+</tr>
+<tr>
+<td>7</td>
+<td>LLC miss 0.00% — despite 5 map accesses per iteration, full working set LLC-resident</td>
+<td>Pool allocation strategy effective</td>
+<td>✅ No action needed</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h2 id="raw-output">Raw Output</h2>
+<h3 id="ordermanager-raw">OrderManager RAW</h3>
+<div class="highlight"><pre><span></span><code>task-clock:         54,476,106,755        3.996 CPUs utilized
+context-switches:              213        3.910 /sec
+cpu-migrations:                  4        0.073 /sec
+page-faults:                   788       14.465 /sec
+
+P-Core (cpu_core):
+  instructions:    79,835,684,978        0.35  insn/cycle
+  cycles:         226,953,465,798        4.166 GHz
+  branches:        15,370,733,928      282.156 M/sec
+  branch-misses:      153,192,457        1.00%
+  L1-dcache-loads:  22,850,915,233     419.467 M/sec
+  L1-dcache-misses:    794,465,469        3.48%
+  LLC-loads:           770,076,933       14.136 M/sec
+  LLC-load-misses:          16,126        0.00%
+
+E-Core (cpu_atom):
+  instructions:    59,232,384,866        1.23  insn/cycle
+  cycles:          48,211,009,369        0.885 GHz
+  branches:        11,126,888,137      204.253 M/sec
+  branch-misses:      196,575,914        1.77%
+  L1-dcache-loads:  14,421,291,910      264.727 M/sec
+  LLC-loads:           58,287,178        1.070 M/sec
+  LLC-load-misses:       8,901,224       15.27%
+
+Wall: 13.63s  User: 54.46s  Sys: 0.02s
+</code></pre></div>
+<div class="highlight"><pre><span></span><code>P-Core L1-icache-load-misses:  372,284,365
+P-Core dTLB-load-misses:        1,495,210
+P-Core iTLB-load-misses:          132,210
+</code></pre></div>
+<p>CPU+Branch top application frames:
+<div class="highlight"><pre><span></span><code>21.36%  2.95%  order_manager_perf  OrderManager::store()
+ 6.93%  6.93%  order_manager_perf  boost::lockfree::ringbuffer_base::push (SPSC message queue)
+ 2.19%  2.19%  order_manager_perf  boost::lockfree::ringbuffer_base&lt;Order*&gt;::push
+ 1.17%  1.17%  order_manager_perf  absl::flat_hash_map::find (order lookup)
+ 1.10%  0.06%  order_manager_perf  OrderManager::add_awaitingAck_order
+</code></pre></div></p>
+<p>ICache top application frames:
+<div class="highlight"><pre><span></span><code>83.72%  2.81%  order_manager_perf  OrderManager::store()
+16.99% 11.02%  order_manager_perf  folly::ConcurrentHashMap::eraseImpl
+13.18% 13.13%  order_manager_perf  HashTables::wyhash_small
+ 7.39%  7.34%  order_manager_perf  absl::flat_hash_map::find
+ 5.13%  5.11%  libc.so.6           pthread_mutex_lock
+ 5.29%  2.21%  order_manager_perf  OrderManager::add_market_order
+</code></pre></div></p>
+<p>DCache top application frames:
+<div class="highlight"><pre><span></span><code>42.89%  1.14%  order_manager_perf  OrderManager::store()
+13.84% 13.74%  order_manager_perf  boost::lockfree::ringbuffer_base::push
+ 8.02%  4.21%  order_manager_perf  folly::ConcurrentHashMap::eraseImpl
+ 6.56%  6.54%  order_manager_perf  boost::lockfree::ringbuffer_base&lt;Order*&gt;::push
+</code></pre></div></p>
+<p>C2C:
+<div class="highlight"><pre><span></span><code>Total Shared Cache Lines:  19
+Load HITs on shared lines: 112,642
+Load Local HITM:           45,310
+Blocked Access on shared:   1,653
+Store HITs on shared:      83,941
+</code></pre></div></p>
+<hr />
+<h3 id="ordermanager-fix-raw">OrderManager FIX RAW</h3>
+<div class="highlight"><pre><span></span><code>task-clock:          2,291,169,359        3.894 CPUs utilized
+page-faults:                   759      331.272 /sec
+
+P-Core (cpu_core):
+  instructions:    11,097,425,752        1.19  insn/cycle
+  cycles:           9,340,793,201        4.077 GHz
+  branches:         1,950,050,405      851.116 M/sec
+  branch-misses:           17,613        0.00%
+  L1-dcache-loads:  2,836,739,377        1.238 G/sec
+  L1-dcache-misses:       685,883        0.02%
+  LLC-loads:               34,628       15.114 K/sec
+  LLC-load-misses:          2,127        6.14%
+
+Wall: 0.588s  User: 2.288s  Sys: 0.005s
+</code></pre></div>
+<div class="highlight"><pre><span></span><code>P-Core L1-icache-load-misses:     63,828
+P-Core dTLB-load-misses:           1,124
+P-Core iTLB-load-misses:           3,626
+</code></pre></div>
+<p>DCache top frames:
+<div class="highlight"><pre><span></span><code>73.80% 40.85%  order_manager_fix_perf  main::{lambda()#6} (FIX iteration loop)
+43.35% 33.58%  order_manager_fix_perf  OrderManager::store()
+ 9.78%  7.81%  order_manager_fix_perf  OrderManager::update_order(FIXMessage*)
+</code></pre></div></p>
+<p>ICache top frames:
+<div class="highlight"><pre><span></span><code>66.30%  7.11%  order_manager_fix_perf  main::{lambda()#6}
+30.60%  4.29%  order_manager_fix_perf  OrderManager::add_awaitingAck_order
+28.76%  6.26%  order_manager_fix_perf  OrderManager::store()
+19.67%  8.99%  order_manager_fix_perf  folly::ConcurrentHashMap::emplace
+17.92%  6.03%  order_manager_fix_perf  OrderManager::update_order(FIXMessage*)
+11.38%  8.97%  libstdc++.so.6.0.33     operator new
+</code></pre></div></p>
+<p>C2C:
+<div class="highlight"><pre><span></span><code>Total Shared Cache Lines:  1
+Load Local HITM:           1
+</code></pre></div></p>
+<hr />
+<h3 id="ordermanager-itch-bist-raw">OrderManager ITCH BIST RAW</h3>
+<div class="highlight"><pre><span></span><code>task-clock:            678,118,647        0.983 CPUs utilized
+page-faults:                   760        1.121 K/sec
+
+P-Core (cpu_core):
+  instructions:     8,634,286,667        2.63  insn/cycle
+  cycles:           3,280,481,993        4.838 GHz
+  branches:         1,430,678,024        2.110 G/sec
+  branch-misses:           67,114        0.00%
+  L1-dcache-loads:  2,398,842,012        3.537 G/sec
+  L1-dcache-misses:       178,664        0.01%
+  LLC-loads:               40,466       59.674 K/sec
+  LLC-load-misses:         16,482       40.73%
+
+Wall: 0.678s  User: 0.674s  Sys: 0.005s
+</code></pre></div>
+<div class="highlight"><pre><span></span><code>P-Core L1-icache-load-misses:   252,264
+P-Core dTLB-load-misses:         25,696
+P-Core iTLB-load-misses:          2,209
+</code></pre></div>
+<p>CPU+Branch top frames:
+<div class="highlight"><pre><span></span><code>94.44% 18.20%  order_manager_itch_bist_perf  OrderManager::store()
+31.41% 31.37%  order_manager_itch_bist_perf  absl::flat_hash_map::find
+12.74% 12.74%  order_manager_itch_bist_perf  FillerITCH_BIST::fill_itch_add
+ 8.25%  5.01%  order_manager_itch_bist_perf  MarketBook::delete_order
+ 7.72%  4.67%  order_manager_itch_bist_perf  MarketBook::add_order
+ 4.30%  4.30%  order_manager_itch_bist_perf  MarketBook::exec_order
+ 3.05%  1.79%  order_manager_itch_bist_perf  absl::btree::insert_unique
+ 1.50%  1.50%  order_manager_itch_bist_perf  absl::btree::erase
+</code></pre></div></p>
+<p>C2C:
+<div class="highlight"><pre><span></span><code>Total Shared Cache Lines:  0
+Load Local HITM:           0
+</code></pre></div></p>
+<hr />
+<h3 id="ordermanager-itch-nasdaq-raw">OrderManager ITCH NASDAQ RAW</h3>
+<div class="highlight"><pre><span></span><code>task-clock:            555,258,414        0.979 CPUs utilized
+page-faults:                   764        1.376 K/sec
+
+P-Core (cpu_core):
+  instructions:    10,160,230,323        3.78  insn/cycle
+  cycles:           2,689,839,328        4.844 GHz
+  branches:         1,718,584,176        3.095 G/sec
+  branch-misses:           25,854        0.00%
+  L1-dcache-loads:  2,751,705,185        4.956 G/sec
+  L1-dcache-misses:       338,048        0.01%
+  LLC-loads:               68,853      124.002 K/sec
+  LLC-load-misses:          7,923       11.51%
+
+Wall: 0.555s  User: 0.551s  Sys: 0.006s
+</code></pre></div>
+<div class="highlight"><pre><span></span><code>P-Core L1-icache-load-misses:   242,215
+P-Core dTLB-load-misses:          9,832
+P-Core iTLB-load-misses:          1,407
+</code></pre></div>
+<p>CPU+Branch top frames:
+<div class="highlight"><pre><span></span><code>96.25% 18.04%  order_manager_itch_nasdaq_perf  OrderManager::store()
+68.17% 11.72%  order_manager_itch_nasdaq_perf  std::__do_visit (NASDAQ ITCH variant)
+24.18% 24.18%  order_manager_itch_nasdaq_perf  absl::flat_hash_map::find
+12.78% 10.72%  order_manager_itch_nasdaq_perf  OrderManager::add_market_order
+ 8.27%  4.76%  order_manager_itch_nasdaq_perf  MarketBook::delete_order
+ 4.84%  4.84%  order_manager_itch_nasdaq_perf  MarketBook::exec_order
+ 3.60%  3.60%  order_manager_itch_nasdaq_perf  boost::lockfree::ringbuffer_base&lt;Order*&gt;::push
+ 2.78%  2.78%  order_manager_itch_nasdaq_perf  FillerITCH_NASDAQ::fill_itch_add
+</code></pre></div></p>
+<p>C2C:
+<div class="highlight"><pre><span></span><code>Total Shared Cache Lines:  0
+Load Local HITM:           0
+</code></pre></div></p>
+<hr />
+<h3 id="ordermanager-ouch-bist-raw">OrderManager OUCH BIST RAW</h3>
+<div class="highlight"><pre><span></span><code>task-clock:         10,615,693,445        3.936 CPUs utilized
+page-faults:                   782       73.665 /sec
+
+P-Core (cpu_core):
+  instructions:    18,722,426,500        0.42  insn/cycle
+  cycles:          44,064,282,710        4.151 GHz
+  branches:         3,594,106,691      338.565 M/sec
+  branch-misses:       33,726,535        0.94%
+  L1-dcache-loads:  5,411,392,951      509.754 M/sec
+  L1-dcache-misses:    163,949,377        3.03%
+  LLC-loads:           153,728,295       14.481 M/sec
+  LLC-load-misses:          13,536        0.01%
+
+E-Core (cpu_atom):
+  instructions:     9,635,484,373        1.04  insn/cycle
+  cycles:           9,275,813,082        0.874 GHz
+
+Wall: 2.697s  User: 10.609s  Sys: 0.009s
+</code></pre></div>
+<div class="highlight"><pre><span></span><code>P-Core L1-icache-load-misses:   3,987,816
+P-Core dTLB-load-misses:          102,950
+P-Core iTLB-load-misses:          144,293
+</code></pre></div>
+<p>CPU+Branch top application frames:
+<div class="highlight"><pre><span></span><code>15.18%  2.57%  order_manager_ouch_bist_perf  OrderManager::store()
+ 6.27%  6.19%  order_manager_ouch_bist_perf  BIST::OUCHOrderCancelledMessage handler
+ 4.77%  4.77%  order_manager_ouch_bist_perf  boost::lockfree::ringbuffer_base::push (SPSC)
+ 3.18%  0.83%  order_manager_ouch_bist_perf  folly::ConcurrentHashMap::eraseImpl
+ 1.77%  1.77%  libc.so.6                     pthread_mutex_lock
+</code></pre></div></p>
+<p>ICache top application frames:
+<div class="highlight"><pre><span></span><code>46.13%  1.80%  order_manager_ouch_bist_perf  OrderManager::store()
+32.49%  3.54%  order_manager_ouch_bist_perf  folly::ConcurrentHashMap::eraseImpl
+22.32%  1.00%  order_manager_ouch_bist_perf  folly::hazptr_domain::push_list
+20.06%  0.16%  order_manager_ouch_bist_perf  folly::detail::hazptr_inline_executor_add
+</code></pre></div></p>
+<p>TLB top application frames:
+<div class="highlight"><pre><span></span><code>85.27% 18.77%  order_manager_ouch_bist_perf  OrderManager::store()
+58.48% 11.46%  order_manager_ouch_bist_perf  folly::ConcurrentHashMap::eraseImpl
+ 5.92%  5.92%  order_manager_ouch_bist_perf  OrderManager::add_our_order
+ 3.84%  3.84%  libc.so.6                     pthread_mutex_lock
+</code></pre></div></p>
+<p>C2C:
+<div class="highlight"><pre><span></span><code>Total Shared Cache Lines:  11
+Load HITs on shared lines: 22,948
+Load Local HITM:            8,400
+Blocked Access on shared:     275
+Store HITs on shared:      17,462
+</code></pre></div></p>
+<hr />
+<h3 id="ordermanager-ouch-nasdaq-raw">OrderManager OUCH NASDAQ RAW</h3>
+<div class="highlight"><pre><span></span><code>task-clock:         13,600,684,916        3.949 CPUs utilized
+page-faults:                   787       57.865 /sec
+
+P-Core (cpu_core):
+  instructions:    19,646,108,800        0.35  insn/cycle
+  cycles:          56,532,798,687        4.157 GHz
+  branches:         3,734,485,002      274.581 M/sec
+  branch-misses:       40,082,906        1.07%
+  L1-dcache-loads:  5,786,034,471      425.422 M/sec
+  L1-dcache-misses:    236,145,658        4.08%
+  LLC-loads:           225,340,959       16.568 M/sec
+  LLC-load-misses:           9,772        0.00%
+
+E-Core (cpu_atom):
+  instructions:    11,530,354,333        1.08  insn/cycle
+  cycles:          10,696,800,098        0.786 GHz
+
+Wall: 3.444s  User: 13.593s  Sys: 0.009s
+</code></pre></div>
+<div class="highlight"><pre><span></span><code>P-Core L1-icache-load-misses:   4,226,950
+P-Core dTLB-load-misses:          244,587
+P-Core iTLB-load-misses:           32,321
+</code></pre></div>
+<p>DCache top application frames:
+<div class="highlight"><pre><span></span><code>44.86%  1.69%  order_manager_ouch_nasdaq_perf  OrderManager::store()
+17.66%  1.51%  order_manager_ouch_nasdaq_perf  std::__do_visit (NASDAQ OUCH variant)
+15.53% 15.42%  order_manager_ouch_nasdaq_perf  boost::lockfree::ringbuffer_base::push (SPSC)
+14.26%  9.00%  order_manager_ouch_nasdaq_perf  folly::ConcurrentHashMap::eraseImpl
+ 8.98%  8.95%  order_manager_ouch_nasdaq_perf  boost::lockfree::ringbuffer_base&lt;Order*&gt;::push
+</code></pre></div></p>
+<p>TLB top application frames:
+<div class="highlight"><pre><span></span><code>98.10%  2.99%  order_manager_ouch_nasdaq_perf  OrderManager::store()
+65.76% 30.53%  order_manager_ouch_nasdaq_perf  std::__do_visit (NASDAQ OUCH variant)
+22.98%  2.03%  order_manager_ouch_nasdaq_perf  folly::ConcurrentHashMap::eraseImpl
+10.51% 10.51%  order_manager_ouch_nasdaq_perf  OrderManager::add_our_order
+ 7.72%  7.72%  libc.so.6                       pthread_mutex_lock
+</code></pre></div></p>
+<p>C2C:
+<div class="highlight"><pre><span></span><code>Total Shared Cache Lines:  13
+Load HITs on shared lines: 29,097
+Load Local HITM:           11,270
+Blocked Access on shared:     389
+Store HITs on shared:      21,383
+</code></pre></div></p>
+
+
+
+
+
+
+
+
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    
+    
+      
+      
+      <script id="__config" type="application/json">{"annotate": null, "base": "../..", "features": ["navigation.tabs", "navigation.tabs.sticky", "navigation.sections", "navigation.indexes", "navigation.expand", "content.code.annotate"], "search": "../../assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script>
+    
+    
+      <script src="../../assets/javascripts/bundle.79ae519e.min.js"></script>
+      
+    
+  </body>
+</html>
