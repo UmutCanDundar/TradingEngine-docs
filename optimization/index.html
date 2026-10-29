@@ -1427,7 +1427,7 @@
     <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
       
         <li class="md-nav__item">
-  <a href="#opt-1-ordermanager-follyconcurrenthashmap-concurrentfixedflatmap-2026-06-03" class="md-nav__link">
+  <a href="#opt-1" class="md-nav__link">
     <span class="md-ellipsis">
       
         Opt-1 — OrderManager:: folly::ConcurrentHashMap → ConcurrentFixedFlatMap (2026-06-03)
@@ -1576,7 +1576,7 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#opt-3-spsc-queue-boostlockfreespsc_queue-custom-spsc-queue-2026-10-29" class="md-nav__link">
+  <a href="#opt-3" class="md-nav__link">
     <span class="md-ellipsis">
       
         Opt-3 — SPSC Queue: boost::lockfree::spsc_queue → Custom spsc queue (2026-10-29)
@@ -1693,7 +1693,7 @@
     <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
       
         <li class="md-nav__item">
-  <a href="#opt-1-ordermanager-follyconcurrenthashmap-concurrentfixedflatmap-2026-06-03" class="md-nav__link">
+  <a href="#opt-1" class="md-nav__link">
     <span class="md-ellipsis">
       
         Opt-1 — OrderManager:: folly::ConcurrentHashMap → ConcurrentFixedFlatMap (2026-06-03)
@@ -1842,7 +1842,7 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#opt-3-spsc-queue-boostlockfreespsc_queue-custom-spsc-queue-2026-10-29" class="md-nav__link">
+  <a href="#opt-3" class="md-nav__link">
     <span class="md-ellipsis">
       
         Opt-3 — SPSC Queue: boost::lockfree::spsc_queue → Custom spsc queue (2026-10-29)
@@ -1944,7 +1944,7 @@
 <h1 id="recent-optimization">Recent Optimization</h1>
 <p>The optimizations on this page were identified through profiling and benchmarking runs conducted against the baseline implementation. Perf results highlighted the bottlenecks; the changes below are the direct response to those findings.</p>
 <hr />
-<h2 id="opt-1-ordermanager-follyconcurrenthashmap-concurrentfixedflatmap-2026-06-03">Opt-1 — OrderManager:: <br><code>folly::ConcurrentHashMap</code> → <code>ConcurrentFixedFlatMap</code> <small>(2026-06-03)</small></h2>
+<h2 id="opt-1">Opt-1 — OrderManager:: <br><code>folly::ConcurrentHashMap</code> → <code>ConcurrentFixedFlatMap</code> <small>(2026-06-03)</small></h2>
 <p><code>folly::ConcurrentHashMap</code> was replaced with a custom <code>mmap</code>-backed, fixed-capacity, open-addressing <code>ConcurrentFixedFlatMap</code>. The map is accessed exclusively by the store thread — concurrent access never occurs — making folly's hazard pointer and mutex machinery pure overhead.</p>
 <p>Additionally, folly is not a modular library: even when only <code>ConcurrentHashMap</code> was used, the entire library was pulled into every build. Removing it cut full build time by <strong>~2x</strong>.</p>
 <hr />
@@ -2379,7 +2379,7 @@
 </table>
 <p>back to <a href="../Perf/builder_perf/#fix-findings">Builder_Dispatch perf findings</a></p>
 <hr />
-<h2 id="opt-3-spsc-queue-boostlockfreespsc_queue-custom-spsc-queue-2026-10-29">Opt-3 — SPSC Queue: <br><code>boost::lockfree::spsc_queue</code> → Custom <code>spsc queue</code> <small>(2026-10-29)</small></h2>
+<h2 id="opt-3">Opt-3 — SPSC Queue: <br><code>boost::lockfree::spsc_queue</code> → Custom <code>spsc queue</code> <small>(2026-10-29)</small></h2>
 <blockquote>
 <p><strong>Note:</strong> Both tests (Boost SPSC and Custom SPSC) were executed on the same day under comparable runtime conditions. Due to natural runtime jitter, system load variations, and minor environment fluctuations, baseline values may differ slightly from older snapshots stored in the main Test section.</p>
 </blockquote>
