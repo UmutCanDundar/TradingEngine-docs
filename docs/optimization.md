@@ -155,7 +155,7 @@ dTLB increase is from the 1.4 MB `g_second_table` region touching new pages on f
 | Wall time | **−43%** |
 | `localtime_r` syscall per message | **eliminated** |
 
-back to [Builder_Dispatch perf findings](Perf/builder_perf.md/#builder-dispatch-findings)
+back to [Builder_Dispatch perf findings](Perf/builder_perf.md/#findings)
 
 ---
 

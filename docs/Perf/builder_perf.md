@@ -136,7 +136,7 @@ L1-D miss rate at 0.03% confirms the Builder Dispatch working set (Order structs
 
 ---
 
-### Findings & Action Items { #builder-dispatch-findings }
+### Findings & Action Items { #findings }
 
 | # | Finding | Impact | Status |
 |---|---|---|---|
