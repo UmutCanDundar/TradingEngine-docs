@@ -1558,6 +1558,84 @@
   
 </li>
       
+        <li class="md-nav__item">
+  <a href="#exp-2-marketbook-data-structure-abslbtree-vs-stdvector" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Exp-2 — MarketBook Data Structure: absl::btree vs. std::vector
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Exp-2 — MarketBook Data Structure: absl::btree vs. std::vector">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#overview_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Overview
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#part-a-micro-benchmark-comparisons-baseline-vs-alternative" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Part A: Micro-Benchmark Comparisons (Baseline vs. Alternative)
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Part A: Micro-Benchmark Comparisons (Baseline vs. Alternative)">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#marketbook-standalone-performance-mb_mixed-workload" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        MarketBook Standalone Performance (MB_Mixed Workload)
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#part-b-system-profiling-perf-metrics-mb_standalone-stress" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Part B: System Profiling &amp; perf Metrics (mb_standalone Stress)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#engineering-rationale-decision_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Engineering Rationale &amp; Decision
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
     </ul>
   
 </nav>
@@ -1716,6 +1794,84 @@
         
           <li class="md-nav__item">
   <a href="#engineering-rationale-decision" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Engineering Rationale &amp; Decision
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#exp-2-marketbook-data-structure-abslbtree-vs-stdvector" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Exp-2 — MarketBook Data Structure: absl::btree vs. std::vector
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Exp-2 — MarketBook Data Structure: absl::btree vs. std::vector">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#overview_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Overview
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#part-a-micro-benchmark-comparisons-baseline-vs-alternative" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Part A: Micro-Benchmark Comparisons (Baseline vs. Alternative)
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Part A: Micro-Benchmark Comparisons (Baseline vs. Alternative)">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#marketbook-standalone-performance-mb_mixed-workload" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        MarketBook Standalone Performance (MB_Mixed Workload)
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#part-b-system-profiling-perf-metrics-mb_standalone-stress" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Part B: System Profiling &amp; perf Metrics (mb_standalone Stress)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#engineering-rationale-decision_1" class="md-nav__link">
     <span class="md-ellipsis">
       
         Engineering Rationale &amp; Decision
@@ -1955,7 +2111,8 @@
 <li><strong>Why it was rejected:</strong> Large <code>switch-case</code> blocks over frequent message type discriminators increase branch misprediction penalties and instruction cache pressure in hot loops. Function pointers (<code>fptr</code>) provide clean, predictable, and isolated execution routing without bloating the dispatch block.</li>
 <li><strong>Outcome:</strong> Switch-case dispatch is rejected across the board; <strong><code>fptr</code> routing remains in production</strong>.</li>
 </ul>
-<h1 id="exp-2-marketbook-data-structure-abslbtree-vs-stdvector">Exp-2 — MarketBook Data Structure: <code>absl::btree</code> vs. <code>std::vector</code></h1>
+<hr />
+<h2 id="exp-2-marketbook-data-structure-abslbtree-vs-stdvector">Exp-2 — MarketBook Data Structure: <code>absl::btree</code> vs. <code>std::vector</code></h2>
 <h3 id="overview_1">Overview</h3>
 <p>The core order book data structure within the standalone MarketBook component was evaluated to compare performance trade-offs between cache-friendly B-Tree node indexing (<code>absl::btree</code>) and contiguous flat-array storage (<code>std::vector</code>). </p>
 <p>Tests were conducted across realistic market replay workloads (64 symbols, up to 500 depth per side) under identical pipeline environments.</p>

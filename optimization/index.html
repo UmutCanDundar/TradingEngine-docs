@@ -3087,6 +3087,7 @@
 </tbody>
 </table>
 <p>back to <a href="../Pipeline/perf_pipeline/#rxtx-perf-findings">Pipeline perf findings</a></p>
+<hr />
 <h2 id="opt-4-hash-table-lookup-custom-open-addressing-abslflat_hash_map-2026-10-30">Opt-4 — Hash Table Lookup: Custom Open-Addressing → <code>absl::flat_hash_map</code> (2026-10-30)</h2>
 <blockquote>
 <p><strong>Note:</strong> Baseline measurements refer to the custom scalar open-addressing / hash-indexed array implementation, evaluated against Abseil's SIMD group probing flat hash map under identical CPU pin and affinity conditions.</p>
@@ -3267,6 +3268,7 @@
 </tr>
 </tbody>
 </table>
+<hr />
 <h2 id="opt-5-fix-parser-simd-scalar-2026-10-30">Opt-5 — FIX Parser: SIMD → Scalar (2026-10-30)</h2>
 <p>The scalar FIX parser was compared against a SIMD implementation across the standalone FIX parser benchmark, the <code>parseFunc</code> micro-benchmark, and the end-to-end parser dispatch benchmark.</p>
 <hr />
