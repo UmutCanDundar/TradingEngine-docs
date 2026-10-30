@@ -1543,10 +1543,10 @@
 </li>
         
           <li class="md-nav__item">
-  <a href="#engineering-rationale-decision" class="md-nav__link">
+  <a href="#decision" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Engineering Rationale &amp; Decision
+        Decision
       
     </span>
   </a>
@@ -1621,10 +1621,10 @@
 </li>
         
           <li class="md-nav__item">
-  <a href="#engineering-rationale-decision_1" class="md-nav__link">
+  <a href="#decision_1" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Engineering Rationale &amp; Decision
+        Decision
       
     </span>
   </a>
@@ -1793,10 +1793,10 @@
 </li>
         
           <li class="md-nav__item">
-  <a href="#engineering-rationale-decision" class="md-nav__link">
+  <a href="#decision" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Engineering Rationale &amp; Decision
+        Decision
       
     </span>
   </a>
@@ -1871,10 +1871,10 @@
 </li>
         
           <li class="md-nav__item">
-  <a href="#engineering-rationale-decision_1" class="md-nav__link">
+  <a href="#decision_1" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Engineering Rationale &amp; Decision
+        Decision
       
     </span>
   </a>
@@ -2105,7 +2105,7 @@
 </tbody>
 </table>
 <hr />
-<h3 id="engineering-rationale-decision">Engineering Rationale &amp; Decision</h3>
+<h3 id="decision">Decision</h3>
 <ul>
 <li><strong>Result:</strong> While both architectures share identical inter-thread queue overheads, static <code>switch-case</code> routing causes measurable performance degradation (~8.6% to ~36.8% higher p50 cycles across micro-benchmarks and ~5% higher total CPU user time in full pipeline <code>perf</code> runs), alongside severe tail latency spikes (p999 up to +41%).</li>
 <li><strong>Why it was rejected:</strong> Large <code>switch-case</code> blocks over frequent message type discriminators increase branch misprediction penalties and instruction cache pressure in hot loops. Function pointers (<code>fptr</code>) provide clean, predictable, and isolated execution routing without bloating the dispatch block.</li>
@@ -2218,7 +2218,7 @@
 </tbody>
 </table>
 <hr />
-<h3 id="engineering-rationale-decision_1">Engineering Rationale &amp; Decision</h3>
+<h3 id="decision_1">Decision</h3>
 <ul>
 <li>
 <p><strong>Result:</strong> <code>std::vector</code> causes severe performance degradation in mixed order book operations (median latency <strong>+89.5% slower</strong>, p99 tail latency <strong>~7x higher</strong>) and inflates order book heap memory footprint by <strong>~18x</strong> (35.37 MB vs 1.97 MB).</p>

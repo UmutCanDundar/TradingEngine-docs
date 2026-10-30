@@ -59,4 +59,5 @@ nav:
       - Perf: Perf/builder_perf.md
   - Experiments: experiments.md
   - Recent Optimization: optimization.md
+  - Project Measurement Summary (Updated State): summary.md
   
