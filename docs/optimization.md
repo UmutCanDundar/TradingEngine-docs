@@ -246,19 +246,6 @@ The benchmarks below compare the pipeline latencies between the old **Boost SPSC
 
 ---
 
-## Why It Won
-
-1. **Cache-Line Alignment (alignas(64)) & Index Striding:**
-Our custom queue explicitly enforces alignas(64) padding to isolate producer and consumer control variables onto separate cache lines. Furthermore, the internal slot layout and index remapping mechanism are designed such that advancing to the next slot (++index) strides directly to the next cache line (e.g., slot 0 resides on Cacheline 1, and incrementing remaps to Cacheline 2). This memory access layout is a key driver in reducing cache thrashing and inter-core invalidation costs (Local HITM dropped by 46.8%).
-
-2. **Explicit Memory Ordering (acquire / release):**
-We explicitly implemented fine-grained lock-free operations using std::memory_order_acquire and std::memory_order_release semantics. This avoids default sequential consistency barriers (seq_cst) and prevents unnecessary CPU pipeline stalls during inter-thread synchronization.
-
-3. **Domain-Specific Custom Implementation vs. General-Purpose Overhead:**
-While Boost provides a general-purpose concurrent queue, tailoring our custom implementation strictly for the trading engine's fixed single-producer single-consumer requirements eliminated unnecessary abstraction layers and template bloat. The streamlined index arithmetic leads to better L1 instruction/data cache utilization and lower tail latencies (p999 cycles improved up to 26.6%).
-
----
-
 ## Summary
 
 | Category | Gain |
@@ -271,9 +258,10 @@ While Boost provides a general-purpose concurrent queue, tailoring our custom im
 
 back to [Pipeline perf findings](Pipeline/perf_pipeline.md/#rxtx-perf-findings)
 
+
 ## Opt-4 — Hash Table Lookup: Custom Open-Addressing → `absl::flat_hash_map` (2026-10-30) 
 
-> **Note:** Baseline measurements refer to the custom scalar open-addressing / hash-indexed array implementation (`HT_Sym_custom`, `HT_Exec_nobloom`), evaluated against Abseil's SIMD group probing flat hash map under identical CPU pin and affinity conditions.
+> **Note:** Baseline measurements refer to the custom scalar open-addressing / hash-indexed array implementation, evaluated against Abseil's SIMD group probing flat hash map under identical CPU pin and affinity conditions.
 
 The custom scalar linear-probing hash table was replaced with Abseil's SIMD-accelerated `absl::flat_hash_map` across symbol index lookups and execution order ID routing tables.
 
@@ -315,16 +303,6 @@ The benchmarks below compare latency and CPU cycle metrics across symbol lookup 
 | L1-D Load Misses | 36.73M | 35.11M | **~4.4% Fewer misses** |
 | LLC Load Misses | 26,451 | 32,983 | Minimal LLC impact |
 
-## Why It Won
-
-1. **SIMD Group Probing vs. Linear Probing Collisions:**
-   While the custom scalar hash table achieves a slightly faster best-case hit cost at p50 (18 vs 28 cycles), linear probing causes collision chains as fill ratios grow. Abseil's SIMD metadata inspection evaluates 16 slots in parallel via 128-bit vector registers, ensuring bounded lookup chains and eliminating long linear probes.
-
-2. **Tail Latency Predictability (`p99` / `p999` Stability):**
-   In high-frequency trading pipelines, tail latency stability is far more critical than an isolated best-case hit. `absl::flat_hash_map` reduced p99 and p999 tail latencies by **~50%** (slashing p99 from 88–90 cycles down to 44 cycles), providing bounded execution guaranteed below 65 cycles across 99.9% of all market events.
-
-3. **Massive Reduction in Branch Mispredictions:**
-   Custom open-addressing loops produced severe branch misprediction penalties (**727.4M branch misses**) during linear probe loops. Abseil's bitmask-driven SIMD group evaluation reduced branch mispredictions to **276.0M (-62.0%)**, significantly cutting hardware pipeline flush stalls.
 
 ## Summary
 
@@ -335,3 +313,84 @@ The benchmarks below compare latency and CPU cycle metrics across symbol lookup 
 | Instructions Retired | **~7.06B fewer instructions** (~7.8% reduction) |
 | CPU Core Cycles | **~3.32B fewer cycles** consumed |
 | Overall Decision | Integrated into Production  |
+
+
+
+## Opt-5 — FIX Parser: SIMD → Scalar (2026-10-30)
+
+The scalar FIX parser was compared against a SIMD implementation across the standalone FIX parser benchmark, the `parseFunc` micro-benchmark, and the end-to-end parser dispatch benchmark.
+
+---
+
+## Benchmark Comparison (`parser_fix_bench`)
+
+| Benchmark / Metric | SIMD (Before) | Scalar (After) | Δ |
+|---|---|---|---|
+| **BM_ParserFIX_best** | | | |
+| Median time | 180 ns | 188 ns | **+4.4%** |
+| p50 cycles | 409 | 413 | **+1.0%** |
+| p95 cycles | 423 | 428 | **+1.2%** |
+| p99 cycles | 468 | 467 | **−0.2%** |
+| p999 cycles | 546 | 550 | **+0.7%** |
+| **BM_ParserFIX_normal** | | | |
+| Median time | 355 ns | 332 ns | **−6.5%** |
+| p50 cycles | 794 | 785 | **−1.1%** |
+| p95 cycles | 1,095 | 1,045 | **−4.6%** |
+| p99 cycles | 1,316 | 1,184 | **−10.0%** |
+| p999 cycles | 1,611 | 1,622 | **+0.7%** |
+| **BM_ParserFIX_worst (seq-in-order)** | | | |
+| Median time | 473 ns | 370 ns | **−21.8%** |
+| p50 cycles | 1,252 | 905 | **−27.7%** |
+| p95 cycles | 1,530 | 1,067 | **−30.3%** |
+| p99 cycles | 1,628 | 1,185 | **−27.2%** |
+| p999 cycles | 1,817 | 1,533 | **−15.6%** |
+| **BM_ParserFIX_worst (seq-out-of-order)** | | | |
+| Median time | 375 ns | 376 ns | **+0.3%** |
+| p50 cycles | 930 | 987 | **+6.1%** |
+| p95 cycles | 1,065 | 1,084 | **+1.8%** |
+| p99 cycles | 1,345 | 1,164 | **−13.5%** |
+| p999 cycles | 1,522 | 1,483 | **−2.6%** |
+
+---
+
+| Benchmark / Metric | SIMD (Before) | Scalar (After) | Δ |
+|---|---|---|---|
+| **parseFunc/NewOrder** | | | |
+| Median time | 70.1 ns | 69.4 ns | **−1.0%** |
+| p50 cycles | 136 | 136 | **0.0%** |
+| p95 cycles | 142 | 142 | **0.0%** |
+| p99 cycles | 158 | 146 | **−7.6%** |
+| p999 cycles | 258 | 259 | **+0.4%** |
+| **parseFunc/ExecReport** | | | |
+| Median time | 64.9 ns | 63.0 ns | **−2.9%** |
+| p50 cycles | 122 | 118 | **−3.3%** |
+| p95 cycles | 126 | 124 | **−1.6%** |
+| p99 cycles | 140 | 128 | **−8.6%** |
+| p999 cycles | 214 | 222 | **+3.7%** |
+
+---
+
+## 3. Benchmark Comparison (`parser_dispatch_bench`, `BM_Parser/MixedTraffic`)
+
+| Metric | SIMD (Before) | Scalar (After) | Δ |
+|---|---|---|---|
+| Median time | 1,676 ns | 1,607 ns | **−4.1%** |
+| p50 cycles | 4,696 | 4,504 | **−4.1%** |
+| p95 cycles | 5,113 | 4,899 | **−4.2%** |
+| p99 cycles | 5,534 | 5,353 | **−3.3%** |
+| p999 cycles | 11,852 | 11,623 | **−1.9%** |
+
+---
+
+## Summary
+
+| Category                           | Result                                                          |
+|------------------------------------|-----------------------------------------------------------------|
+| Best case (short message)          | ~1% cycle gain, within noise                                    |
+| Normal                             | SIMD slower, especially tail (p99 +11%)                         |
+| Worst (in-order)                   | SIMD **+38% p50, +43% p95** slower                              |
+| Worst (out-of-order)               | Mixed: p50 −5.8%, but p99 +15.5%                                |
+| parseFunc                          | No difference, slightly worse tail (p99 +8–9%)                  |
+| End-to-end (dispatch MixedTraffic) | SIMD **~4.3% slower** across all percentiles                    |
+
+**Result: SIMD dropped, Scalar kept.** The only gain is in the best case and it is within noise. On realistic traffic (normal, worst, dispatch) SIMD is either equal or clearly worse. Likely cause: FIX tag=value fields are short, so the SIMD setup and mask-extraction cost outweighs the scan savings.
