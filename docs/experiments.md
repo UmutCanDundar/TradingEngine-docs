@@ -61,7 +61,7 @@ Message type dispatching across all binary and text protocol parsers (Mixed traf
 
 ---
 
-### Engineering Rationale & Decision
+### Decision
 
 * **Result:** While both architectures share identical inter-thread queue overheads, static `switch-case` routing causes measurable performance degradation (~8.6% to ~36.8% higher p50 cycles across micro-benchmarks and ~5% higher total CPU user time in full pipeline `perf` runs), alongside severe tail latency spikes (p999 up to +41%).
 * **Why it was rejected:** Large `switch-case` blocks over frequent message type discriminators increase branch misprediction penalties and instruction cache pressure in hot loops. Function pointers (`fptr`) provide clean, predictable, and isolated execution routing without bloating the dispatch block.
@@ -105,7 +105,7 @@ Tests were conducted across realistic market replay workloads (64 symbols, up to
 
 ---
 
-### Engineering Rationale & Decision
+### Decision
 
 - **Result:** `std::vector` causes severe performance degradation in mixed order book operations (median latency **+89.5% slower**, p99 tail latency **~7x higher**) and inflates order book heap memory footprint by **~18x** (35.37 MB vs 1.97 MB).
 

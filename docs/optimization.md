@@ -12,7 +12,7 @@ Additionally, folly is not a modular library: even when only `ConcurrentHashMap`
 
 ---
 
-## Benchmark Comparison (`BM_OrderManager/MixedTraffic`)
+### Benchmark Comparison (`BM_OrderManager/MixedTraffic`)
 
 | Metric | Before (folly) | After (ConcurrentFixedFlatMap) | Δ |
 |---|---|---|---|
@@ -26,9 +26,9 @@ Mean and steady-state cycle counts are effectively unchanged — the hot path co
 
 ---
 
-## Performance Comparison
+### Performance Comparison
 
-### Key Counters (P-core / Store Thread)
+#### Key Counters (P-core / Store Thread)
 
 | Metric | Before | After | Δ |
 |---|---|---|---|
@@ -46,7 +46,7 @@ IPC and cycle improvements are partly attributable to the removal of consumer sp
 
 ---
 
-### ICache Hotspots
+#### ICache Hotspots
 
 | Symbol | Before (self%) | After (self%) |
 |---|---|---|
@@ -59,7 +59,7 @@ Three folly symbols previously consumed **29.26% icache self** combined. All are
 
 ---
 
-### DCache Hotspots
+#### DCache Hotspots
 
 | Symbol | Before (self%) | After (self%) |
 |---|---|---|
@@ -69,7 +69,7 @@ Three folly symbols previously consumed **29.26% icache self** combined. All are
 
 ---
 
-### False Sharing (C2C)
+#### False Sharing (C2C)
 
 | Metric | Before | After | Δ |
 |---|---|---|---|
@@ -79,7 +79,7 @@ Three folly symbols previously consumed **29.26% icache self** combined. All are
 
 ---
 
-## Summary
+### Summary
 
 | Category | Gain |
 |---|---|
@@ -98,7 +98,7 @@ Each FIX order previously called `localtime_r` to format the `TransactTime` fiel
 
 ---
 
-## Benchmark Comparison (`BM_Builder_FIX_newOrder`) 
+### Benchmark Comparison (`BM_Builder_FIX_newOrder`) 
 
 | Metric | Before | After | Δ |
 |---|---|---|---|
@@ -110,7 +110,7 @@ Each FIX order previously called `localtime_r` to format the `TransactTime` fiel
 
 ---
 
-## Performance Comparison
+### Performance Comparison
 
 | Metric | Before | After | Δ |
 |---|---|---|---|
@@ -132,7 +132,7 @@ dTLB increase is from the 1.4 MB `g_second_table` region touching new pages on f
 
 ---
 
-## CPU+Branch Hotspots
+#### CPU+Branch Hotspots
 
 | Symbol | Before (self%) | After (self%) |
 |---|---|---|
@@ -142,7 +142,7 @@ dTLB increase is from the 1.4 MB `g_second_table` region touching new pages on f
 
 ---
 
-## Summary
+### Summary
 
 | Category | Gain |
 |---|---|
@@ -165,13 +165,13 @@ The general-purpose **Boost SPSC Queue** (`boost::lockfree::spsc_queue`) was rep
 
 ---
 
-## Benchmark Comparison (`Rx` & `Tx` Pipelines)
+### Benchmark Comparison (`Rx` & `Tx` Pipelines)
 
 The benchmarks below compare the pipeline latencies between the old **Boost SPSC Queue** and the new **Custom SPSC Queue** across FIX, OUCH (BIST & NQ), and ITCH protocols. All values are measured in nanoseconds (time/median) and CPU cycles (`p50`, `p95`, `p99`, `p999`).
 
 ---
 
-### 1. Rx Pipeline (`Network -> Risk`)
+#### Rx Pipeline (`Network -> Risk`)
 
 | Benchmark / Metric | Before (Boost SPSC) | After (Custom SPSC) | Δ |
 |---|---|---|---|
@@ -208,7 +208,7 @@ The benchmarks below compare the pipeline latencies between the old **Boost SPSC
 
 ---
 
-### 2. Tx Pipeline (`Risk -> Network`)
+#### Tx Pipeline (`Risk -> Network`)
 
 | Benchmark / Metric | Before (Boost SPSC) | After (Custom SPSC) | Δ |
 |---|---|---|---|
@@ -233,9 +233,9 @@ The benchmarks below compare the pipeline latencies between the old **Boost SPSC
 
 ---
 
-## Performance Comparison 
+### Performance Comparison 
 
-### 1. `RxTx` Stats
+#### `RxTx` Stats
 
 | Metric | Before (Boost SPSC) | After (Custom SPSC) | Δ |
 |---|---|---|---|
@@ -246,7 +246,7 @@ The benchmarks below compare the pipeline latencies between the old **Boost SPSC
 
 ---
 
-## Summary
+### Summary
 
 | Category | Gain |
 |---|---|
@@ -266,11 +266,11 @@ back to [Pipeline perf findings](Pipeline/perf_pipeline.md/#rxtx-perf-findings)
 
 The custom scalar linear-probing hash table was replaced with Abseil's SIMD-accelerated `absl::flat_hash_map` across symbol index lookups and execution order ID routing tables.
 
-## Benchmark Comparison (`Symbol` & `Exec ID` Lookups)
+### Benchmark Comparison (`Symbol` & `Exec ID` Lookups)
 
 The benchmarks below compare latency and CPU cycle metrics across symbol lookup tables (`size: 512`, `load: 50%`) and execution order tracking tables (`65,536` active IDs). All values represent standalone micro-benchmark iterations.
 
-### 1. Symbol Index Lookup Table (`HT_Sym`, 512 Capacity)
+#### Symbol Index Lookup Table 
 
 | Benchmark / Metric | Before (Custom Hash Table) | After (`absl::flat_hash_map`) | Δ |
 | ----- | ----- | ----- | ----- |
@@ -281,7 +281,7 @@ The benchmarks below compare latency and CPU cycle metrics across symbol lookup 
 | p99 cycles | 90 | 44 | **~51.1% Fewer cycles** |
 | p999 cycles | 128 | 65 | **~49.2% Fewer cycles** |
 
-### 2. Execution ID Tracking Map (`HT_Exec`, 65,536 Active IDs)
+#### Execution ID Tracking Map 
 
 | Benchmark / Metric | Before (Custom Hash Table) | After (`absl::flat_hash_map`) | Δ |
 | ----- | ----- | ----- | ----- |
@@ -292,9 +292,9 @@ The benchmarks below compare latency and CPU cycle metrics across symbol lookup 
 | p99 cycles | 88 | 44 | **~50.0% Fewer cycles** |
 | p999 cycles | 124 | 62 | **~50.0% Fewer cycles** |
 
-## Performance Comparison
+### Performance Comparison
 
-### 1. System Profiling & `perf` Stats (`ht_standalone` Stress)
+#### System Profiling & `perf` Stats 
 
 | Metric | Before (Custom Hash Table) | After (`absl::flat_hash_map`) | Δ |
 | ----- | ----- | ----- | ----- |
@@ -305,7 +305,7 @@ The benchmarks below compare latency and CPU cycle metrics across symbol lookup 
 | LLC Load Misses | 26,451 | 32,983 | Minimal LLC impact |
 
 
-## Summary
+### Summary
 
 | Category | Gain |
 | ----- | ----- |
@@ -323,7 +323,9 @@ The scalar FIX parser was compared against a SIMD implementation across the stan
 
 ---
 
-## Benchmark Comparison (`parser_fix_bench`)
+### Benchmark Comparison 
+
+#### (`parser_fix_bench`)
 
 | Benchmark / Metric | SIMD (Before) | Scalar (After) | Δ |
 |---|---|---|---|
@@ -354,6 +356,8 @@ The scalar FIX parser was compared against a SIMD implementation across the stan
 
 ---
 
+#### (`parser_fix_parseFunc`)
+
 | Benchmark / Metric | SIMD (Before) | Scalar (After) | Δ |
 |---|---|---|---|
 | **parseFunc/NewOrder** | | | |
@@ -371,7 +375,7 @@ The scalar FIX parser was compared against a SIMD implementation across the stan
 
 ---
 
-## 3. Benchmark Comparison (`parser_dispatch_bench`, `BM_Parser/MixedTraffic`)
+#### (`parser_dispatch_bench`, `BM_Parser/MixedTraffic`)
 
 | Metric | SIMD (Before) | Scalar (After) | Δ |
 |---|---|---|---|
@@ -383,7 +387,7 @@ The scalar FIX parser was compared against a SIMD implementation across the stan
 
 ---
 
-## Summary
+### Summary
 
 | Category                           | Result                                                          |
 |------------------------------------|-----------------------------------------------------------------|
