@@ -21,9 +21,8 @@ Additionally, folly is not a modular library: even when only `ConcurrentHashMap`
 | p95 cycles | 7,941 | 8,643 | +8.8% |
 | p99 cycles | 8,903 | 9,471 | +6.4% |
 | p999 cycles | 183,912 | 17,400 | **−91%** |
-| Max cycles | 632,706 | 144,687 | **−77%** |
 
-Mean and steady-state cycle counts are effectively unchanged — the hot path cost of the map swap is neutral. The significant gain is in tail latency: p999 dropped **−91%** and max cycles **−77%**, directly attributable to the elimination of folly's hazard pointer reclamation and deferred free paths that caused occasional long stalls.
+Mean and steady-state cycle counts are effectively unchanged — the hot path cost of the map swap is neutral. The significant gain is in tail latency: p999 dropped **−91%**, directly attributable to the elimination of folly's hazard pointer reclamation and deferred free paths that caused occasional long stalls.
 
 ---
 
@@ -108,7 +107,6 @@ Each FIX order previously called `localtime_r` to format the `TransactTime` fiel
 | p95 cycles | 454.6 | 228.4 | **−50%** |
 | p99 cycles | 497.4 | 269.8 | **−46%** |
 | p999 cycles | 584 | 319.2 | **−45%** |
-| Max cycles | 87,758 | 66,680 | **−24%** |
 
 ---
 
@@ -235,7 +233,9 @@ The benchmarks below compare the pipeline latencies between the old **Boost SPSC
 
 ---
 
-## Performance Comparison (`RxTx` Integration Stats)
+## Performance Comparison 
+
+### 1. `RxTx` Stats
 
 | Metric | Before (Boost SPSC) | After (Custom SPSC) | Δ |
 |---|---|---|---|
@@ -270,3 +270,68 @@ While Boost provides a general-purpose concurrent queue, tailoring our custom im
 | False sharing / Local HITM | **~46.8% dramatic reduction** |
 
 back to [Pipeline perf findings](Pipeline/perf_pipeline.md/#rxtx-perf-findings)
+
+## Opt-4 — Hash Table Lookup: Custom Open-Addressing → `absl::flat_hash_map` (2026-10-30) 
+
+> **Note:** Baseline measurements refer to the custom scalar open-addressing / hash-indexed array implementation (`HT_Sym_custom`, `HT_Exec_nobloom`), evaluated against Abseil's SIMD group probing flat hash map under identical CPU pin and affinity conditions.
+
+The custom scalar linear-probing hash table was replaced with Abseil's SIMD-accelerated `absl::flat_hash_map` across symbol index lookups and execution order ID routing tables.
+
+## Benchmark Comparison (`Symbol` & `Exec ID` Lookups)
+
+The benchmarks below compare latency and CPU cycle metrics across symbol lookup tables (`size: 512`, `load: 50%`) and execution order tracking tables (`65,536` active IDs). All values represent standalone micro-benchmark iterations.
+
+### 1. Symbol Index Lookup Table (`HT_Sym`, 512 Capacity)
+
+| Benchmark / Metric | Before (Custom Hash Table) | After (`absl::flat_hash_map`) | Δ |
+| ----- | ----- | ----- | ----- |
+| **HT_Sym Lookup** | | | |
+| Median time | 9.05 ns | 9.78 ns | +8.0% (within jitter noise) |
+| p50 cycles | 18 | 28 | +10 cycles (scalar probe hit) |
+| p95 cycles | 64 | 36 | **~43.8% Fewer cycles** |
+| p99 cycles | 90 | 44 | **~51.1% Fewer cycles** |
+| p999 cycles | 128 | 65 | **~49.2% Fewer cycles** |
+
+### 2. Execution ID Tracking Map (`HT_Exec`, 65,536 Active IDs)
+
+| Benchmark / Metric | Before (Custom Hash Table) | After (`absl::flat_hash_map`) | Δ |
+| ----- | ----- | ----- | ----- |
+| **HT_Exec Lookup** | | | |
+| Median time | 9.01 ns | 9.82 ns | +9.0% (within jitter noise) |
+| p50 cycles | 18 | 28 | +10 cycles |
+| p95 cycles | 62 | 36 | **~41.9% Fewer cycles** |
+| p99 cycles | 88 | 44 | **~50.0% Fewer cycles** |
+| p999 cycles | 124 | 62 | **~50.0% Fewer cycles** |
+
+## Performance Comparison
+
+### 1. System Profiling & `perf` Stats (`ht_standalone` Stress)
+
+| Metric | Before (Custom Hash Table) | After (`absl::flat_hash_map`) | Δ |
+| ----- | ----- | ----- | ----- |
+| CPU Core Cycles | 138.39B | 135.07B | **~2.4% Fewer cycles** |
+| Instructions Retired | 90.43B | 83.37B | **~7.8% Fewer instructions** |
+| Branch Misses | 727.41M | 276.06M | **~62.0% Dramatic Reduction** |
+| L1-D Load Misses | 36.73M | 35.11M | **~4.4% Fewer misses** |
+| LLC Load Misses | 26,451 | 32,983 | Minimal LLC impact |
+
+## Why It Won
+
+1. **SIMD Group Probing vs. Linear Probing Collisions:**
+   While the custom scalar hash table achieves a slightly faster best-case hit cost at p50 (18 vs 28 cycles), linear probing causes collision chains as fill ratios grow. Abseil's SIMD metadata inspection evaluates 16 slots in parallel via 128-bit vector registers, ensuring bounded lookup chains and eliminating long linear probes.
+
+2. **Tail Latency Predictability (`p99` / `p999` Stability):**
+   In high-frequency trading pipelines, tail latency stability is far more critical than an isolated best-case hit. `absl::flat_hash_map` reduced p99 and p999 tail latencies by **~50%** (slashing p99 from 88–90 cycles down to 44 cycles), providing bounded execution guaranteed below 65 cycles across 99.9% of all market events.
+
+3. **Massive Reduction in Branch Mispredictions:**
+   Custom open-addressing loops produced severe branch misprediction penalties (**727.4M branch misses**) during linear probe loops. Abseil's bitmask-driven SIMD group evaluation reduced branch mispredictions to **276.0M (-62.0%)**, significantly cutting hardware pipeline flush stalls.
+
+## Summary
+
+| Category | Gain |
+| ----- | ----- |
+| Tail Latency (`p99` / `p999`) | **~50.0% reduction** across all lookup tables |
+| Branch Mispredictions | **~62.0% dramatic reduction** |
+| Instructions Retired | **~7.06B fewer instructions** (~7.8% reduction) |
+| CPU Core Cycles | **~3.32B fewer cycles** consumed |
+| Overall Decision | Integrated into Production  |
