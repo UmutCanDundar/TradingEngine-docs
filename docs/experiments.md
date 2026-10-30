@@ -11,7 +11,6 @@ Message type dispatching across all binary and text protocol parsers (Mixed traf
 
 *Note: Both implementations run on the identical SPSC pipeline (`boost::lockfree` queue), ensuring queue-induced cache metrics remain baseline-equivalent.*
 
-
 ---
 
 ### Part A: Micro-Benchmark Comparisons (Before vs. After)
@@ -68,8 +67,9 @@ Message type dispatching across all binary and text protocol parsers (Mixed traf
 * **Why it was rejected:** Large `switch-case` blocks over frequent message type discriminators increase branch misprediction penalties and instruction cache pressure in hot loops. Function pointers (`fptr`) provide clean, predictable, and isolated execution routing without bloating the dispatch block.
 * **Outcome:** Switch-case dispatch is rejected across the board; **`fptr` routing remains in production**.
 
+---
 
-# Exp-2 — MarketBook Data Structure: `absl::btree` vs. `std::vector`
+## Exp-2 — MarketBook Data Structure: `absl::btree` vs. `std::vector`
 
 ### Overview
 The core order book data structure within the standalone MarketBook component was evaluated to compare performance trade-offs between cache-friendly B-Tree node indexing (`absl::btree`) and contiguous flat-array storage (`std::vector`). 

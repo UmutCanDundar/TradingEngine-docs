@@ -258,6 +258,7 @@ The benchmarks below compare the pipeline latencies between the old **Boost SPSC
 
 back to [Pipeline perf findings](Pipeline/perf_pipeline.md/#rxtx-perf-findings)
 
+---
 
 ## Opt-4 — Hash Table Lookup: Custom Open-Addressing → `absl::flat_hash_map` (2026-10-30) 
 
@@ -314,7 +315,7 @@ The benchmarks below compare latency and CPU cycle metrics across symbol lookup 
 | CPU Core Cycles | **~3.32B fewer cycles** consumed |
 | Overall Decision | Integrated into Production  |
 
-
+---
 
 ## Opt-5 — FIX Parser: SIMD → Scalar (2026-10-30)
 
