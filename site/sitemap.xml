@@ -2,86 +2,90 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
     <url>
          <loc>https://UmutCanDundar.github.io/TradingEngine-Portfolio/</loc>
-         <lastmod>2026-10-29</lastmod>
+         <lastmod>2026-10-30</lastmod>
     </url>
     <url>
          <loc>https://UmutCanDundar.github.io/TradingEngine-Portfolio/architecture/</loc>
-         <lastmod>2026-10-29</lastmod>
+         <lastmod>2026-10-30</lastmod>
     </url>
     <url>
          <loc>https://UmutCanDundar.github.io/TradingEngine-Portfolio/design/</loc>
-         <lastmod>2026-10-29</lastmod>
+         <lastmod>2026-10-30</lastmod>
+    </url>
+    <url>
+         <loc>https://UmutCanDundar.github.io/TradingEngine-Portfolio/experiments/</loc>
+         <lastmod>2026-10-30</lastmod>
     </url>
     <url>
          <loc>https://UmutCanDundar.github.io/TradingEngine-Portfolio/optimization/</loc>
-         <lastmod>2026-10-29</lastmod>
+         <lastmod>2026-10-30</lastmod>
     </url>
     <url>
          <loc>https://UmutCanDundar.github.io/TradingEngine-Portfolio/tests/</loc>
-         <lastmod>2026-10-29</lastmod>
+         <lastmod>2026-10-30</lastmod>
     </url>
     <url>
          <loc>https://UmutCanDundar.github.io/TradingEngine-Portfolio/Benchmark/builder_benchmark/</loc>
-         <lastmod>2026-10-29</lastmod>
+         <lastmod>2026-10-30</lastmod>
     </url>
     <url>
          <loc>https://UmutCanDundar.github.io/TradingEngine-Portfolio/Benchmark/order_manager_benchmark/</loc>
-         <lastmod>2026-10-29</lastmod>
+         <lastmod>2026-10-30</lastmod>
     </url>
     <url>
          <loc>https://UmutCanDundar.github.io/TradingEngine-Portfolio/Benchmark/parser_benchmark/</loc>
-         <lastmod>2026-10-29</lastmod>
+         <lastmod>2026-10-30</lastmod>
     </url>
     <url>
          <loc>https://UmutCanDundar.github.io/TradingEngine-Portfolio/Benchmark/risk_benchmark/</loc>
-         <lastmod>2026-10-29</lastmod>
+         <lastmod>2026-10-30</lastmod>
     </url>
     <url>
          <loc>https://UmutCanDundar.github.io/TradingEngine-Portfolio/Perf/builder_perf/</loc>
-         <lastmod>2026-10-29</lastmod>
+         <lastmod>2026-10-30</lastmod>
     </url>
     <url>
          <loc>https://UmutCanDundar.github.io/TradingEngine-Portfolio/Perf/order_manager_perf/</loc>
-         <lastmod>2026-10-29</lastmod>
+         <lastmod>2026-10-30</lastmod>
     </url>
     <url>
          <loc>https://UmutCanDundar.github.io/TradingEngine-Portfolio/Perf/parser_perf/</loc>
-         <lastmod>2026-10-29</lastmod>
+         <lastmod>2026-10-30</lastmod>
     </url>
     <url>
          <loc>https://UmutCanDundar.github.io/TradingEngine-Portfolio/Perf/risk_perf/</loc>
-         <lastmod>2026-10-29</lastmod>
+         <lastmod>2026-10-30</lastmod>
     </url>
     <url>
          <loc>https://UmutCanDundar.github.io/TradingEngine-Portfolio/Pipeline/benchmark_pipeline/</loc>
-         <lastmod>2026-10-29</lastmod>
+         <lastmod>2026-10-30</lastmod>
     </url>
     <url>
          <loc>https://UmutCanDundar.github.io/TradingEngine-Portfolio/Pipeline/perf_pipeline/</loc>
-         <lastmod>2026-10-29</lastmod>
+         <lastmod>2026-10-30</lastmod>
     </url>
     <url>
          <loc>https://UmutCanDundar.github.io/TradingEngine-Portfolio/Pipeline/pipeline/</loc>
-         <lastmod>2026-10-29</lastmod>
+         <lastmod>2026-10-30</lastmod>
     </url>
     <url>
          <loc>https://UmutCanDundar.github.io/TradingEngine-Portfolio/Unit/builder_unit/</loc>
-         <lastmod>2026-10-29</lastmod>
+         <lastmod>2026-10-30</lastmod>
     </url>
     <url>
          <loc>https://UmutCanDundar.github.io/TradingEngine-Portfolio/Unit/network_unit/</loc>
-         <lastmod>2026-10-29</lastmod>
+         <lastmod>2026-10-30</lastmod>
     </url>
     <url>
          <loc>https://UmutCanDundar.github.io/TradingEngine-Portfolio/Unit/order_manager_unit/</loc>
-         <lastmod>2026-10-29</lastmod>
+         <lastmod>2026-10-30</lastmod>
     </url>
     <url>
          <loc>https://UmutCanDundar.github.io/TradingEngine-Portfolio/Unit/parser_unit/</loc>
-         <lastmod>2026-10-29</lastmod>
+         <lastmod>2026-10-30</lastmod>
     </url>
     <url>
          <loc>https://UmutCanDundar.github.io/TradingEngine-Portfolio/Unit/risk_unit/</loc>
-         <lastmod>2026-10-29</lastmod>
+         <lastmod>2026-10-30</lastmod>
     </url>
 </urlset>
