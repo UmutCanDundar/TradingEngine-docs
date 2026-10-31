@@ -1,4 +1,4 @@
-# Project Measurement Summary
+# Project Measurement Summary (30.10.2026)
 
 > **Current state of the system's main pipelines (hot path).** Last updated: 2026-10-30. This page is refreshed after every change; it always shows the latest measurements only.
 >
