@@ -33,7 +33,7 @@ health, thread-heartbeats, and latency histograms in real-time.
 | Outbound protocols | FIX (BIST), OUCH (BIST, NASDAQ) |
 | Account model | Single account per venue |
 | Concurrency model | Lock-free, SPSC queues between pipeline stages |
-| Memory model | Preallocated pools, no heap allocation on hot path |
+| Memory model | Preallocated pools for messages and packets on the hot path |
 | Kernel bypass | Not used (hardware limitations) |
 
 ---
@@ -80,7 +80,7 @@ Each stage communicates via lock-free SPSC queues. Stages run on pinned CPU core
 
 ## Design Highlights
 
-- **Zero-copy on hot path** – Messages are written directly into preallocated packet buffers with no intermediate copies, eliminating heap allocation overhead during execution.
+- **Zero-copy on hot path** – Messages are written directly into preallocated packet buffers with no intermediate copies, avoiding per-message heap allocation.
 
 - **Lock-free pipeline** – All inter-thread communication is handled via SPSC queues (boost::lockfree::spsc_queue). No mutexes or condition variables exist on production.
 
@@ -93,8 +93,6 @@ Each stage communicates via lock-free SPSC queues. Stages run on pinned CPU core
 - **Static Dispatch** – The engine utilizes function pointer tables, switch-case, and tag dispatch to achieve high-performance routing while avoiding runtime vtable overhead.
 
 - **Busy-Wait Polling** – Network and Flow threads employ a 100% duty-cycle polling strategy. Spin-loops are optimized with _mm_pause() intrinsics to prevent CPU pipeline flushes and reduce power consumption while maintaining sub-microsecond responsiveness.
-
-- **SIMD-Accelerated Parsing** – The FIX parser utilizes SIMD intrinsics to batch-process tag/value delimiters, significantly reducing the clock cycles required for string-to-binary conversion.
 
 - **Design Patterns** – The engine applies several well-known design patterns across its pipeline. See [Design Patterns](design.md) for a detailed breakdown.
 

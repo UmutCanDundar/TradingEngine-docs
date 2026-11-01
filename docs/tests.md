@@ -38,3 +38,6 @@ underlying protocol handlers are tested independently.
 This isolates per-stage costs before measuring combined 
 overhead — for example, measuring a FIX parser in isolation 
 before measuring it through the parser dispatch layer.
+
+
+**Note**: This section describes the initial design. For the current state see Recent Optimization and Summary.
