@@ -2096,7 +2096,7 @@ health, thread-heartbeats, and latency histograms in real-time.</p>
 </tr>
 <tr>
 <td>Memory model</td>
-<td>Preallocated pools, no heap allocation on hot path</td>
+<td>Preallocated pools for messages and packets on the hot path</td>
 </tr>
 <tr>
 <td>Kernel bypass</td>
@@ -2144,7 +2144,7 @@ health, thread-heartbeats, and latency histograms in real-time.</p>
 <h2 id="design-highlights">Design Highlights</h2>
 <ul>
 <li>
-<p><strong>Zero-copy on hot path</strong> – Messages are written directly into preallocated packet buffers with no intermediate copies, eliminating heap allocation overhead during execution.</p>
+<p><strong>Zero-copy on hot path</strong> – Messages are written directly into preallocated packet buffers with no intermediate copies, avoiding per-message heap allocation.</p>
 </li>
 <li>
 <p><strong>Lock-free pipeline</strong> – All inter-thread communication is handled via SPSC queues (boost::lockfree::spsc_queue). No mutexes or condition variables exist on production.</p>
@@ -2163,9 +2163,6 @@ health, thread-heartbeats, and latency histograms in real-time.</p>
 </li>
 <li>
 <p><strong>Busy-Wait Polling</strong> – Network and Flow threads employ a 100% duty-cycle polling strategy. Spin-loops are optimized with _mm_pause() intrinsics to prevent CPU pipeline flushes and reduce power consumption while maintaining sub-microsecond responsiveness.</p>
-</li>
-<li>
-<p><strong>SIMD-Accelerated Parsing</strong> – The FIX parser utilizes SIMD intrinsics to batch-process tag/value delimiters, significantly reducing the clock cycles required for string-to-binary conversion.</p>
 </li>
 <li>
 <p><strong>Design Patterns</strong> – The engine applies several well-known design patterns across its pipeline. See <a href="design/">Design Patterns</a> for a detailed breakdown.</p>
