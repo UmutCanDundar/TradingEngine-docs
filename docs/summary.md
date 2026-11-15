@@ -2,7 +2,7 @@
 
 > **Current state of the system's main pipelines (hot path).** Last updated: 2026-10-30. This page is refreshed after every change; it always shows the latest measurements only.
 >
-> **Measurement:** values are medians; cv of time ≤ 1.0% and of p50 ≤ 1.4% on every leg (max and p999 cycles are inherently noisy). Threads pinned per core (`SCHED_FIFO`), SMT on, `performance` governor, turbo on. Host: 13th-gen Intel Core i7-13620H (hybrid P/E cores).
+> **Measurement:** values are medians; cv of time ≤ 1.0% and of p50 ≤ 1.4% on every leg. Threads pinned per core (`SCHED_FIFO`), SMT on, `performance` governor, turbo on. Host: 13th-gen Intel Core i7-13620H (hybrid P/E cores).
 
 * * *
 

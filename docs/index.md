@@ -11,19 +11,7 @@ TradingEngine is a multi-venue, multi-protocol order execution engine built for 
 The engine is designed with a focus on predictable, low-latency execution. Messages, packets and orders are served from preallocated pools, so there is no per-message heap allocation on the hot path (the one known exception is MarketBook price-level nodes, see below). Inter-stage communication uses lock-free data structures, and hot data is isolated on explicit cache lines to minimize false sharing between threads.
 
 !!! note "Work in Progress"
-The engine is currently in its Core Performance Phase. The primary focus is achieving deterministic, low-latency execution on the "Happy Path." The following areas are under active development:
-
-**Strategy Engine** – Implementation of the main decision-making logic is pending.
-
-**Database Integration** – ClickHouse connectivity for post-trade analysis is 
-partially implemented.
-
-**System Monitoring** – A dedicated telemetry unit is planned to monitor pipeline 
-health, thread-heartbeats, and latency histograms in real-time.
-
-**Binary Journaling** – Inbound/outbound messages and session sequence numbers are journaled to disk. After a crash, the journal is replayed to rebuild state and return to the same position as the exchange; orders with unconfirmed state are queried, not resent, to avoid duplicates.
-
-**Validation & Boundary Checks** – A trusted-gateway assumption is currently made: exchange messages are assumed to conform to the protocol. Sequence numbering and gap recovery are handled at the session level (FIX, SoupBinTCP); checksum verification and critical tag/value validation are planned.
+    The engine is currently in its Core Performance Phase. The primary focus is achieving deterministic, low-latency execution on the "Happy Path." 
 
 !!! note "Measurement scope"
     Latency figures in this documentation are per-leg medians measured in-process over loopback TCP against a fake exchange server, on a hybrid-core laptop CPU. They exclude strategy logic and real wire/NIC time, and are not wire-to-wire numbers. See [Project Measurement Summary](summary.md) for details.
@@ -107,17 +95,23 @@ Each stage communicates via lock-free SPSC queues. Stages run on pinned CPU core
 
 ## Roadmap & Resilience Engineering
 
-Current development ensures that the engine performs at peak speed when data is valid. The next phases will introduce robustness against "Real World" anomalies:
+Current development ensures that the engine performs at peak speed when data is valid. The next phases complete the missing components, then introduce robustness against “Real World” anomalies:
 
-Phase 2: Production Readiness & Safety
+Phase 2: Core Completion
 
-- **Binary Journaling** – Implementing a high-speed, sequential disk-logger to 
-persist the last seen Sequence Numbers and critical state for instant recovery 
-after crashes.
+- **Strategy Engine** – Implementation of the main decision-making logic is pending.
 
-- **Validation & Boundary Checks** – Adding Checksum validation and rigorous 
-protection against malformed packets or protocol violations from the exchange 
-side.
+- **Database Integration** – ClickHouse connectivity for post-trade analysis is 
+partially implemented.
+
+- **System Monitoring** – A dedicated telemetry unit is planned to monitor pipeline 
+health, thread-heartbeats, and latency histograms in real-time.
+
+Phase 3: Production Readiness & Safety
+
+- **Binary Journaling** – Inbound/outbound messages and session sequence numbers are journaled to disk. After a crash, the journal is replayed to rebuild state and return to the same position as the exchange; orders with unconfirmed state are queried, not resent, to avoid duplicates.
+
+- **Validation & Boundary Checks** – A trusted-gateway assumption is currently made: exchange messages are assumed to conform to the protocol. Sequence numbering and gap recovery are handled at the session level (FIX, SoupBinTCP); checksum verification and critical tag/value validation are planned.
 
 - **Secure Config Management** – Transitioning from plain-text JSON credentials to 
 **AES-256 encrypted secrets** with environment-based master keys.
@@ -125,13 +119,10 @@ side.
 - **Transport Layer Security (TLS/SSL)** – Integrating **OpenSSL** for FIX 
 connectivity to ensure encrypted communication with exchange gateways.
 
-Phase 3: Micro-Optimizations
+Phase 4: Micro-Optimizations
 
 - **Warm-up Sequences** – Pre-market dummy-load injection to prime the Instruction 
 Cache and Branch Predictor for "first-packet" stability.
-
-- **Latency Telemetry** – Integrating a non-intrusive monitoring unit to track 
-nanosecond-level jitter across each pipeline stage without impacting the hot path.
 
 ---
     

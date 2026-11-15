@@ -1803,7 +1803,7 @@
 <li><code>OrderPool</code> — preallocated order objects</li>
 <li><code>OrderRiskPool</code> in <code>RiskEngine</code> — preallocated <code>OrderRisk</code> entries for active order tracking</li>
 </ol>
-<p><strong>Why:</strong> Dynamic allocation (<code>new</code>/<code>delete</code>) is non-deterministic in latency due to heap fragmentation and OS interaction. Object pools give O(1) predictable allocation with zero system calls on the hot path.</p>
+<p><strong>Why:</strong> Dynamic allocation (<code>new</code>/<code>delete</code>) is non-deterministic in latency due to heap fragmentation and OS interaction. Object pools give O(1) predictable allocation with no per-message heap allocation or system calls on the message/packet/order path. (Known exception: MarketBook price-level nodes in absl::btree_map, allocated only when a new price level overflows a node; a pool-backed allocator is a future optimization.)</p>
 <hr />
 <h2 id="producer-consumer-spsc-queue">Producer-Consumer (SPSC Queue)</h2>
 <p><strong>What:</strong> Decouple producers and consumers of data using a shared queue. In this engine, all inter-thread communication uses lock-free Single-Producer Single-Consumer (SPSC) queues.</p>
@@ -1818,7 +1818,7 @@
 <li><code>store_to_db</code> — OrderManager → ClickhouseWriter</li>
 <li><code>db_to_parser</code> — ClickhouseWriter → ParserDispatch</li>
 </ol>
-<p><strong>Why:</strong> SPSC queues are wait-free for both producer and consumer when they operate on separate threads. No mutexes, no contention, no blocking. <code>boost::lockfree::spsc_queue</code> is used throughout.</p>
+<p><strong>Why:</strong> SPSC queues are wait-free for both producer and consumer when they operate on separate threads. No mutexes, no contention, no blocking. <code>boost::lockfree::spsc_queue</code>/<code>CustomSpscQueue</code> is used throughout.</p>
 <hr />
 <h2 id="facade">Facade</h2>
 <p><strong>What:</strong> Provide a simplified interface to a complex subsystem. Hides internal wiring and lifecycle management from the caller.</p>
@@ -1884,7 +1884,7 @@
 <ol>
 <li><code>NetworkIO</code> — epoll is the kernel-level implementation of the Observer pattern. Each socket file descriptor is registered as a subscriber (<code>epoll_ctl</code>), and <code>epoll_wait()</code> acts as the notification mechanism. When data arrives or a socket becomes writable, the corresponding event handler is invoked.</li>
 </ol>
-<p><strong>Why:</strong> Kernel bypass solutions (DPDK, RDMA, Solarflare OpenOnload) were not available due to hardware limitations. epoll was chosen as the most performant alternative available on standard Linux — it scales to thousands of file descriptors with O(1) event delivery, avoids busy-polling CPU waste, and integrates naturally with non-blocking sockets. Edge-triggered mode (<code>EPOLLET</code>) is used throughout to minimize spurious wakeups and syscall overhead.</p>
+<p><strong>Why:</strong> Kernel bypass solutions (DPDK, RDMA, Solarflare OpenOnload) were not available due to hardware limitations. epoll was chosen as the most performant alternative available on standard Linux, epoll_wait is called with timeout 0 inside the network loop, which also drains builder_to_sender_ queue. Blocking would delay outbound orders, so epoll is busy-polled; edge-triggered mode avoids repeated readiness notifications.</p>
 <hr />
 <h2 id="summary">Summary</h2>
 <table>
