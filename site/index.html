@@ -2053,15 +2053,8 @@
 <p>The engine is designed with a focus on predictable, low-latency execution. Messages, packets and orders are served from preallocated pools, so there is no per-message heap allocation on the hot path (the one known exception is MarketBook price-level nodes, see below). Inter-stage communication uses lock-free data structures, and hot data is isolated on explicit cache lines to minimize false sharing between threads.</p>
 <div class="admonition note">
 <p class="admonition-title">Work in Progress</p>
+<p>The engine is currently in its Core Performance Phase. The primary focus is achieving deterministic, low-latency execution on the "Happy Path." </p>
 </div>
-<p>The engine is currently in its Core Performance Phase. The primary focus is achieving deterministic, low-latency execution on the "Happy Path." The following areas are under active development:</p>
-<p><strong>Strategy Engine</strong> – Implementation of the main decision-making logic is pending.</p>
-<p><strong>Database Integration</strong> – ClickHouse connectivity for post-trade analysis is 
-partially implemented.</p>
-<p><strong>System Monitoring</strong> – A dedicated telemetry unit is planned to monitor pipeline 
-health, thread-heartbeats, and latency histograms in real-time.</p>
-<p><strong>Binary Journaling</strong> – Inbound/outbound messages and session sequence numbers are journaled to disk. After a crash, the journal is replayed to rebuild state and return to the same position as the exchange; orders with unconfirmed state are queried, not resent, to avoid duplicates.</p>
-<p><strong>Validation &amp; Boundary Checks</strong> – A trusted-gateway assumption is currently made: exchange messages are assumed to conform to the protocol. Sequence numbering and gap recovery are handled at the session level (FIX, SoupBinTCP); checksum verification and critical tag/value validation are planned.</p>
 <div class="admonition note">
 <p class="admonition-title">Measurement scope</p>
 <p>Latency figures in this documentation are per-leg medians measured in-process over loopback TCP against a fake exchange server, on a hybrid-core laptop CPU. They exclude strategy logic and real wire/NIC time, and are not wire-to-wire numbers. See <a href="summary/">Project Measurement Summary</a> for details.</p>
@@ -2176,18 +2169,28 @@ health, thread-heartbeats, and latency histograms in real-time.</p>
 </ul>
 <hr />
 <h2 id="roadmap-resilience-engineering">Roadmap &amp; Resilience Engineering</h2>
-<p>Current development ensures that the engine performs at peak speed when data is valid. The next phases will introduce robustness against "Real World" anomalies:</p>
-<p>Phase 2: Production Readiness &amp; Safety</p>
+<p>Current development ensures that the engine performs at peak speed when data is valid. The next phases complete the missing components, then introduce robustness against “Real World” anomalies:</p>
+<p>Phase 2: Core Completion</p>
 <ul>
 <li>
-<p><strong>Binary Journaling</strong> – Implementing a high-speed, sequential disk-logger to 
-persist the last seen Sequence Numbers and critical state for instant recovery 
-after crashes.</p>
+<p><strong>Strategy Engine</strong> – Implementation of the main decision-making logic is pending.</p>
 </li>
 <li>
-<p><strong>Validation &amp; Boundary Checks</strong> – Adding Checksum validation and rigorous 
-protection against malformed packets or protocol violations from the exchange 
-side.</p>
+<p><strong>Database Integration</strong> – ClickHouse connectivity for post-trade analysis is 
+partially implemented.</p>
+</li>
+<li>
+<p><strong>System Monitoring</strong> – A dedicated telemetry unit is planned to monitor pipeline 
+health, thread-heartbeats, and latency histograms in real-time.</p>
+</li>
+</ul>
+<p>Phase 3: Production Readiness &amp; Safety</p>
+<ul>
+<li>
+<p><strong>Binary Journaling</strong> – Inbound/outbound messages and session sequence numbers are journaled to disk. After a crash, the journal is replayed to rebuild state and return to the same position as the exchange; orders with unconfirmed state are queried, not resent, to avoid duplicates.</p>
+</li>
+<li>
+<p><strong>Validation &amp; Boundary Checks</strong> – A trusted-gateway assumption is currently made: exchange messages are assumed to conform to the protocol. Sequence numbering and gap recovery are handled at the session level (FIX, SoupBinTCP); checksum verification and critical tag/value validation are planned.</p>
 </li>
 <li>
 <p><strong>Secure Config Management</strong> – Transitioning from plain-text JSON credentials to 
@@ -2198,16 +2201,10 @@ side.</p>
 connectivity to ensure encrypted communication with exchange gateways.</p>
 </li>
 </ul>
-<p>Phase 3: Micro-Optimizations</p>
+<p>Phase 4: Micro-Optimizations</p>
 <ul>
-<li>
-<p><strong>Warm-up Sequences</strong> – Pre-market dummy-load injection to prime the Instruction 
-Cache and Branch Predictor for "first-packet" stability.</p>
-</li>
-<li>
-<p><strong>Latency Telemetry</strong> – Integrating a non-intrusive monitoring unit to track 
-nanosecond-level jitter across each pipeline stage without impacting the hot path.</p>
-</li>
+<li><strong>Warm-up Sequences</strong> – Pre-market dummy-load injection to prime the Instruction 
+Cache and Branch Predictor for "first-packet" stability.</li>
 </ul>
 <hr />
 <h2 id="repository-structure">Repository Structure</h2>
