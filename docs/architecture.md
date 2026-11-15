@@ -35,11 +35,7 @@ and cache characteristics.
 
 ### Risk Check Design Decision
 
-Risk Check is read-heavy — it validates positions and limits 
-without mutating state. With P-cores fully allocated to 
-latency-critical write path components, Risk Check was 
-assigned to an E-core. Its read-only nature makes it 
-tolerant of the lower single-thread throughput of E-cores.
+Risk Check is read-heavy: it reads position/exposure state owned by the Risk Update thread and does not mutate it. Its only write is setting the RISK_DONE bit on the order it was handed. With the P-cores budgeted for the write path, it runs on an E-core.
 
 ## Source Structure
 

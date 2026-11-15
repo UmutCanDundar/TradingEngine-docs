@@ -15,7 +15,7 @@ This page documents the design patterns applied across the TradingEngine pipelin
 3. `OrderPool` — preallocated order objects
 4. `OrderRiskPool` in `RiskEngine` — preallocated `OrderRisk` entries for active order tracking
 
-**Why:** Dynamic allocation (`new`/`delete`) is non-deterministic in latency due to heap fragmentation and OS interaction. Object pools give O(1) predictable allocation with zero system calls on the hot path.
+**Why:** Dynamic allocation (`new`/`delete`) is non-deterministic in latency due to heap fragmentation and OS interaction. Object pools give O(1) predictable allocation with no per-message heap allocation or system calls on the message/packet/order path. (Known exception: MarketBook price-level nodes in absl::btree_map, allocated only when a new price level overflows a node; a pool-backed allocator is a future optimization.)
 
 ---
 
@@ -34,7 +34,7 @@ This page documents the design patterns applied across the TradingEngine pipelin
 7. `store_to_db` — OrderManager → ClickhouseWriter
 8. `db_to_parser` — ClickhouseWriter → ParserDispatch
 
-**Why:** SPSC queues are wait-free for both producer and consumer when they operate on separate threads. No mutexes, no contention, no blocking. `boost::lockfree::spsc_queue` is used throughout.
+**Why:** SPSC queues are wait-free for both producer and consumer when they operate on separate threads. No mutexes, no contention, no blocking. `boost::lockfree::spsc_queue`/`CustomSpscQueue` is used throughout.
 
 ---
 
@@ -129,7 +129,7 @@ Each check returns a reject reason bitmask. The chain short-circuits on certain 
 
 1. `NetworkIO` — epoll is the kernel-level implementation of the Observer pattern. Each socket file descriptor is registered as a subscriber (`epoll_ctl`), and `epoll_wait()` acts as the notification mechanism. When data arrives or a socket becomes writable, the corresponding event handler is invoked.
 
-**Why:** Kernel bypass solutions (DPDK, RDMA, Solarflare OpenOnload) were not available due to hardware limitations. epoll was chosen as the most performant alternative available on standard Linux — it scales to thousands of file descriptors with O(1) event delivery, avoids busy-polling CPU waste, and integrates naturally with non-blocking sockets. Edge-triggered mode (`EPOLLET`) is used throughout to minimize spurious wakeups and syscall overhead.
+**Why:** Kernel bypass solutions (DPDK, RDMA, Solarflare OpenOnload) were not available due to hardware limitations. epoll was chosen as the most performant alternative available on standard Linux, epoll_wait is called with timeout 0 inside the network loop, which also drains builder_to_sender_ queue. Blocking would delay outbound orders, so epoll is busy-polled; edge-triggered mode avoids repeated readiness notifications.
 
 ---
 

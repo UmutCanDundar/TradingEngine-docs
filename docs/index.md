@@ -8,7 +8,7 @@ A low-latency algorithmic trading engine written in C++23, designed for direct e
 
 TradingEngine is a multi-venue, multi-protocol order execution engine built for algorithmic trading. It handles the full lifecycle of an order — from market data ingestion and order book maintenance, through risk validation, to order construction and transmission to the exchange.
 
-The engine is designed with a focus on predictable, low-latency execution. Every component on the hot path avoids dynamic allocation, uses lock-free data structures, and applies explicit cache-line isolation to minimize false sharing between threads.
+The engine is designed with a focus on predictable, low-latency execution. Messages, packets and orders are served from preallocated pools, so there is no per-message heap allocation on the hot path (the one known exception is MarketBook price-level nodes, see below). Inter-stage communication uses lock-free data structures, and hot data is isolated on explicit cache lines to minimize false sharing between threads.
 
 !!! note "Work in Progress"
 The engine is currently in its Core Performance Phase. The primary focus is achieving deterministic, low-latency execution on the "Happy Path." The following areas are under active development:
@@ -21,6 +21,13 @@ partially implemented.
 **System Monitoring** – A dedicated telemetry unit is planned to monitor pipeline 
 health, thread-heartbeats, and latency histograms in real-time.
 
+**Binary Journaling** – Inbound/outbound messages and session sequence numbers are journaled to disk. After a crash, the journal is replayed to rebuild state and return to the same position as the exchange; orders with unconfirmed state are queried, not resent, to avoid duplicates.
+
+**Validation & Boundary Checks** – A trusted-gateway assumption is currently made: exchange messages are assumed to conform to the protocol. Sequence numbering and gap recovery are handled at the session level (FIX, SoupBinTCP); checksum verification and critical tag/value validation are planned.
+
+!!! note "Measurement scope"
+    Latency figures in this documentation are per-leg medians measured in-process over loopback TCP against a fake exchange server, on a hybrid-core laptop CPU. They exclude strategy logic and real wire/NIC time, and are not wire-to-wire numbers. See [Project Measurement Summary](summary.md) for details.
+    
 ---
 
 ## Key Properties
@@ -80,9 +87,9 @@ Each stage communicates via lock-free SPSC queues. Stages run on pinned CPU core
 
 ## Design Highlights
 
-- **Zero-copy on hot path** – Messages are written directly into preallocated packet buffers with no intermediate copies, avoiding per-message heap allocation.
+- **Zero-copy on hot path** – Messages are written directly into preallocated packet buffers with no intermediate copies, avoiding per-message heap allocation.The MarketBook allocates absl::btree_map nodes only when a new price level overflows a node (a custom allocator is planned as a future optimization).
 
-- **Lock-free pipeline** – All inter-thread communication is handled via SPSC queues (boost::lockfree::spsc_queue). No mutexes or condition variables exist on production.
+- **Lock-free pipeline** – All inter-thread communication is handled via SPSC queues (boost::lockfree::spsc_queue/CustomSpscQueue). No mutexes or condition variables exist on production.
 
 - **Atomic State & Memory Ordering** – The pipeline utilizes std::atomic with explicit Memory Barriers (Acquire/Release semantics) for cross-thread synchronization. This ensures maximum throughput by avoiding expensive sequentially consistent (memory_order_seq_cst) operations where possible.
 
@@ -92,7 +99,7 @@ Each stage communicates via lock-free SPSC queues. Stages run on pinned CPU core
 
 - **Static Dispatch** – The engine utilizes function pointer tables, switch-case, and tag dispatch to achieve high-performance routing while avoiding runtime vtable overhead.
 
-- **Busy-Wait Polling** – Network and Flow threads employ a 100% duty-cycle polling strategy. Spin-loops are optimized with _mm_pause() intrinsics to prevent CPU pipeline flushes and reduce power consumption while maintaining sub-microsecond responsiveness.
+- **Busy-Wait Polling** – Busy-polling avoids scheduler/futex wake-up latency; _mm_pause() reduces power and spin-exit penalty.
 
 - **Design Patterns** – The engine applies several well-known design patterns across its pipeline. See [Design Patterns](design.md) for a detailed breakdown.
 
