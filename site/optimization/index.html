@@ -2445,7 +2445,7 @@
 <p>The optimizations on this page were identified through profiling and benchmarking runs conducted against the baseline implementation. Perf results highlighted the bottlenecks; the changes below are the direct response to those findings.</p>
 <hr />
 <h2 id="opt-1">Opt-1 — OrderManager:: <br><code>folly::ConcurrentHashMap</code> → <code>ConcurrentFixedFlatMap</code> <small>(2026-06-03)</small></h2>
-<p><code>folly::ConcurrentHashMap</code> was replaced with a custom <code>mmap</code>-backed, fixed-capacity, open-addressing <code>ConcurrentFixedFlatMap</code>. The map is accessed exclusively by the store thread — concurrent access never occurs — making folly's hazard pointer and mutex machinery pure overhead.</p>
+<p><code>folly::ConcurrentHashMap</code> was replaced with a custom fixed-capacity, open-addressing <code>ConcurrentFixedFlatMap</code>. The map is accessed exclusively by the store thread — concurrent access never occurs — making folly's hazard pointer and mutex machinery pure overhead.</p>
 <p>Additionally, folly is not a modular library: even when only <code>ConcurrentHashMap</code> was used, the entire library was pulled into every build. Removing it cut full build time by <strong>~2x</strong>.</p>
 <hr />
 <h3 id="benchmark-comparison-bm_ordermanagermixedtraffic">Benchmark Comparison (<code>BM_OrderManager/MixedTraffic</code>)</h3>
